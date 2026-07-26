@@ -1,0 +1,4326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portail administratif</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .page {
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #0f172a;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 22px;
+        }
+
+        .header p {
+            margin-top: 5px;
+            color: #cbd5e1;
+        }
+
+        .conteneur {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .carte {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .bouton-principal {
+            padding: 13px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #0f172a;
+            color: white;
+        }
+
+        .bouton-secondaire {
+            padding: 13px 20px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            color: #0f172a;
+        }
+
+        .bouton-principal:hover,
+        .bouton-secondaire:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 700px) {
+            .header {
+                padding: 20px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .conteneur {
+                width: 94%;
+                margin: 25px auto;
+            }
+
+            .carte {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="accueil" class="page">
+
+        <header class="header">
+            <div>
+                <h1>Portail administratif</h1>
+                <p>Services administratifs numériques</p>
+            </div>
+        </header>
+
+        <main class="conteneur">
+
+            <div class="carte">
+
+                <h2>Bienvenue</h2>
+
+                <p>
+                    Accédez à votre espace personnel
+                    ou à l'espace administratif.
+                </p>
+
+                <br>
+
+                <button
+                    class="bouton-principal"
+                    onclick="ouvrirConnexionCitoyen()">
+                    Espace Citoyen
+                </button>
+
+                <button
+                    class="bouton-secondaire"
+                    onclick="ouvrirConnexionEtranger()">
+                    Espace Étranger
+                </button>
+
+                <button
+                    class="bouton-secondaire"
+                    onclick="ouvrirConnexionAdministrateur()">
+                    Espace Administratif
+                </button>
+
+            </div>
+
+        </main>
+
+  </div>
+  <div id="connexionCitoyen" class="page hidden">
+
+    <header class="header">
+        <div>
+            <h1>Espace Citoyen</h1>
+            <p>Connexion à votre espace personnel</p>
+        </div>
+
+        <button
+            class="bouton-secondaire"
+            onclick="retournerAccueil()">
+            Retour
+        </button>
+    </header>
+
+    <main class="conteneur">
+
+        <div class="carte">
+
+            <h2>Connexion Citoyen</h2>
+
+            <br>
+
+            <label for="numeroIdentification">
+                Numéro d'identification national
+            </label>
+
+            <br><br>
+
+            <input
+                type="text"
+                id="numeroIdentification"
+                placeholder="Votre numéro d'identification national">
+
+            <br><br>
+
+            <label for="motDePasseCitoyen">
+                Mot de passe
+            </label>
+
+            <br><br>
+
+            <input
+                type="password"
+                id="motDePasseCitoyen"
+                placeholder="Votre mot de passe">
+
+            <br><br>
+
+            <button
+                class="bouton-principal"
+                onclick="connexionCitoyen()">
+                Se connecter
+            </button>
+
+            <button
+                class="bouton-secondaire"
+                onclick="ouvrirCreationCompteCitoyen()">
+                Créer un compte
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<div id="creationCompteCitoyen" class="page hidden">
+
+    <header class="header">
+        <div>
+            <h1>Créer un compte Citoyen</h1>
+            <p>Création de votre espace personnel</p>
+        </div>
+
+        <button
+            class="bouton-secondaire"
+            onclick="ouvrirConnexionCitoyen()">
+            Retour
+        </button>
+    </header>
+
+    <main class="conteneur">
+
+        <div class="carte">
+
+            <h2>Créer votre compte</h2>
+
+            <br>
+
+            <label for="nouveauNumeroCitoyen">
+                Numéro d'identification national
+            </label>
+
+            <br><br>
+
+            <input
+                type="text"
+                id="nouveauNumeroCitoyen"
+                placeholder="Votre numéro d'identification national">
+
+            <br><br>
+
+            <label for="nouveauMotDePasseCitoyen">
+                Choisissez votre mot de passe
+            </label>
+
+            <br><br>
+
+            <input
+                type="password"
+                id="nouveauMotDePasseCitoyen"
+                placeholder="Choisissez un mot de passe">
+
+            <br><br>
+
+            <label for="confirmationMotDePasseCitoyen">
+                Confirmez votre mot de passe
+            </label>
+
+            <br><br>
+
+            <input
+                type="password"
+                id="confirmationMotDePasseCitoyen"
+                placeholder="Confirmez votre mot de passe">
+
+            <br><br>
+
+            <button
+                class="bouton-principal"
+                onclick="creerCompteCitoyen()">
+                Créer mon compte
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<div id="connexionEtranger" class="page hidden">
+
+    <header class="header">
+        <div>
+            <h1>Espace Étranger</h1>
+            <p>Connexion à votre espace personnel</p>
+        </div>
+
+        <button
+            class="bouton-secondaire"
+            onclick="retournerAccueil()">
+            Retour
+        </button>
+    </header>
+
+    <main class="conteneur">
+
+        <div class="carte">
+
+            <h2>Connexion Étranger</h2>
+
+            <br>
+
+            <label for="numeroEtranger">
+                Numéro étranger
+            </label>
+
+            <br><br>
+
+            <input
+                type="text"
+                id="numeroEtranger"
+                placeholder="Votre numéro étranger">
+
+            <br><br>
+
+            <label for="motDePasseEtranger">
+                Mot de passe
+            </label>
+
+            <br><br>
+
+            <input
+                type="password"
+                id="motDePasseEtranger"
+                placeholder="Votre mot de passe">
+
+            <br><br>
+
+            <button
+                class="bouton-principal"
+                onclick="connexionEtranger()">
+                Se connecter
+            </button>
+
+            <button
+                class="bouton-secondaire"
+                onclick="ouvrirCreationCompteEtranger()">
+                Créer un compte
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<div id="creationCompteEtranger" class="page hidden">
+
+    <header class="header">
+        <div>
+            <h1>Créer un compte Étranger</h1>
+            <p>Création de votre espace personnel</p>
+        </div>
+
+        <button
+            class="bouton-secondaire"
+            onclick="ouvrirConnexionEtranger()">
+            Retour
+        </button>
+    </header>
+
+    <main class="conteneur">
+
+        <div class="carte">
+
+            <h2>Créer votre compte</h2>
+
+            <br>
+
+            <label for="nouveauNumeroEtranger">
+                Numéro étranger
+            </label>
+
+            <br><br>
+
+            <input
+                type="text"
+                id="nouveauNumeroEtranger"
+                placeholder="Votre numéro étranger">
+
+            <br><br>
+
+            <label for="nouveauMotDePasseEtranger">
+                Choisissez votre mot de passe
+            </label>
+
+            <br><br>
+
+            <input
+                type="password"
+                id="nouveauMotDePasseEtranger"
+                placeholder="Choisissez un mot de passe">
+
+            <br><br>
+
+            <label for="confirmationMotDePasseEtranger">
+                Confirmez votre mot de passe
+            </label>
+
+            <br><br>
+
+            <input
+                type="password"
+                id="confirmationMotDePasseEtranger"
+                placeholder="Confirmez votre mot de passe">
+
+            <br><br>
+
+            <button
+                class="bouton-principal"
+                onclick="creerCompteEtranger()">
+                Créer mon compte
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<div id="connexionAdministrateur" class="page hidden">
+
+    <header class="header">
+        <div>
+            <h1>Espace Administratif</h1>
+            <p>Connexion administrateur</p>
+        </div>
+
+        <button
+            class="bouton-secondaire"
+            onclick="retournerAccueil()">
+            Retour
+        </button>
+    </header>
+
+    <main class="conteneur">
+
+        <div class="carte">
+
+            <h2>Connexion Administrateur</h2>
+
+            <br>
+
+            <label for="identifiantAdministratif">
+                Identifiant administratif
+            </label>
+
+            <br><br>
+
+            <input
+                type="text"
+                id="identifiantAdministratif"
+                placeholder="Votre identifiant administratif">
+
+            <br><br>
+
+            <label for="motDePasseAdministrateur">
+                Mot de passe
+            </label>
+
+            <br><br>
+
+            <input
+                type="password"
+                id="motDePasseAdministrateur"
+                placeholder="Votre mot de passe">
+
+            <br><br>
+
+            <button
+                class="bouton-principal"
+                onclick="connexionAdministrateur()">
+                Se connecter
+            </button>
+
+        </div>
+
+    </main>
+
+  </div>
+  <div id="espaceCitoyen" class="page hidden">
+
+    <header class="header">
+        <div>
+            <h1>Espace Personnel — Citoyen</h1>
+            <p id="numeroCitoyenAffiche"></p>
+        </div>
+
+        <button
+            class="bouton-secondaire"
+            onclick="deconnexion()">
+            Déconnexion
+        </button>
+    </header>
+
+    <main class="conteneur">
+
+        <div class="carte">
+
+            <h2>Mes démarches</h2>
+
+            <br>
+
+            <button
+                class="bouton-principal"
+                onclick="ouvrirDemande('CNI')">
+                Demande de CNI
+            </button>
+
+            <button
+                class="bouton-principal"
+                onclick="ouvrirDemande('Passeport')">
+                Demande de passeport
+            </button>
+
+            <button
+                class="bouton-principal"
+                onclick="ouvrirDemande('Certificat de nationalité')">
+                Demande de certificat de nationalité
+            </button>
+
+            <button
+                class="bouton-principal"
+                onclick="ouvrirDemande('Extrait de naissance')">
+                Demande d'extrait de naissance
+            </button>
+
+            <button
+                class="bouton-principal"
+                onclick="ouvrirDemande('Passe santé')">
+                Demande de passe santé
+            </button>
+
+            <button
+                class="bouton-principal"
+                onclick="ouvrirDemande('Casier judiciaire')">
+                Demande de casier judiciaire
+            </button>
+
+            <br><br>
+
+            <button
+                class="bouton-secondaire"
+                onclick="afficherDemandes()">
+                Suivre mes demandes
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<div id="espaceEtranger" class="page hidden">
+
+    <header class="header">
+        <div>
+            <h1>Espace Personnel — Étranger</h1>
+            <p id="numeroEtrangerAffiche"></p>
+        </div>
+
+        <button
+            class="bouton-secondaire"
+            onclick="deconnexion()">
+            Déconnexion
+        </button>
+    </header>
+
+    <main class="conteneur">
+
+        <div class="carte">
+
+            <h2>Mes démarches</h2>
+
+            <br>
+
+            <button
+                class="bouton-principal"
+                onclick="ouvrirDemande('Carte de Statut Numérique')">
+                Demande de Carte de Statut Numérique
+            </button>
+
+            <button
+                class="bouton-principal"
+                onclick="ouvrirDemande('Autorisation de travail')">
+                Demande d'autorisation de travail
+            </button>
+
+            <button
+                class="bouton-principal"
+                onclick="ouvrirDemande('Extrait de naissance affilié')">
+                Demande d'extrait de naissance affilié
+            </button>
+
+            <button
+                class="bouton-principal"
+                onclick="ouvrirDemande('Demande de nationalité')">
+                Demande de nationalité
+            </button>
+
+            <button
+                class="bouton-principal"
+                onclick="ouvrirDemande('Passe santé')">
+                Demande de passe santé
+            </button>
+
+            <br><br>
+
+            <button
+                class="bouton-secondaire"
+                onclick="afficherDemandes()">
+                Suivre mes demandes
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<div id="formulaireDemande" class="page hidden">
+
+    <header class="header">
+
+        <div>
+            <h1>Nouvelle demande</h1>
+            <p id="titreTypeDemande"></p>
+        </div>
+
+        <button
+            class="bouton-secondaire"
+            onclick="retournerEspacePersonnel()">
+            Retour
+        </button>
+
+    </header>
+
+
+    <main class="conteneur">
+
+        <div class="carte">
+
+            <h2 id="titreFormulaireDemande"></h2>
+
+            <p id="descriptionFormulaireDemande"></p>
+
+            <br>
+
+
+            <div id="choixTypeCNI" class="hidden">
+
+                <h3>Type de demande</h3>
+
+                <br>
+
+                <button
+                    class="bouton-principal"
+                    onclick="selectionnerSousType('CNI', 'Première demande')">
+                    Première demande
+                </button>
+
+                <button
+                    class="bouton-secondaire"
+                    onclick="selectionnerSousType('CNI', 'Renouvellement')">
+                    Renouvellement
+                </button>
+
+            </div>
+
+
+            <div id="choixTypePasseport" class="hidden">
+
+                <h3>Type de demande</h3>
+
+                <br>
+
+                <button
+                    class="bouton-principal"
+                    onclick="selectionnerSousType('Passeport', 'Première demande')">
+                    Première demande
+                </button>
+
+                <button
+                    class="bouton-secondaire"
+                    onclick="selectionnerSousType('Passeport', 'Renouvellement')">
+                    Renouvellement
+                </button>
+
+            </div>
+
+
+            <div id="documentsNecessaires">
+
+                <h3>Documents nécessaires</h3>
+
+                <br>
+
+                <p id="listeDocuments"></p>
+
+            </div>
+
+
+            <br>
+
+
+            <div id="zoneDepotDocuments">
+
+                <h3>Déposer un document</h3>
+
+                <br>
+
+                <input
+                    type="file"
+                    id="documentUpload">
+
+                <br><br>
+
+                <button
+                    class="bouton-secondaire"
+                    onclick="ajouterDocumentFormulaire()">
+                    Ajouter le document
+                </button>
+
+            </div>
+
+
+            <br>
+
+
+            <div id="documentsAjoutes">
+
+                <h3>Documents ajoutés</h3>
+
+                <br>
+
+                <p id="listeDocumentsAjoutes">
+                    Aucun document ajouté.
+                </p>
+
+            </div>
+
+
+            <br>
+
+
+            <button
+                class="bouton-principal"
+                onclick="envoyerDemandeFormulaire()">
+                Déposer la demande
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<div id="suiviDemandes" class="page hidden">
+
+    <header class="header">
+
+        <div>
+            <h1>Suivi de mes demandes</h1>
+            <p>Consultez l'état de vos dossiers</p>
+        </div>
+
+        <button
+            class="bouton-secondaire"
+            onclick="retournerEspacePersonnel()">
+            Retour
+        </button>
+
+    </header>
+
+
+    <main class="conteneur">
+
+        <div class="carte">
+
+            <div id="listeSuiviDemandes">
+
+                <p>
+                    Vous n'avez aucune demande.
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+  </div>
+  <div id="detailDemande" class="page hidden">
+
+    <header class="header">
+
+        <div>
+            <h1>Détail de la demande</h1>
+            <p id="numeroDossierDetail"></p>
+        </div>
+
+        <button
+            class="bouton-secondaire"
+            onclick="retournerEspacePersonnel()">
+            Retour
+        </button>
+
+    </header>
+
+
+    <main class="conteneur">
+
+        <div class="carte">
+
+            <h2 id="typeDemandeDetail">
+                Demande
+            </h2>
+
+            <br>
+
+            <div class="informations-demande">
+
+                <p>
+                    <strong>Numéro de dossier :</strong>
+                    <span id="numeroDossierAffiche"></span>
+                </p>
+
+                <p>
+                    <strong>Date de dépôt :</strong>
+                    <span id="dateDepotAffiche"></span>
+                </p>
+
+                <p>
+                    <strong>Statut :</strong>
+                    <span id="statutDemandeAffiche"></span>
+                </p>
+
+            </div>
+
+
+            <br>
+
+
+            <h3>Progression du dossier</h3>
+
+            <br>
+
+            <div class="progression-demande">
+
+                <div class="etape-demande" id="etapeDepot">
+                    <span>1</span>
+                    <p>Dépôt</p>
+                </div>
+
+                <div class="ligne-progression"></div>
+
+                <div class="etape-demande" id="etapeInstruction">
+                    <span>2</span>
+                    <p>Instruction en cours</p>
+                </div>
+
+                <div class="ligne-progression"></div>
+
+                <div class="etape-demande" id="etapeDecision">
+                    <span>3</span>
+                    <p>Décision prise</p>
+                </div>
+
+                <div class="ligne-progression"></div>
+
+                <div class="etape-demande" id="etapeDocument">
+                    <span>4</span>
+                    <p>Document prêt</p>
+                </div>
+
+            </div>
+
+
+            <div
+                id="zoneRecepisse"
+                class="zone-recepisse hidden">
+
+                <h3>Récépissé</h3>
+
+                <p>
+                    Le récépissé de votre Carte de Statut
+                    Numérique est disponible.
+                </p>
+
+                <br>
+
+                <button
+                    class="bouton-principal"
+                    onclick="telechargerRecepisseDepuisDetail()">
+                    Télécharger le récépissé
+                </button>
+
+            </div>
+
+
+            <div
+                id="zoneCarteStatut"
+                class="zone-carte-statut hidden">
+
+                <h3>Carte de Statut Numérique</h3>
+
+                <p>
+                    Votre Carte de Statut Numérique est prête.
+                </p>
+
+                <br>
+
+                <button
+                    class="bouton-principal"
+                    onclick="telechargerCarteStatutDepuisDetail()">
+                    Télécharger la Carte de Statut
+                </button>
+
+            </div>
+
+
+            <br>
+
+
+            <h3>Documents du dossier</h3>
+
+            <br>
+
+            <div id="documentsDossierDetail">
+
+                <p>
+                    Aucun document disponible.
+                </p>
+
+            </div>
+
+
+            <br>
+
+
+            <div
+                id="zoneComplement"
+                class="zone-complement hidden">
+
+                <h3>Complément demandé</h3>
+
+                <p id="messageComplementDetail"></p>
+
+                <br>
+
+                <input
+                    type="file"
+                    id="documentComplement">
+
+                <br><br>
+
+                <button
+                    class="bouton-principal"
+                    onclick="envoyerComplementDepuisDetail()">
+                    Déposer le complément
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<style>
+
+    .informations-demande {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 15px;
+
+    }
+
+
+    .informations-demande p {
+
+        background: #f8fafc;
+
+        padding: 18px;
+
+        border-radius: 10px;
+
+        color: #475569;
+
+    }
+
+
+    .informations-demande strong {
+
+        display: block;
+
+        color: #0f172a;
+
+        margin-bottom: 8px;
+
+    }
+
+
+    .progression-demande {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 10px;
+
+        margin: 30px 0;
+
+    }
+
+
+    .etape-demande {
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        text-align: center;
+
+        min-width: 100px;
+
+    }
+
+
+    .etape-demande span {
+
+        width: 40px;
+
+        height: 40px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 50%;
+
+        background: #e2e8f0;
+
+        color: #475569;
+
+        font-weight: bold;
+
+        margin-bottom: 8px;
+
+    }
+
+
+    .etape-demande p {
+
+        font-size: 13px;
+
+        color: #64748b;
+
+    }
+
+
+    .ligne-progression {
+
+        height: 2px;
+
+        width: 70px;
+
+        background: #cbd5e1;
+
+    }
+
+
+    .zone-recepisse,
+
+    .zone-carte-statut,
+
+    .zone-complement {
+
+        margin-top: 30px;
+
+        padding: 25px;
+
+        border-radius: 10px;
+
+        background: #f8fafc;
+
+        border: 1px solid #e2e8f0;
+
+    }
+
+
+    .zone-recepisse h3,
+
+    .zone-carte-statut h3,
+
+    .zone-complement h3 {
+
+        margin-bottom: 10px;
+
+        color: #0f172a;
+
+    }
+
+
+    .zone-recepisse p,
+
+    .zone-carte-statut p,
+
+    .zone-complement p {
+
+        color: #64748b;
+
+        line-height: 1.5;
+
+    }
+
+
+    #documentsDossierDetail {
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 12px;
+
+    }
+
+
+    .document-detail {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        padding: 18px;
+
+        background: #f8fafc;
+
+        border-radius: 10px;
+
+    }
+
+
+    .document-detail-info {
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 5px;
+
+    }
+
+
+    .document-detail-info strong {
+
+        color: #0f172a;
+
+    }
+
+
+    .document-detail-info span {
+
+        color: #64748b;
+
+        font-size: 14px;
+
+    }
+
+
+    .document-detail button {
+
+        padding: 10px 16px;
+
+        border: none;
+
+        border-radius: 8px;
+
+        background: #334155;
+
+        color: white;
+
+    }
+
+
+    .zone-complement input {
+
+        width: 100%;
+
+        padding: 12px;
+
+        border: 1px solid #cbd5e1;
+
+        border-radius: 8px;
+
+        background: white;
+
+    }
+
+
+    @media (max-width: 800px) {
+
+        .informations-demande {
+
+            grid-template-columns: 1fr;
+
+        }
+
+
+        .progression-demande {
+
+            flex-direction: column;
+
+        }
+
+
+        .ligne-progression {
+
+            width: 2px;
+
+            height: 30px;
+
+        }
+
+
+        .document-detail {
+
+            flex-direction: column;
+
+            align-items: flex-start;
+
+            gap: 15px;
+
+        }
+
+    }
+
+</style>
+<div id="espaceAdministratif" class="page hidden">
+
+    <header class="header">
+
+        <div>
+            <h1>Espace Administratif</h1>
+            <p>
+                Identifiant :
+                <span id="identifiantAdministratifAffiche"></span>
+            </p>
+        </div>
+
+        <button
+            class="bouton-secondaire"
+            onclick="deconnexion()">
+            Déconnexion
+        </button>
+
+    </header>
+
+
+    <main class="conteneur">
+
+        <div class="carte">
+
+            <h2>Gestion des dossiers</h2>
+
+            <br>
+
+            <label for="rechercheDossier">
+                Rechercher un dossier
+            </label>
+
+            <br><br>
+
+            <input
+                type="text"
+                id="rechercheDossier"
+                placeholder="Numéro de dossier ou identifiant">
+
+            <br><br>
+
+            <button
+                class="bouton-principal"
+                onclick="rechercherDossier()">
+                Rechercher
+            </button>
+
+        </div>
+
+
+        <br>
+
+
+        <div
+            class="carte bloc-dossier hidden">
+
+            <h2>Dossier sélectionné</h2>
+
+            <br>
+
+            <div id="informationsDossierAdmin">
+
+                <p>
+                    Aucun dossier sélectionné.
+                </p>
+
+            </div>
+
+
+            <br>
+
+
+            <h3>Documents déposés</h3>
+
+            <br>
+
+            <div id="documentsDossierAdmin">
+
+                <p>
+                    Aucun document disponible.
+                </p>
+
+            </div>
+
+
+            <br>
+
+
+            <h3>Modifier le statut</h3>
+
+            <br>
+
+            <select id="nouveauStatut">
+
+                <option value="">
+                    Sélectionner un statut
+                </option>
+
+                <option value="Instruction en cours">
+                    Instruction en cours
+                </option>
+
+                <option value="Décision prise">
+                    Décision prise
+                </option>
+
+                <option value="Document prêt">
+                    Document prêt
+                </option>
+
+                <option value="Récépissé disponible">
+                    Récépissé disponible
+                </option>
+
+            </select>
+
+            <br><br>
+
+            <button
+                class="bouton-principal"
+                onclick="modifierStatutAdmin()">
+                Modifier le statut
+            </button>
+
+
+            <br><br>
+
+
+            <h3>Demander un complément</h3>
+
+            <br>
+
+            <textarea
+                id="messageComplement"
+                rows="5"
+                placeholder="Indiquez les documents ou informations complémentaires nécessaires">
+            </textarea>
+
+            <br><br>
+
+            <button
+                class="bouton-secondaire"
+                onclick="demanderComplement()">
+                Demander un complément
+            </button>
+
+
+            <br><br>
+
+
+            <h3>Prendre une décision</h3>
+
+            <br>
+
+            <select id="decisionDossier">
+
+                <option>
+                    Sélectionner une décision
+                </option>
+
+                <option value="Demande acceptée">
+                    Demande acceptée
+                </option>
+
+                <option value="Demande refusée">
+                    Demande refusée
+                </option>
+
+            </select>
+
+            <br><br>
+
+            <textarea
+                id="motifDecision"
+                rows="5"
+                placeholder="Motif ou commentaire de la décision">
+            </textarea>
+
+            <br><br>
+
+            <button
+                class="bouton-principal"
+                onclick="enregistrerDecision()">
+                Enregistrer la décision
+            </button>
+
+
+            <br><br>
+
+
+            <div
+                id="zoneGestionRecepisseAdmin"
+                class="hidden">
+
+                <h3>Récépissé</h3>
+
+                <p>
+                    Cette fonction est uniquement disponible
+                    pour une Carte de Statut Numérique.
+                </p>
+
+                <br>
+
+                <button
+                    class="bouton-secondaire"
+                    onclick="rendreRecepisseDisponible()">
+                    Rendre le récépissé disponible
+                </button>
+
+            </div>
+
+
+            <br>
+
+
+            <button
+                class="bouton-principal"
+                onclick="passerDocumentPret()">
+                Passer à Document prêt
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<style>
+
+    #rechercheDossier,
+    #nouveauStatut,
+    #decisionDossier,
+    #messageComplement,
+    #motifDecision {
+
+        width: 100%;
+
+        padding: 13px;
+
+        border: 1px solid #cbd5e1;
+
+        border-radius: 8px;
+
+        background: white;
+
+        color: #0f172a;
+
+    }
+
+
+    #messageComplement,
+    #motifDecision {
+
+        resize: vertical;
+
+    }
+
+
+    #informationsDossierAdmin {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 15px;
+
+    }
+
+
+    .information-admin {
+
+        padding: 18px;
+
+        background: #f8fafc;
+
+        border-radius: 10px;
+
+    }
+
+
+    .information-admin strong {
+
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #0f172a;
+
+    }
+
+
+    .information-admin span {
+
+        color: #64748b;
+
+    }
+
+
+    #documentsDossierAdmin {
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 12px;
+
+    }
+
+
+    .document-admin {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        padding: 18px;
+
+        border-radius: 10px;
+
+        background: #f8fafc;
+
+    }
+
+
+    .document-admin-info {
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 5px;
+
+    }
+
+
+    .document-admin-info strong {
+
+        color: #0f172a;
+
+    }
+
+
+    .document-admin-info span {
+
+        color: #64748b;
+
+        font-size: 14px;
+
+    }
+
+
+    .document-admin button {
+
+        padding: 10px 16px;
+
+        border: none;
+
+        border-radius: 8px;
+
+        background: #334155;
+
+        color: white;
+
+        cursor: pointer;
+
+    }
+
+
+    @media (max-width: 800px) {
+
+        #informationsDossierAdmin {
+
+            grid-template-columns: 1fr;
+
+        }
+
+
+        .document-admin {
+
+            flex-direction: column;
+
+            align-items: flex-start;
+
+            gap: 15px;
+
+        }
+
+    }
+
+  </style>
+  <script>
+
+let demandes = [];
+let demandeEnCours = null;
+let demandeAdminSelectionnee = null;
+let utilisateurConnecte = null;
+let typeUtilisateur = null;
+
+const IDENTIFIANT_ADMINISTRATIF = "NR-2601-0001-M-FON";
+
+
+function afficherPage(id) {
+
+    document.querySelectorAll(".page").forEach(function(page) {
+
+        page.classList.add("hidden");
+
+    });
+
+    const page = document.getElementById(id);
+
+    if (page) {
+
+        page.classList.remove("hidden");
+
+        window.scrollTo(0, 0);
+
+    }
+
+}
+
+
+function retournerAccueil() {
+
+    afficherPage("accueil");
+
+    utilisateurConnecte = null;
+
+    typeUtilisateur = null;
+
+}
+
+
+function ouvrirConnexionCitoyen() {
+
+    afficherPage("connexionCitoyen");
+
+}
+
+
+function ouvrirConnexionEtranger() {
+
+    afficherPage("connexionEtranger");
+
+}
+
+
+function ouvrirCreationCompteCitoyen() {
+
+    afficherPage("creationCompteCitoyen");
+
+}
+
+
+function ouvrirCreationCompteEtranger() {
+
+    afficherPage("creationCompteEtranger");
+
+}
+
+
+function ouvrirConnexionAdministrateur() {
+
+    afficherPage("connexionAdministrateur");
+
+}
+
+
+function deconnexion() {
+
+    utilisateurConnecte = null;
+
+    typeUtilisateur = null;
+
+    demandeEnCours = null;
+
+    demandeAdminSelectionnee = null;
+
+    afficherPage("accueil");
+
+}
+
+
+function retournerEspacePersonnel() {
+
+    if (typeUtilisateur === "citoyen") {
+
+        afficherPage("espaceCitoyen");
+
+        return;
+
+    }
+
+
+    if (typeUtilisateur === "etranger") {
+
+        afficherPage("espaceEtranger");
+
+        return;
+
+    }
+
+
+    if (typeUtilisateur === "administrateur") {
+
+        afficherPage("espaceAdministratif");
+
+        return;
+
+    }
+
+
+    afficherPage("accueil");
+
+}
+
+
+function connexionCitoyen() {
+
+    const numero =
+        document.getElementById(
+            "numeroIdentification"
+        ).value.trim();
+
+
+    const motDePasse =
+        document.getElementById(
+            "motDePasseCitoyen"
+        ).value;
+
+
+    if (
+        numero === "" ||
+        motDePasse === ""
+    ) {
+
+        alert(
+            "Veuillez remplir tous les champs."
+        );
+
+        return;
+
+    }
+
+
+    utilisateurConnecte = numero;
+
+    typeUtilisateur = "citoyen";
+
+
+    document.getElementById(
+        "numeroCitoyenAffiche"
+    ).textContent =
+        "Identifiant : " + numero;
+
+
+    afficherPage("espaceCitoyen");
+
+}
+
+
+function connexionEtranger() {
+
+    const numero =
+        document.getElementById(
+            "numeroEtranger"
+        ).value.trim();
+
+
+    const motDePasse =
+        document.getElementById(
+            "motDePasseEtranger"
+        ).value;
+
+
+    if (
+        numero === "" ||
+        motDePasse === ""
+    ) {
+
+        alert(
+            "Veuillez remplir tous les champs."
+        );
+
+        return;
+
+    }
+
+
+    utilisateurConnecte = numero;
+
+    typeUtilisateur = "etranger";
+
+
+    document.getElementById(
+        "numeroEtrangerAffiche"
+    ).textContent =
+        "Identifiant : " + numero;
+
+
+    afficherPage("espaceEtranger");
+
+}
+
+
+function creerCompteCitoyen() {
+
+    const numero =
+        document.getElementById(
+            "nouveauNumeroCitoyen"
+        ).value.trim();
+
+
+    const motDePasse =
+        document.getElementById(
+            "nouveauMotDePasseCitoyen"
+        ).value;
+
+
+    const confirmation =
+        document.getElementById(
+            "confirmationMotDePasseCitoyen"
+        ).value;
+
+
+    if (
+        numero === "" ||
+        motDePasse === "" ||
+        confirmation === ""
+    ) {
+
+        alert(
+            "Veuillez remplir tous les champs."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        motDePasse !== confirmation
+    ) {
+
+        alert(
+            "Les mots de passe ne correspondent pas."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        motDePasse.length < 8
+    ) {
+
+        alert(
+            "Le mot de passe doit contenir au moins 8 caractères."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Votre compte Citoyen a été créé."
+    );
+
+
+    document.getElementById(
+        "numeroIdentification"
+    ).value = numero;
+
+
+    afficherPage("connexionCitoyen");
+
+}
+
+
+function creerCompteEtranger() {
+
+    const numero =
+        document.getElementById(
+            "nouveauNumeroEtranger"
+        ).value.trim();
+
+
+    const motDePasse =
+        document.getElementById(
+            "nouveauMotDePasseEtranger"
+        ).value;
+
+
+    const confirmation =
+        document.getElementById(
+            "confirmationMotDePasseEtranger"
+        ).value;
+
+
+    if (
+        numero === "" ||
+        motDePasse === "" ||
+        confirmation === ""
+    ) {
+
+        alert(
+            "Veuillez remplir tous les champs."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        motDePasse !== confirmation
+    ) {
+
+        alert(
+            "Les mots de passe ne correspondent pas."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        motDePasse.length < 8
+    ) {
+
+        alert(
+            "Le mot de passe doit contenir au moins 8 caractères."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Votre compte Étranger a été créé."
+    );
+
+
+    document.getElementById(
+        "numeroEtranger"
+    ).value = numero;
+
+
+    afficherPage("connexionEtranger");
+
+}
+
+
+function connexionAdministrateur() {
+
+    const identifiant =
+        document.getElementById(
+            "identifiantAdministratif"
+        ).value.trim();
+
+
+    const motDePasse =
+        document.getElementById(
+            "motDePasseAdministrateur"
+        ).value;
+
+
+    if (
+        identifiant === "" ||
+        motDePasse === ""
+    ) {
+
+        alert(
+            "Veuillez remplir tous les champs."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        identifiant !==
+        IDENTIFIANT_ADMINISTRATIF
+    ) {
+
+        alert(
+            "Identifiant administratif incorrect."
+        );
+
+        return;
+
+    }
+
+
+    utilisateurConnecte =
+        identifiant;
+
+
+    typeUtilisateur =
+        "administrateur";
+
+
+    document.getElementById(
+        "identifiantAdministratifAffiche"
+    ).textContent =
+        identifiant;
+
+
+    afficherPage(
+        "espaceAdministratif"
+    );
+
+}
+
+
+function genererNumeroDossier() {
+
+    const annee =
+        new Date().getFullYear();
+
+
+    const numero =
+        String(
+            demandes.length + 1
+        ).padStart(
+            4,
+            "0"
+        );
+
+
+    return (
+        "DOS-" +
+        annee +
+        "-" +
+        numero
+    );
+
+}
+
+
+  </script>
+  <script>
+
+function ouvrirDemande(typeDemande) {
+
+    demandeEnCours = {
+
+        type: typeDemande,
+
+        sousType: "",
+
+        statut: "Dépôt",
+
+        dateDepot: new Date().toISOString(),
+
+        date: new Date().toLocaleDateString("fr-FR"),
+
+        numeroDossier: genererNumeroDossier(),
+
+        documents: [],
+
+        fichiers: []
+
+    };
+
+
+    document.getElementById(
+        "titreTypeDemande"
+    ).textContent =
+        typeDemande;
+
+
+    document.getElementById(
+        "titreFormulaireDemande"
+    ).textContent =
+        "Demande de " + typeDemande;
+
+
+    document.getElementById(
+        "descriptionFormulaireDemande"
+    ).textContent =
+        "Veuillez déposer les documents nécessaires à votre demande.";
+
+
+    document.getElementById(
+        "choixTypeCNI"
+    ).classList.add("hidden");
+
+
+    document.getElementById(
+        "choixTypePasseport"
+    ).classList.add("hidden");
+
+
+    document.getElementById(
+        "listeDocuments"
+    ).textContent =
+        "";
+
+
+    document.getElementById(
+        "listeDocumentsAjoutes"
+    ).textContent =
+        "Aucun document ajouté.";
+
+
+    document.getElementById(
+        "documentUpload"
+    ).value =
+        "";
+
+
+    if (typeDemande === "CNI") {
+
+        document.getElementById(
+            "choixTypeCNI"
+        ).classList.remove("hidden");
+
+
+        document.getElementById(
+            "listeDocuments"
+        ).textContent =
+            "Veuillez sélectionner Première demande ou Renouvellement.";
+
+    }
+
+
+    else if (
+        typeDemande === "Passeport"
+    ) {
+
+        document.getElementById(
+            "choixTypePasseport"
+        ).classList.remove("hidden");
+
+
+        document.getElementById(
+            "listeDocuments"
+        ).textContent =
+            "Veuillez sélectionner Première demande ou Renouvellement.";
+
+    }
+
+
+    else if (
+        typeDemande ===
+        "Certificat de nationalité"
+    ) {
+
+        demandeEnCours.documentsRequis = [
+
+            "CNI",
+
+            "Extrait de naissance"
+
+        ];
+
+        afficherDocumentsRequis();
+
+    }
+
+
+    else if (
+        typeDemande ===
+        "Extrait de naissance"
+    ) {
+
+        demandeEnCours.documentsRequis = [
+
+            "CNI"
+
+        ];
+
+        afficherDocumentsRequis();
+
+    }
+
+
+    else if (
+        typeDemande ===
+        "Passe santé"
+    ) {
+
+        demandeEnCours.documentsRequis = [
+
+            "CNI"
+
+        ];
+
+        if (
+            typeUtilisateur ===
+            "etranger"
+        ) {
+
+            demandeEnCours.documentsRequis = [
+
+                "Récépissé"
+
+            ];
+
+        }
+
+        afficherDocumentsRequis();
+
+    }
+
+
+    else if (
+        typeDemande ===
+        "Casier judiciaire"
+    ) {
+
+        demandeEnCours.documentsRequis = [
+
+            "CNI",
+
+            "Extrait de naissance",
+
+            "Casier judiciaire du pays d'origine si nécessaire"
+
+        ];
+
+        afficherDocumentsRequis();
+
+    }
+
+
+    else if (
+        typeDemande ===
+        "Carte de Statut Numérique"
+    ) {
+
+        demandeEnCours.documentsRequis = [
+
+            "Pièce d'identité étrangère",
+
+            "E-photo"
+
+        ];
+
+        afficherDocumentsRequis();
+
+    }
+
+
+    else if (
+        typeDemande ===
+        "Autorisation de travail"
+    ) {
+
+        demandeEnCours.documentsRequis = [
+
+            "Carte de Statut Numérique",
+
+            "Justificatif d'activité professionnelle"
+
+        ];
+
+        afficherDocumentsRequis();
+
+    }
+
+
+    else if (
+        typeDemande ===
+        "Extrait de naissance affilié"
+    ) {
+
+        demandeEnCours.documentsRequis = [
+
+            "Carte de Statut Numérique",
+
+            "Acte de naissance du pays d'origine"
+
+        ];
+
+        afficherDocumentsRequis();
+
+    }
+
+
+    else if (
+        typeDemande ===
+        "Demande de nationalité"
+    ) {
+
+        demandeEnCours.documentsRequis = [
+
+            "Carte de Statut Numérique",
+
+            "Justificatif des 3 ans de statut",
+
+            "Extrait de naissance",
+
+            "Casier judiciaire du pays d'origine"
+
+        ];
+
+        afficherDocumentsRequis();
+
+    }
+
+
+    afficherPage(
+        "formulaireDemande"
+    );
+
+}
+
+
+function selectionnerSousType(
+    typeDemande,
+    sousType
+) {
+
+    if (!demandeEnCours) {
+
+        return;
+
+    }
+
+
+    demandeEnCours.sousType =
+        sousType;
+
+
+    demandeEnCours.documentsRequis =
+        [];
+
+
+    if (
+        typeDemande ===
+        "CNI"
+    ) {
+
+        if (
+            sousType ===
+            "Première demande"
+        ) {
+
+            demandeEnCours.documentsRequis = [
+
+                "Certificat de nationalité",
+
+                "E-photo"
+
+            ];
+
+        }
+
+
+        else if (
+            sousType ===
+            "Renouvellement"
+        ) {
+
+            demandeEnCours.documentsRequis = [
+
+                "Ancienne CNI",
+
+                "E-photo"
+
+            ];
+
+        }
+
+    }
+
+
+    if (
+        typeDemande ===
+        "Passeport"
+    ) {
+
+        if (
+            sousType ===
+            "Première demande"
+        ) {
+
+            demandeEnCours.documentsRequis = [
+
+                "CNI",
+
+                "Certificat de nationalité",
+
+                "E-photo"
+
+            ];
+
+        }
+
+
+        else if (
+            sousType ===
+            "Renouvellement"
+        ) {
+
+            demandeEnCours.documentsRequis = [
+
+                "Ancien passeport",
+
+                "E-photo"
+
+            ];
+
+        }
+
+    }
+
+
+    afficherDocumentsRequis();
+
+}
+
+
+function afficherDocumentsRequis() {
+
+    const liste =
+        document.getElementById(
+            "listeDocuments"
+        );
+
+
+    if (
+        !demandeEnCours ||
+        !demandeEnCours.documentsRequis ||
+        demandeEnCours.documentsRequis.length === 0
+    ) {
+
+        liste.textContent =
+            "Aucun document requis.";
+
+        return;
+
+    }
+
+
+    liste.textContent =
+        demandeEnCours.documentsRequis.join(
+            " • "
+        );
+
+}
+
+
+function ajouterDocumentFormulaire() {
+
+    if (!demandeEnCours) {
+
+        alert(
+            "Aucune demande en cours."
+        );
+
+        return;
+
+    }
+
+
+    const input =
+        document.getElementById(
+            "documentUpload"
+        );
+
+
+    if (
+        !input.files ||
+        input.files.length === 0
+    ) {
+
+        alert(
+            "Veuillez sélectionner un document."
+        );
+
+        return;
+
+    }
+
+
+    const fichier =
+        input.files[0];
+
+
+    demandeEnCours.fichiers.push({
+
+        nom:
+            fichier.name,
+
+        type:
+            fichier.type,
+
+        taille:
+            fichier.size,
+
+        date:
+            new Date().toLocaleDateString(
+                "fr-FR"
+            )
+
+    });
+
+
+    demandeEnCours.documents.push(
+        fichier.name
+    );
+
+
+    afficherDocumentsAjoutes();
+
+
+    input.value =
+        "";
+
+}
+
+
+function afficherDocumentsAjoutes() {
+
+    const zone =
+        document.getElementById(
+            "listeDocumentsAjoutes"
+        );
+
+
+    if (
+        !demandeEnCours ||
+        demandeEnCours.fichiers.length === 0
+    ) {
+
+        zone.textContent =
+            "Aucun document ajouté.";
+
+        return;
+
+    }
+
+
+    zone.innerHTML =
+        "";
+
+
+    demandeEnCours.fichiers.forEach(
+        function(fichier) {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+
+            element.textContent =
+                fichier.nom;
+
+
+            zone.appendChild(
+                element
+            );
+
+        }
+    );
+
+}
+
+
+function envoyerDemandeFormulaire() {
+
+    if (!demandeEnCours) {
+
+        alert(
+            "Aucune demande en cours."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        (
+            demandeEnCours.type ===
+            "CNI"
+            ||
+            demandeEnCours.type ===
+            "Passeport"
+        )
+        &&
+        demandeEnCours.sousType === ""
+    ) {
+
+        alert(
+            "Veuillez sélectionner le type de demande."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        !demandeEnCours.documentsRequis
+    ) {
+
+        demandeEnCours.documentsRequis =
+            [];
+
+    }
+
+
+    if (
+        demandeEnCours.documents.length === 0
+    ) {
+
+        alert(
+            "Veuillez déposer au moins un document."
+        );
+
+        return;
+
+    }
+
+
+    demandeEnCours.identifiant =
+        utilisateurConnecte;
+
+
+    demandeEnCours.typeUtilisateur =
+        typeUtilisateur;
+
+
+    demandes.push(
+        demandeEnCours
+    );
+
+
+    const numero =
+        demandeEnCours.numeroDossier;
+
+
+    demandeEnCours =
+        null;
+
+
+    alert(
+
+        "Votre demande a été déposée.\n\n" +
+
+        "Numéro de dossier : " +
+
+        numero
+
+    );
+
+
+    afficherPage(
+        typeUtilisateur ===
+        "citoyen"
+            ?
+        "espaceCitoyen"
+            :
+        "espaceEtranger"
+
+    );
+
+}
+
+
+function afficherDemandes() {
+
+    const zone =
+        document.getElementById(
+            "listeSuiviDemandes"
+        );
+
+
+    zone.innerHTML =
+        "";
+
+
+    const mesDemandes =
+        demandes.filter(
+            function(demande) {
+
+                return (
+                    demande.identifiant ===
+                    utilisateurConnecte
+                );
+
+            }
+        );
+
+
+    if (
+        mesDemandes.length === 0
+    ) {
+
+        zone.innerHTML =
+            "<p>Vous n'avez aucune demande.</p>";
+
+        afficherPage(
+            "suiviDemandes"
+        );
+
+        return;
+
+    }
+
+
+    mesDemandes.forEach(
+        function(demande) {
+
+            const bloc =
+                document.createElement(
+                    "div"
+                );
+
+
+            bloc.className =
+                "carte";
+
+
+            bloc.style.marginBottom =
+                "15px";
+
+
+            bloc.innerHTML =
+
+                "<h3>" +
+                demande.type +
+                "</h3>" +
+
+                "<p>Numéro : " +
+                demande.numeroDossier +
+                "</p>" +
+
+                "<p>Statut : " +
+                obtenirStatutDemande(
+                    demande
+                ) +
+                "</p>" +
+
+                "<p>Date : " +
+                demande.date +
+                "</p>" +
+
+                "<br>" +
+
+                "<button class='bouton-principal' " +
+                "onclick=\"ouvrirDetailDemande('" +
+                demande.numeroDossier +
+                "')\">" +
+
+                "Voir le dossier" +
+
+                "</button>";
+
+
+            zone.appendChild(
+                bloc
+            );
+
+        }
+    );
+
+
+    afficherPage(
+        "suiviDemandes"
+    );
+
+}
+
+
+function obtenirStatutDemande(
+    demande
+) {
+
+    if (
+        demande.type ===
+        "Carte de Statut Numérique"
+        &&
+        demande.statut ===
+        "Instruction en cours"
+    ) {
+
+        if (
+            demande.recepisseDisponible
+        ) {
+
+            return "Récépissé disponible";
+
+        }
+
+    }
+
+
+    return demande.statut;
+
+}
+
+
+  </script>
+  <script>
+
+function ouvrirDetailDemande(
+    numeroDossier
+) {
+
+    const demande =
+        demandes.find(
+            function(element) {
+
+                return (
+                    element.numeroDossier ===
+                    numeroDossier
+                );
+
+            }
+        );
+
+
+    if (!demande) {
+
+        alert(
+            "Dossier introuvable."
+        );
+
+        return;
+
+    }
+
+
+    demandeEnCours =
+        demande;
+
+
+    document.getElementById(
+        "numeroDossierDetail"
+    ).textContent =
+        "Dossier : " +
+        demande.numeroDossier;
+
+
+    document.getElementById(
+        "typeDemandeDetail"
+    ).textContent =
+        demande.type;
+
+
+    document.getElementById(
+        "numeroDossierAffiche"
+    ).textContent =
+        demande.numeroDossier;
+
+
+    document.getElementById(
+        "dateDepotAffiche"
+    ).textContent =
+        demande.date;
+
+
+    document.getElementById(
+        "statutDemandeAffiche"
+    ).textContent =
+        obtenirStatutDemande(
+            demande
+        );
+
+
+    mettreAJourProgression(
+        demande
+    );
+
+
+    afficherDocumentsDetail(
+        demande
+    );
+
+
+    const zoneRecepisse =
+        document.getElementById(
+            "zoneRecepisse"
+        );
+
+
+    const zoneCarteStatut =
+        document.getElementById(
+            "zoneCarteStatut"
+        );
+
+
+    const zoneComplement =
+        document.getElementById(
+            "zoneComplement"
+        );
+
+
+    zoneRecepisse.classList.add(
+        "hidden"
+    );
+
+
+    zoneCarteStatut.classList.add(
+        "hidden"
+    );
+
+
+    zoneComplement.classList.add(
+        "hidden"
+    );
+
+
+    if (
+        demande.type ===
+        "Carte de Statut Numérique"
+        &&
+        demande.recepisseDisponible
+    ) {
+
+        zoneRecepisse.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    if (
+        demande.type ===
+        "Carte de Statut Numérique"
+        &&
+        demande.statut ===
+        "Document prêt"
+    ) {
+
+        zoneCarteStatut.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    if (
+        demande.statut ===
+        "Complément demandé"
+    ) {
+
+        zoneComplement.classList.remove(
+            "hidden"
+        );
+
+
+        document.getElementById(
+            "messageComplementDetail"
+        ).textContent =
+            demande.complement ||
+            "Un complément est demandé pour votre dossier.";
+
+    }
+
+
+    afficherPage(
+        "detailDemande"
+    );
+
+}
+
+
+function mettreAJourProgression(
+    demande
+) {
+
+    const etapes = [
+
+        document.getElementById(
+            "etapeDepot"
+        ),
+
+        document.getElementById(
+            "etapeInstruction"
+        ),
+
+        document.getElementById(
+            "etapeDecision"
+        ),
+
+        document.getElementById(
+            "etapeDocument"
+        )
+
+    ];
+
+
+    etapes.forEach(
+        function(etape) {
+
+            etape.classList.remove(
+                "etape-active"
+            );
+
+        }
+    );
+
+
+    let niveau =
+        1;
+
+
+    if (
+        demande.statut ===
+        "Instruction en cours"
+    ) {
+
+        niveau =
+            2;
+
+    }
+
+
+    if (
+        demande.statut ===
+        "Décision prise"
+        ||
+        demande.statut ===
+        "Complément demandé"
+        ||
+        demande.statut ===
+        "Récépissé disponible"
+    ) {
+
+        niveau =
+            3;
+
+    }
+
+
+    if (
+        demande.statut ===
+        "Document prêt"
+    ) {
+
+        niveau =
+            4;
+
+    }
+
+
+    for (
+        let i = 0;
+        i < niveau;
+        i++
+    ) {
+
+        etapes[i].classList.add(
+            "etape-active"
+        );
+
+    }
+
+}
+
+
+function afficherDocumentsDetail(
+    demande
+) {
+
+    const zone =
+        document.getElementById(
+            "documentsDossierDetail"
+        );
+
+
+    zone.innerHTML =
+        "";
+
+
+    if (
+        !demande.fichiers ||
+        demande.fichiers.length === 0
+    ) {
+
+        zone.innerHTML =
+
+            "<p>Aucun document disponible.</p>";
+
+        return;
+
+    }
+
+
+    demande.fichiers.forEach(
+        function(fichier) {
+
+            const bloc =
+                document.createElement(
+                    "div"
+                );
+
+
+            bloc.className =
+                "document-detail";
+
+
+            const informations =
+                document.createElement(
+                    "div"
+                );
+
+
+            informations.className =
+                "document-detail-info";
+
+
+            const nom =
+                document.createElement(
+                    "strong"
+                );
+
+
+            nom.textContent =
+                fichier.nom;
+
+
+            const date =
+                document.createElement(
+                    "span"
+                );
+
+
+            date.textContent =
+                "Ajouté le " +
+                fichier.date;
+
+
+            informations.appendChild(
+                nom
+            );
+
+
+            informations.appendChild(
+                date
+            );
+
+
+            const bouton =
+                document.createElement(
+                    "button"
+                );
+
+
+            bouton.textContent =
+                "Télécharger";
+
+
+            bouton.onclick =
+                function() {
+
+                    telechargerDocumentDepuisDetail(
+                        fichier
+                    );
+
+                };
+
+
+            bloc.appendChild(
+                informations
+            );
+
+
+            bloc.appendChild(
+                bouton
+            );
+
+
+            zone.appendChild(
+                bloc
+            );
+
+        }
+    );
+
+}
+
+
+function telechargerDocumentDepuisDetail(
+    fichier
+) {
+
+    if (!fichier) {
+
+        alert(
+            "Document introuvable."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        !fichier.contenu
+    ) {
+
+        alert(
+
+            "Le document sera disponible " +
+            "au téléchargement après la connexion " +
+            "au stockage sécurisé."
+
+        );
+
+        return;
+
+    }
+
+
+    const lien =
+        document.createElement(
+            "a"
+        );
+
+
+    lien.href =
+        fichier.contenu;
+
+
+    lien.download =
+        fichier.nom;
+
+
+    document.body.appendChild(
+        lien
+    );
+
+
+    lien.click();
+
+
+    lien.remove();
+
+}
+
+
+function telechargerRecepisseDepuisDetail() {
+
+    if (!demandeEnCours) {
+
+        alert(
+            "Aucun dossier sélectionné."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        demandeEnCours.type !==
+        "Carte de Statut Numérique"
+    ) {
+
+        alert(
+
+            "Le récépissé est uniquement " +
+            "disponible pour la Carte de Statut Numérique."
+
+        );
+
+        return;
+
+    }
+
+
+    if (
+        !demandeEnCours.recepisseDisponible
+    ) {
+
+        alert(
+            "Le récépissé n'est pas encore disponible."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        demandeEnCours.recepisse
+    ) {
+
+        telechargerDocumentDepuisDetail(
+
+            demandeEnCours.recepisse
+
+        );
+
+        return;
+
+    }
+
+
+    alert(
+
+        "Le récépissé est disponible " +
+        "mais son téléchargement sera " +
+        "activé avec le stockage sécurisé."
+
+    );
+
+}
+
+
+function telechargerCarteStatutDepuisDetail() {
+
+    if (!demandeEnCours) {
+
+        alert(
+            "Aucun dossier sélectionné."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        demandeEnCours.type !==
+        "Carte de Statut Numérique"
+    ) {
+
+        alert(
+            "Ce dossier ne concerne pas une Carte de Statut Numérique."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        demandeEnCours.statut !==
+        "Document prêt"
+    ) {
+
+        alert(
+            "La Carte de Statut Numérique n'est pas encore prête."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        demandeEnCours.carteStatut
+    ) {
+
+        telechargerDocumentDepuisDetail(
+
+            demandeEnCours.carteStatut
+
+        );
+
+        return;
+
+    }
+
+
+    alert(
+
+        "La Carte de Statut Numérique est prête " +
+        "mais son téléchargement sera activé " +
+        "avec le stockage sécurisé."
+
+    );
+
+}
+
+
+function envoyerComplementDepuisDetail() {
+
+    if (!demandeEnCours) {
+
+        alert(
+            "Aucun dossier sélectionné."
+        );
+
+        return;
+
+    }
+
+
+    const input =
+        document.getElementById(
+            "documentComplement"
+        );
+
+
+    if (
+        !input.files ||
+        input.files.length === 0
+    ) {
+
+        alert(
+            "Veuillez sélectionner un document."
+        );
+
+        return;
+
+    }
+
+
+    const fichier =
+        input.files[0];
+
+
+    if (
+        !demandeEnCours.fichiers
+    ) {
+
+        demandeEnCours.fichiers =
+            [];
+
+    }
+
+
+    demandeEnCours.fichiers.push({
+
+        nom:
+            fichier.name,
+
+        type:
+            fichier.type,
+
+        taille:
+            fichier.size,
+
+        date:
+            new Date().toLocaleDateString(
+                "fr-FR"
+            )
+
+    });
+
+
+    demandeEnCours.documents.push(
+        fichier.name
+    );
+
+
+    demandeEnCours.statut =
+        "Instruction en cours";
+
+
+    demandeEnCours.complement =
+        "";
+
+
+    alert(
+        "Le complément a été déposé."
+    );
+
+
+    ouvrirDetailDemande(
+        demandeEnCours.numeroDossier
+    );
+
+}
+
+
+  </script>
+  <script>
+
+function rechercherDossier() {
+
+    const recherche =
+        document.getElementById(
+            "rechercheDossier"
+        ).value.trim().toLowerCase();
+
+
+    if (recherche === "") {
+
+        alert(
+            "Veuillez saisir un numéro de dossier ou un identifiant."
+        );
+
+        return;
+
+    }
+
+
+    const resultat =
+        demandes.find(
+            function(demande) {
+
+                return (
+
+                    demande.numeroDossier
+                        .toLowerCase()
+                        .includes(recherche)
+
+                    ||
+
+                    (
+                        demande.identifiant &&
+                        demande.identifiant
+                            .toLowerCase()
+                            .includes(recherche)
+                    )
+
+                );
+
+            }
+        );
+
+
+    if (!resultat) {
+
+        alert(
+            "Aucun dossier trouvé."
+        );
+
+        return;
+
+    }
+
+
+    demandeAdminSelectionnee =
+        resultat.numeroDossier;
+
+
+    afficherDossierAdministratif(
+        resultat
+    );
+
+}
+
+
+function afficherDossierAdministratif(
+    demande
+) {
+
+    const bloc =
+        document.querySelector(
+            ".bloc-dossier"
+        );
+
+
+    const informations =
+        document.getElementById(
+            "informationsDossierAdmin"
+        );
+
+
+    const documents =
+        document.getElementById(
+            "documentsDossierAdmin"
+        );
+
+
+    bloc.classList.remove(
+        "hidden"
+    );
+
+
+    informations.innerHTML =
+
+        "<div class='information-admin'>" +
+
+        "<strong>Numéro de dossier</strong>" +
+
+        "<span>" +
+        demande.numeroDossier +
+        "</span>" +
+
+        "</div>" +
+
+
+        "<div class='information-admin'>" +
+
+        "<strong>Type de demande</strong>" +
+
+        "<span>" +
+        demande.type +
+        "</span>" +
+
+        "</div>" +
+
+
+        "<div class='information-admin'>" +
+
+        "<strong>Identifiant du demandeur</strong>" +
+
+        "<span>" +
+        demande.identifiant +
+        "</span>" +
+
+        "</div>" +
+
+
+        "<div class='information-admin'>" +
+
+        "<strong>Date de dépôt</strong>" +
+
+        "<span>" +
+        demande.date +
+        "</span>" +
+
+        "</div>" +
+
+
+        "<div class='information-admin'>" +
+
+        "<strong>Statut</strong>" +
+
+        "<span>" +
+        obtenirStatutDemande(
+            demande
+        ) +
+        "</span>" +
+
+        "</div>" +
+
+
+        "<div class='information-admin'>" +
+
+        "<strong>Type d'utilisateur</strong>" +
+
+        "<span>" +
+        demande.typeUtilisateur +
+        "</span>" +
+
+        "</div>";
+
+
+    documents.innerHTML =
+        "";
+
+
+    if (
+        !demande.fichiers ||
+        demande.fichiers.length === 0
+    ) {
+
+        documents.innerHTML =
+
+            "<p>Aucun document déposé.</p>";
+
+    }
+
+
+    else {
+
+        demande.fichiers.forEach(
+            function(fichier) {
+
+                const blocDocument =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                blocDocument.className =
+                    "document-admin";
+
+
+                const informationsDocument =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                informationsDocument.className =
+                    "document-admin-info";
+
+
+                const nom =
+                    document.createElement(
+                        "strong"
+                    );
+
+
+                nom.textContent =
+                    fichier.nom;
+
+
+                const date =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                date.textContent =
+                    "Déposé le " +
+                    fichier.date;
+
+
+                informationsDocument.appendChild(
+                    nom
+                );
+
+
+                informationsDocument.appendChild(
+                    date
+                );
+
+
+                const bouton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                bouton.textContent =
+                    "Télécharger";
+
+
+                bouton.onclick =
+                    function() {
+
+                        telechargerDocumentDepuisDetail(
+                            fichier
+                        );
+
+                    };
+
+
+                blocDocument.appendChild(
+                    informationsDocument
+                );
+
+
+                blocDocument.appendChild(
+                    bouton
+                );
+
+
+                documents.appendChild(
+                    blocDocument
+                );
+
+            }
+        );
+
+    }
+
+
+    const zoneRecepisse =
+        document.getElementById(
+            "zoneGestionRecepisseAdmin"
+        );
+
+
+    if (
+        demande.type ===
+        "Carte de Statut Numérique"
+    ) {
+
+        zoneRecepisse.classList.remove(
+            "hidden"
+        );
+
+    }
+
+    else {
+
+        zoneRecepisse.classList.add(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+function demanderComplement() {
+
+    if (
+        !demandeAdminSelectionnee
+    ) {
+
+        alert(
+            "Veuillez sélectionner un dossier."
+        );
+
+        return;
+
+    }
+
+
+    const message =
+        document.getElementById(
+            "messageComplement"
+        ).value.trim();
+
+
+    if (
+        message === ""
+    ) {
+
+        alert(
+            "Veuillez indiquer le complément demandé."
+        );
+
+        return;
+
+    }
+
+
+    const demande =
+        demandes.find(
+            function(element) {
+
+                return (
+                    element.numeroDossier ===
+                    demandeAdminSelectionnee
+                );
+
+            }
+        );
+
+
+    if (!demande) {
+
+        alert(
+            "Dossier introuvable."
+        );
+
+        return;
+
+    }
+
+
+    demande.complement =
+        message;
+
+
+    demande.statut =
+        "Complément demandé";
+
+
+    document.getElementById(
+        "messageComplement"
+    ).value =
+        "";
+
+
+    alert(
+        "Le complément a été demandé au demandeur."
+    );
+
+
+    afficherDossierAdministratif(
+        demande
+    );
+
+}
+
+
+function modifierStatutAdmin() {
+
+    if (
+        !demandeAdminSelectionnee
+    ) {
+
+        alert(
+            "Veuillez sélectionner un dossier."
+        );
+
+        return;
+
+    }
+
+
+    const nouveauStatut =
+        document.getElementById(
+            "nouveauStatut"
+        ).value;
+
+
+    if (
+        nouveauStatut === ""
+    ) {
+
+        alert(
+            "Veuillez sélectionner un statut."
+        );
+
+        return;
+
+    }
+
+
+    const demande =
+        demandes.find(
+            function(element) {
+
+                return (
+                    element.numeroDossier ===
+                    demandeAdminSelectionnee
+                );
+
+            }
+        );
+
+
+    if (!demande) {
+
+        alert(
+            "Dossier introuvable."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        nouveauStatut ===
+        "Récépissé disponible"
+        &&
+        demande.type !==
+        "Carte de Statut Numérique"
+    ) {
+
+        alert(
+
+            "Le récépissé est uniquement prévu " +
+            "pour la Carte de Statut Numérique."
+
+        );
+
+        return;
+
+    }
+
+
+    demande.statut =
+        nouveauStatut;
+
+
+    if (
+        nouveauStatut ===
+        "Récépissé disponible"
+    ) {
+
+        demande.recepisseDisponible =
+            true;
+
+    }
+
+
+    alert(
+        "Le statut du dossier a été modifié."
+    );
+
+
+    afficherDossierAdministratif(
+        demande
+    );
+
+}
+
+
+function enregistrerDecision() {
+
+    if (
+        !demandeAdminSelectionnee
+    ) {
+
+        alert(
+            "Veuillez sélectionner un dossier."
+        );
+
+        return;
+
+    }
+
+
+    const decision =
+        document.getElementById(
+            "decisionDossier"
+        ).value;
+
+
+    const motif =
+        document.getElementById(
+            "motifDecision"
+        ).value.trim();
+
+
+    if (
+        !decision ||
+        decision ===
+        "Sélectionner une décision"
+    ) {
+
+        alert(
+            "Veuillez sélectionner une décision."
+        );
+
+        return;
+
+    }
+
+
+    const demande =
+        demandes.find(
+            function(element) {
+
+                return (
+                    element.numeroDossier ===
+                    demandeAdminSelectionnee
+                );
+
+            }
+        );
+
+
+    if (!demande) {
+
+        alert(
+            "Dossier introuvable."
+        );
+
+        return;
+
+    }
+
+
+    demande.decision =
+        decision;
+
+
+    demande.motifDecision =
+        motif;
+
+
+    demande.statut =
+        "Décision prise";
+
+
+    alert(
+        "La décision a été enregistrée."
+    );
+
+
+    afficherDossierAdministratif(
+        demande
+    );
+
+}
+
+
+function rendreRecepisseDisponible() {
+
+    if (
+        !demandeAdminSelectionnee
+    ) {
+
+        alert(
+            "Veuillez sélectionner un dossier."
+        );
+
+        return;
+
+    }
+
+
+    const demande =
+        demandes.find(
+            function(element) {
+
+                return (
+                    element.numeroDossier ===
+                    demandeAdminSelectionnee
+                );
+
+            }
+        );
+
+
+    if (!demande) {
+
+        alert(
+            "Dossier introuvable."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        demande.type !==
+        "Carte de Statut Numérique"
+    ) {
+
+        alert(
+
+            "Le récépissé est uniquement prévu " +
+            "pour la Carte de Statut Numérique."
+
+        );
+
+        return;
+
+    }
+
+
+    const dateDepot =
+        new Date(
+            demande.dateDepot
+        );
+
+
+    const dateDisponible =
+        new Date(
+            dateDepot
+        );
+
+
+    dateDisponible.setDate(
+        dateDisponible.getDate() + 7
+    );
+
+
+    const maintenant =
+        new Date();
+
+
+    if (
+        maintenant <
+        dateDisponible
+    ) {
+
+        alert(
+
+            "Le délai d'une semaine n'est pas encore écoulé."
+
+        );
+
+        return;
+
+    }
+
+
+    demande.recepisseDisponible =
+        true;
+
+
+    demande.statut =
+        "Récépissé disponible";
+
+
+    alert(
+        "Le récépissé est maintenant disponible."
+    );
+
+
+    afficherDossierAdministratif(
+        demande
+    );
+
+}
+
+
+function passerDocumentPret() {
+
+    if (
+        !demandeAdminSelectionnee
+    ) {
+
+        alert(
+            "Veuillez sélectionner un dossier."
+        );
+
+        return;
+
+    }
+
+
+    const demande =
+        demandes.find(
+            function(element) {
+
+                return (
+                    element.numeroDossier ===
+                    demandeAdminSelectionnee
+                );
+
+            }
+        );
+
+
+    if (!demande) {
+
+        alert(
+            "Dossier introuvable."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        demande.decision !==
+        "Demande acceptée"
+    ) {
+
+        alert(
+
+            "Le dossier doit avoir une décision acceptée " +
+            "avant de passer à Document prêt."
+
+        );
+
+        return;
+
+    }
+
+
+    demande.statut =
+        "Document prêt";
+
+
+    alert(
+        "Le dossier est maintenant marqué comme Document prêt."
+    );
+
+
+    afficherDossierAdministratif(
+        demande
+    );
+
+}
+
+
+  </script>
