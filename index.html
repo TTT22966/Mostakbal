@@ -1,0 +1,4135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portail Administratif</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    color: #172033;
+    min-height: 100vh;
+}
+
+header {
+    background: #ffffff;
+    border-bottom: 1px solid #e4e8ef;
+    padding: 18px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.07);
+    margin-bottom: 25px;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+p {
+    color: #667085;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 13px 20px;
+    font-size: 15px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.primary {
+    background: #1d4ed8;
+    color: white;
+}
+
+.secondary {
+    background: #e8eefc;
+    color: #1d4ed8;
+}
+
+.danger {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 13px;
+    margin: 8px 0 16px;
+    border: 1px solid #d7dce5;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.message {
+    padding: 12px;
+    border-radius: 10px;
+    margin: 15px 0;
+    display: none;
+}
+
+.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.choice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.choice {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 25px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.choice:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.choice h3 {
+    margin-bottom: 8px;
+}
+
+#app {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    header {
+        padding: 15px;
+    }
+
+    .container {
+        margin: 20px auto;
+        padding: 12px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Portail Administratif</div>
+    <button id="logoutButton" class="danger hidden" onclick="logout()">Déconnexion</button>
+</header>
+
+<div id="loginPage" class="container">
+
+    <div class="card">
+        <h1>Connexion</h1>
+        <p>Accédez à votre espace administratif personnel.</p>
+
+        <div id="loginMessage" class="message"></div>
+
+        <label for="loginType">Type de compte</label>
+        <select id="loginType">
+            <option value="citizen">Citoyen</option>
+            <option value="foreigner">Étranger</option>
+            <option value="admin">Agent administratif</option>
+        </select>
+
+        <label for="loginIdentifier">Identifiant</label>
+        <input
+            type="text"
+            id="loginIdentifier"
+            placeholder="Entrez votre identifiant"
+        >
+
+        <label for="loginPassword">Mot de passe</label>
+        <input
+            type="password"
+            id="loginPassword"
+            placeholder="Entrez votre mot de passe"
+        >
+
+        <button class="primary" onclick="login()">Se connecter</button>
+        <button class="secondary" onclick="showRegistration()">Créer un compte</button>
+    </div>
+
+</div>
+
+<div id="registrationPage" class="container hidden">
+
+    <div class="card">
+        <h1>Créer un compte</h1>
+        <p>Sélectionnez le type de compte que vous souhaitez créer.</p>
+
+        <div id="registrationMessage" class="message"></div>
+
+        <div class="choice-grid">
+
+            <div class="choice" onclick="showCitizenRegistration()">
+                <h3>Citoyen</h3>
+                <p>Créer un compte pour un nouveau citoyen.</p>
+            </div>
+
+            <div class="choice" onclick="showForeignerRegistration()">
+                <h3>Étranger</h3>
+                <p>Créer un compte avec attribution automatique d'un numéro étranger.</p>
+            </div>
+
+        </div>
+
+        <button class="secondary" onclick="showLogin()">Retour à la connexion</button>
+    </div>
+
+</div>
+
+<div id="citizenRegistrationPage" class="container hidden">
+
+    <div class="card">
+        <h1>Création d'un compte citoyen</h1>
+        <p>Un nouveau citoyen doit fournir son numéro étranger afin de créer son compte citoyen.</p>
+
+        <div id="citizenRegistrationMessage" class="message"></div>
+
+        <label for="citizenLastName">Nom</label>
+        <input type="text" id="citizenLastName">
+
+        <label for="citizenFirstName">Prénom</label>
+        <input type="text" id="citizenFirstName">
+
+        <label for="citizenBirthDate">Date de naissance</label>
+        <input type="date" id="citizenBirthDate">
+
+        <label for="citizenGender">Sexe</label>
+        <select id="citizenGender">
+            <option value="">Sélectionner</option>
+            <option value="M">M</option>
+            <option value="F">F</option>
+        </select>
+
+        <label for="citizenForeignerNumber">Numéro étranger</label>
+        <input
+            type="text"
+            id="citizenForeignerNumber"
+            placeholder="2026-----------"
+        >
+
+        <label for="citizenPassword">Créer un mot de passe</label>
+        <input
+            type="password"
+            id="citizenPassword"
+        >
+
+        <label for="citizenPasswordConfirm">Confirmer le mot de passe</label>
+        <input
+            type="password"
+            id="citizenPasswordConfirm"
+        >
+
+        <button class="primary" onclick="createCitizenAccount()">
+            Créer mon compte
+        </button>
+
+        <button class="secondary" onclick="showRegistration()">
+            Retour
+        </button>
+    </div>
+
+</div>
+
+<div id="foreignerRegistrationPage" class="container hidden">
+
+    <div class="card">
+        <h1>Création d'un compte étranger</h1>
+        <p>Après votre inscription, le système attribuera automatiquement votre numéro étranger.</p>
+
+        <div id="foreignerRegistrationMessage" class="message"></div>
+
+        <label for="foreignerLastName">Nom</label>
+        <input type="text" id="foreignerLastName">
+
+        <label for="foreignerFirstName">Prénom</label>
+        <input type="text" id="foreignerFirstName">
+
+        <label for="foreignerBirthDate">Date de naissance</label>
+        <input type="date" id="foreignerBirthDate">
+
+        <label for="foreignerGender">Sexe</label>
+        <select id="foreignerGender">
+            <option value="">Sélectionner</option>
+            <option value="M">M</option>
+            <option value="F">F</option>
+        </select>
+
+        <label for="foreignerPassword">Créer un mot de passe</label>
+        <input
+            type="password"
+            id="foreignerPassword"
+        >
+
+        <label for="foreignerPasswordConfirm">Confirmer le mot de passe</label>
+        <input
+            type="password"
+            id="foreignerPasswordConfirm"
+        >
+
+        <button class="primary" onclick="createForeignerAccount()">
+            Créer mon compte
+        </button>
+
+        <button class="secondary" onclick="showRegistration()">
+            Retour
+        </button>
+    </div>
+
+</div>
+
+<div id="app" class="container">
+
+    <div class="card">
+        <h1 id="welcomeTitle">Bienvenue</h1>
+        <p id="accountInformation"></p>
+
+        <div id="citizenSpace" class="hidden">
+            <h2>Espace citoyen</h2>
+            <div class="choice-grid">
+                <div class="choice">
+                    <h3>Demande de CNI</h3>
+                    <p>Première demande ou renouvellement.</p>
+                </div>
+
+                <div class="choice">
+                    <h3>Demande de passeport</h3>
+                    <p>Première demande ou renouvellement.</p>
+                </div>
+
+                <div class="choice">
+                    <h3>Mes demandes</h3>
+                    <p>Consulter et suivre toutes vos démarches.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="foreignerSpace" class="hidden">
+            <h2>Espace étranger</h2>
+            <div class="choice-grid">
+                <div class="choice">
+                    <h3>Carte de Statut Numérique</h3>
+                    <p>Déposer et suivre une demande.</p>
+                </div>
+
+                <div class="choice">
+                    <h3>Autorisation de travail</h3>
+                    <p>Déposer une demande d'autorisation de travail.</p>
+                </div>
+
+                <div class="choice">
+                    <h3>Mes demandes</h3>
+                    <p>Consulter et suivre toutes vos démarches.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="adminSpace" class="hidden">
+            <h2>Espace administratif</h2>
+            <div class="choice-grid">
+                <div class="choice">
+                    <h3>Demandes reçues</h3>
+                    <p>Consulter les demandes déposées par les utilisateurs.</p>
+                </div>
+
+                <div class="choice">
+                    <h3>Notifications</h3>
+                    <p>Consulter les nouvelles notifications.</p>
+                </div>
+
+                <div class="choice">
+                    <h3>Mes démarches personnelles</h3>
+                    <p>Effectuer et suivre vos propres demandes.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL = "https://jnwqrlogdkninljrcwwf.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "TA_PUBLISHABLE_KEY";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+let currentUser = null;
+
+function hideAllPages() {
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("registrationPage").classList.add("hidden");
+    document.getElementById("citizenRegistrationPage").classList.add("hidden");
+    document.getElementById("foreignerRegistrationPage").classList.add("hidden");
+    document.getElementById("app").style.display = "none";
+}
+
+function showLogin() {
+    hideAllPages();
+    document.getElementById("loginPage").classList.remove("hidden");
+}
+
+function showRegistration() {
+    hideAllPages();
+    document.getElementById("registrationPage").classList.remove("hidden");
+}
+
+function showCitizenRegistration() {
+    hideAllPages();
+    document.getElementById("citizenRegistrationPage").classList.remove("hidden");
+}
+
+function showForeignerRegistration() {
+    hideAllPages();
+    document.getElementById("foreignerRegistrationPage").classList.remove("hidden");
+}
+
+function generateForeignerNumber() {
+    const year = new Date().getFullYear();
+    let number = "";
+
+    for (let i = 0; i < 11; i++) {
+        number += Math.floor(Math.random() * 10);
+    }
+
+    return year + number;
+}
+
+function generateNIN(gender) {
+    const year = new Date().getFullYear();
+
+    let randomNumbers = "";
+
+    for (let i = 0; i < 4; i++) {
+        randomNumbers += Math.floor(Math.random() * 10);
+    }
+
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const randomLetter =
+        letters[Math.floor(Math.random() * letters.length)];
+
+    return "MST_" + year + "_" + randomNumbers + "_" + gender + "_" + randomLetter;
+}
+
+async function createForeignerAccount() {
+
+    const lastName =
+        document.getElementById("foreignerLastName").value.trim();
+
+    const firstName =
+        document.getElementById("foreignerFirstName").value.trim();
+
+    const birthDate =
+        document.getElementById("foreignerBirthDate").value;
+
+    const gender =
+        document.getElementById("foreignerGender").value;
+
+    const password =
+        document.getElementById("foreignerPassword").value;
+
+    const passwordConfirm =
+        document.getElementById("foreignerPasswordConfirm").value;
+
+    const message =
+        document.getElementById("foreignerRegistrationMessage");
+
+    if (
+        !lastName ||
+        !firstName ||
+        !birthDate ||
+        !gender ||
+        !password ||
+        !passwordConfirm
+    ) {
+        message.textContent = "Veuillez remplir tous les champs.";
+        message.className = "message error";
+        message.style.display = "block";
+        return;
+    }
+
+    if (password !== passwordConfirm) {
+        message.textContent = "Les mots de passe ne correspondent pas.";
+        message.className = "message error";
+        message.style.display = "block";
+        return;
+    }
+
+    const foreignerNumber = generateForeignerNumber();
+
+    message.textContent =
+        "Compte créé. Votre numéro étranger est : " + foreignerNumber;
+
+    message.className = "message success";
+    message.style.display = "block";
+
+    console.log("Foreigner number:", foreignerNumber);
+}
+
+async function createCitizenAccount() {
+
+    const lastName =
+        document.getElementById("citizenLastName").value.trim();
+
+    const firstName =
+        document.getElementById("citizenFirstName").value.trim();
+
+    const birthDate =
+        document.getElementById("citizenBirthDate").value;
+
+    const gender =
+        document.getElementById("citizenGender").value;
+
+    const foreignerNumber =
+        document.getElementById("citizenForeignerNumber").value.trim();
+
+    const password =
+        document.getElementById("citizenPassword").value;
+
+    const passwordConfirm =
+        document.getElementById("citizenPasswordConfirm").value;
+
+    const message =
+        document.getElementById("citizenRegistrationMessage");
+
+    if (
+        !lastName ||
+        !firstName ||
+        !birthDate ||
+        !gender ||
+        !foreignerNumber ||
+        !password ||
+        !passwordConfirm
+    ) {
+        message.textContent = "Veuillez remplir tous les champs.";
+        message.className = "message error";
+        message.style.display = "block";
+        return;
+    }
+
+    if (password !== passwordConfirm) {
+        message.textContent = "Les mots de passe ne correspondent pas.";
+        message.className = "message error";
+        message.style.display = "block";
+        return;
+    }
+
+    const nin = generateNIN(gender);
+
+    message.textContent =
+        "Compte citoyen créé. Votre numéro d'identification national est : " + nin;
+
+    message.className = "message success";
+    message.style.display = "block";
+
+    console.log("NIN:", nin);
+}
+
+async function login() {
+
+    const type =
+        document.getElementById("loginType").value;
+
+    const identifier =
+        document.getElementById("loginIdentifier").value.trim();
+
+    const password =
+        document.getElementById("loginPassword").value;
+
+    const message =
+        document.getElementById("loginMessage");
+
+    if (!identifier || !password) {
+        message.textContent =
+            "Veuillez entrer votre identifiant et votre mot de passe.";
+
+        message.className = "message error";
+        message.style.display = "block";
+        return;
+    }
+
+    if (type === "admin") {
+
+        message.textContent =
+            "Connexion administrative en préparation.";
+
+        message.className = "message success";
+        message.style.display = "block";
+
+        return;
+    }
+
+    currentUser = {
+        type: type,
+        identifier: identifier
+    };
+
+    document.getElementById("loginPage").classList.add("hidden");
+
+    document.getElementById("app").style.display = "block";
+
+    document.getElementById("logoutButton").classList.remove("hidden");
+
+    document.getElementById("welcomeTitle").textContent =
+        "Bienvenue dans votre espace";
+
+    document.getElementById("accountInformation").textContent =
+        "Identifiant : " + identifier;
+
+    document.getElementById("citizenSpace").classList.add("hidden");
+    document.getElementById("foreignerSpace").classList.add("hidden");
+    document.getElementById("adminSpace").classList.add("hidden");
+
+    if (type === "citizen") {
+        document.getElementById("citizenSpace").classList.remove("hidden");
+    }
+
+    if (type === "foreigner") {
+        document.getElementById("foreignerSpace").classList.remove("hidden");
+    }
+}
+
+function logout() {
+
+    currentUser = null;
+
+    document.getElementById("logoutButton").classList.add("hidden");
+
+    showLogin();
+}
+
+showLogin();
+
+</script>
+
+</body>
+</html>
+<div id="citizenDashboard" class="hidden">
+
+    <div class="card">
+        <h2>Mon espace citoyen</h2>
+
+        <div class="choice-grid">
+
+            <div class="choice" onclick="openCitizenProcedure('cni')">
+                <h3>Demande de CNI</h3>
+                <p>Première demande ou renouvellement.</p>
+            </div>
+
+            <div class="choice" onclick="openCitizenProcedure('passport')">
+                <h3>Demande de passeport</h3>
+                <p>Première demande ou renouvellement.</p>
+            </div>
+
+            <div class="choice" onclick="openCitizenProcedure('nationality')">
+                <h3>Certificat de nationalité</h3>
+                <p>Déposer une demande de certificat de nationalité.</p>
+            </div>
+
+            <div class="choice" onclick="openCitizenProcedure('birth')">
+                <h3>Extrait de naissance</h3>
+                <p>Déposer une demande d'extrait de naissance.</p>
+            </div>
+
+            <div class="choice" onclick="openCitizenProcedure('health')">
+                <h3>Passe santé</h3>
+                <p>Demander votre numéro de sécurité sociale.</p>
+            </div>
+
+            <div class="choice" onclick="openCitizenProcedure('criminal')">
+                <h3>Casier judiciaire</h3>
+                <p>Déposer une demande de casier judiciaire.</p>
+            </div>
+
+            <div class="choice" onclick="showMyRequests()">
+                <h3>Suivre mes demandes</h3>
+                <p>Consulter l'ensemble de vos démarches.</p>
+            </div>
+
+            <div class="choice" onclick="showMailbox()">
+                <h3>Messagerie</h3>
+                <p>Consulter vos convocations, récépissés et messages.</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div id="foreignerDashboard" class="hidden">
+
+    <div class="card">
+        <h2>Mon espace étranger</h2>
+
+        <div class="choice-grid">
+
+            <div class="choice" onclick="openForeignerProcedure('digitalStatus')">
+                <h3>Carte de Statut Numérique</h3>
+                <p>Déposer et suivre votre demande.</p>
+            </div>
+
+            <div class="choice" onclick="openForeignerProcedure('work')">
+                <h3>Autorisation de travail</h3>
+                <p>Déposer une demande d'autorisation de travail.</p>
+            </div>
+
+            <div class="choice" onclick="openForeignerProcedure('birthAffiliated')">
+                <h3>Extrait de naissance affilié</h3>
+                <p>Demander un extrait de naissance affilié.</p>
+            </div>
+
+            <div class="choice" onclick="openForeignerProcedure('nationality')">
+                <h3>Demande de nationalité</h3>
+                <p>Déposer une demande de nationalité.</p>
+            </div>
+
+            <div class="choice" onclick="openForeignerProcedure('health')">
+                <h3>Passe santé</h3>
+                <p>Demander votre numéro de sécurité sociale.</p>
+            </div>
+
+            <div class="choice" onclick="showMyRequests()">
+                <h3>Suivre mes demandes</h3>
+                <p>Consulter l'ensemble de vos démarches.</p>
+            </div>
+
+            <div class="choice" onclick="showMailbox()">
+                <h3>Messagerie</h3>
+                <p>Consulter vos convocations, récépissés et messages.</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div id="procedurePage" class="container hidden">
+
+    <div class="card">
+
+        <h2 id="procedureTitle">Nouvelle demande</h2>
+
+        <div id="procedureMessage" class="message"></div>
+
+        <div id="cniOptions" class="hidden">
+
+            <label for="cniType">Type de demande</label>
+
+            <select id="cniType">
+                <option value="">Sélectionner</option>
+                <option value="first">Première demande</option>
+                <option value="renewal">Renouvellement</option>
+            </select>
+
+        </div>
+
+        <div id="passportOptions" class="hidden">
+
+            <label for="passportType">Type de demande</label>
+
+            <select id="passportType">
+                <option value="">Sélectionner</option>
+                <option value="first">Première demande</option>
+                <option value="renewal">Renouvellement</option>
+            </select>
+
+        </div>
+
+        <div id="documentsSection">
+
+            <h3>Documents à déposer</h3>
+
+            <div id="documentInstructions"></div>
+
+            <div id="documentInputs"></div>
+
+        </div>
+
+        <button class="primary" onclick="submitProcedure()">
+            Déposer la demande
+        </button>
+
+        <button class="secondary" onclick="closeProcedure()">
+            Retour
+        </button>
+
+    </div>
+
+</div>
+
+<div id="requestsPage" class="container hidden">
+
+    <div class="card">
+
+        <h2>Suivre mes demandes</h2>
+
+        <div id="requestsList">
+
+            <p>Aucune demande à afficher.</p>
+
+        </div>
+
+        <button class="secondary" onclick="closeRequests()">
+            Retour
+        </button>
+
+    </div>
+
+</div>
+
+<div id="mailboxPage" class="container hidden">
+
+    <div class="card">
+
+        <h2>Messagerie administrative</h2>
+
+        <div id="mailboxList">
+
+            <p>Aucun message disponible.</p>
+
+        </div>
+
+        <button class="secondary" onclick="closeMailbox()">
+            Retour
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+let currentProcedure = null;
+
+let temporaryRequests = [];
+
+function openCitizenProcedure(type) {
+
+    currentProcedure = {
+        category: type,
+        userType: "citizen"
+    };
+
+    openProcedure(type);
+}
+
+function openForeignerProcedure(type) {
+
+    currentProcedure = {
+        category: type,
+        userType: "foreigner"
+    };
+
+    openProcedure(type);
+}
+
+function openProcedure(type) {
+
+    document.getElementById("citizenDashboard").classList.add("hidden");
+
+    document.getElementById("foreignerDashboard").classList.add("hidden");
+
+    document.getElementById("requestsPage").classList.add("hidden");
+
+    document.getElementById("mailboxPage").classList.add("hidden");
+
+    document.getElementById("procedurePage").classList.remove("hidden");
+
+    document.getElementById("cniOptions").classList.add("hidden");
+
+    document.getElementById("passportOptions").classList.add("hidden");
+
+    document.getElementById("documentInputs").innerHTML = "";
+
+    const title =
+        document.getElementById("procedureTitle");
+
+    const instructions =
+        document.getElementById("documentInstructions");
+
+    if (type === "cni") {
+
+        title.textContent = "Demande de CNI";
+
+        document.getElementById("cniOptions")
+            .classList.remove("hidden");
+
+        instructions.innerHTML =
+            "<p>Veuillez déposer les documents nécessaires à votre demande.</p>";
+
+        createFileInput("Certificat de nationalité");
+
+        createFileInput("E-photo");
+
+    }
+
+    if (type === "passport") {
+
+        title.textContent = "Demande de passeport";
+
+        document.getElementById("passportOptions")
+            .classList.remove("hidden");
+
+        instructions.innerHTML =
+            "<p>Veuillez déposer les documents nécessaires à votre demande.</p>";
+
+        createFileInput("CNI");
+
+        createFileInput("Certificat de nationalité");
+
+        createFileInput("E-photo");
+
+    }
+
+    if (type === "nationality") {
+
+        title.textContent =
+            "Demande de certificat de nationalité";
+
+        instructions.innerHTML =
+            "<p>Documents nécessaires : CNI et extrait de naissance.</p>";
+
+        createFileInput("CNI");
+
+        createFileInput("Extrait de naissance");
+
+    }
+
+    if (type === "birth") {
+
+        title.textContent =
+            "Demande d'extrait de naissance";
+
+        instructions.innerHTML =
+            "<p>Document nécessaire : CNI.</p>";
+
+        createFileInput("CNI");
+
+    }
+
+    if (type === "health") {
+
+        title.textContent =
+            "Demande de passe santé";
+
+        instructions.innerHTML =
+            "<p>Document nécessaire : CNI.</p>";
+
+        createFileInput("CNI");
+
+    }
+
+    if (type === "criminal") {
+
+        title.textContent =
+            "Demande de casier judiciaire";
+
+        instructions.innerHTML =
+            "<p>Veuillez déposer les documents nécessaires.</p>";
+
+        createFileInput("CNI");
+
+        createFileInput("Extrait de naissance");
+
+        createFileInput(
+            "Casier judiciaire du pays d'origine si nécessaire"
+        );
+
+    }
+
+    if (type === "digitalStatus") {
+
+        title.textContent =
+            "Demande de Carte de Statut Numérique";
+
+        instructions.innerHTML =
+            "<p>Documents nécessaires : pièce d'identité étrangère et e-photo.</p>";
+
+        createFileInput(
+            "Pièce d'identité étrangère"
+        );
+
+        createFileInput("E-photo");
+
+    }
+
+    if (type === "work") {
+
+        title.textContent =
+            "Demande d'autorisation de travail";
+
+        instructions.innerHTML =
+            "<p>Documents nécessaires : Carte de Statut Numérique et justificatif d'activité professionnelle.</p>";
+
+        createFileInput(
+            "Carte de Statut Numérique"
+        );
+
+        createFileInput(
+            "Justificatif d'activité professionnelle"
+        );
+
+    }
+
+    if (type === "birthAffiliated") {
+
+        title.textContent =
+            "Demande d'extrait de naissance affilié";
+
+        instructions.innerHTML =
+            "<p>Documents nécessaires : Carte de Statut Numérique et acte de naissance du pays d'origine.</p>";
+
+        createFileInput(
+            "Carte de Statut Numérique"
+        );
+
+        createFileInput(
+            "Acte de naissance du pays d'origine"
+        );
+
+    }
+
+    if (
+        type === "nationality" &&
+        currentProcedure.userType === "foreigner"
+    ) {
+
+        title.textContent =
+            "Demande de nationalité";
+
+        instructions.innerHTML =
+            "<p>Documents nécessaires : Carte de Statut Numérique, justificatif des 3 ans de statut, extrait de naissance et casier judiciaire du pays d'origine.</p>";
+
+        document.getElementById("documentInputs").innerHTML = "";
+
+        createFileInput(
+            "Carte de Statut Numérique"
+        );
+
+        createFileInput(
+            "Justificatif des 3 ans de statut"
+        );
+
+        createFileInput(
+            "Extrait de naissance"
+        );
+
+        createFileInput(
+            "Casier judiciaire du pays d'origine"
+        );
+
+    }
+
+}
+
+function createFileInput(documentName) {
+
+    const container =
+        document.getElementById("documentInputs");
+
+    const wrapper =
+        document.createElement("div");
+
+    wrapper.style.marginBottom = "20px";
+
+    const label =
+        document.createElement("label");
+
+    label.textContent =
+        documentName;
+
+    const input =
+        document.createElement("input");
+
+    input.type = "file";
+
+    input.dataset.documentName =
+        documentName;
+
+    wrapper.appendChild(label);
+
+    wrapper.appendChild(input);
+
+    container.appendChild(wrapper);
+
+}
+
+function submitProcedure() {
+
+    if (!currentUser) {
+
+        alert(
+            "Vous devez être connecté pour déposer une demande."
+        );
+
+        return;
+
+    }
+
+    const files =
+        document.querySelectorAll(
+            "#documentInputs input[type='file']"
+        );
+
+    const documents = [];
+
+    files.forEach(fileInput => {
+
+        if (fileInput.files.length > 0) {
+
+            documents.push({
+
+                name:
+                    fileInput.dataset.documentName,
+
+                file:
+                    fileInput.files[0].name
+
+            });
+
+        }
+
+    });
+
+    let requestType =
+        currentProcedure.category;
+
+    if (requestType === "cni") {
+
+        requestType =
+            "Demande de CNI - " +
+            document.getElementById("cniType").value;
+
+    }
+
+    if (requestType === "passport") {
+
+        requestType =
+            "Demande de passeport - " +
+            document.getElementById("passportType").value;
+
+    }
+
+    const newRequest = {
+
+        id:
+            "REQ-" +
+            Date.now(),
+
+        userIdentifier:
+            currentUser.identifier,
+
+        userType:
+            currentUser.type,
+
+        type:
+            requestType,
+
+        status:
+            "Dépôt",
+
+        createdAt:
+            new Date().toISOString(),
+
+        documents:
+            documents
+
+    };
+
+    temporaryRequests.push(newRequest);
+
+    const message =
+        document.getElementById("procedureMessage");
+
+    message.textContent =
+        "Votre demande a été déposée avec succès.";
+
+    message.className =
+        "message success";
+
+    message.style.display =
+        "block";
+
+}
+
+function closeProcedure() {
+
+    document.getElementById("procedurePage")
+        .classList.add("hidden");
+
+    if (
+        currentProcedure &&
+        currentProcedure.userType === "citizen"
+    ) {
+
+        document.getElementById("citizenDashboard")
+            .classList.remove("hidden");
+
+    } else {
+
+        document.getElementById("foreignerDashboard")
+            .classList.remove("hidden");
+
+    }
+
+}
+
+function showMyRequests() {
+
+    document.getElementById("citizenDashboard")
+        .classList.add("hidden");
+
+    document.getElementById("foreignerDashboard")
+        .classList.add("hidden");
+
+    document.getElementById("procedurePage")
+        .classList.add("hidden");
+
+    document.getElementById("mailboxPage")
+        .classList.add("hidden");
+
+    document.getElementById("requestsPage")
+        .classList.remove("hidden");
+
+    const list =
+        document.getElementById("requestsList");
+
+    const userRequests =
+        temporaryRequests.filter(
+            request =>
+                currentUser &&
+                request.userIdentifier ===
+                currentUser.identifier
+        );
+
+    if (userRequests.length === 0) {
+
+        list.innerHTML =
+            "<p>Aucune demande à afficher.</p>";
+
+        return;
+
+    }
+
+    list.innerHTML = "";
+
+    userRequests.forEach(request => {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "choice";
+
+        item.innerHTML =
+
+            "<h3>" +
+            request.type +
+            "</h3>" +
+
+            "<p>Référence : " +
+            request.id +
+            "</p>" +
+
+            "<p>Statut : " +
+            request.status +
+            "</p>" +
+
+            "<p>Date : " +
+            new Date(
+                request.createdAt
+            ).toLocaleDateString("fr-FR") +
+            "</p>";
+
+        list.appendChild(item);
+
+    });
+
+}
+
+function closeRequests() {
+
+    document.getElementById("requestsPage")
+        .classList.add("hidden");
+
+    if (
+        currentUser &&
+        currentUser.type === "citizen"
+    ) {
+
+        document.getElementById("citizenDashboard")
+            .classList.remove("hidden");
+
+    } else {
+
+        document.getElementById("foreignerDashboard")
+            .classList.remove("hidden");
+
+    }
+
+}
+
+function showMailbox() {
+
+    document.getElementById("citizenDashboard")
+        .classList.add("hidden");
+
+    document.getElementById("foreignerDashboard")
+        .classList.add("hidden");
+
+    document.getElementById("mailboxPage")
+        .classList.remove("hidden");
+
+}
+
+function closeMailbox() {
+
+    document.getElementById("mailboxPage")
+        .classList.add("hidden");
+
+    if (
+        currentUser &&
+        currentUser.type === "citizen"
+    ) {
+
+        document.getElementById("citizenDashboard")
+            .classList.remove("hidden");
+
+    } else {
+
+        document.getElementById("foreignerDashboard")
+            .classList.remove("hidden");
+
+    }
+
+}
+
+</script>
+<div id="adminDashboard" class="hidden">
+
+    <div class="card">
+        <h2>Espace administratif</h2>
+
+        <div class="choice-grid">
+
+            <div class="choice" onclick="showAdminRequests()">
+                <h3>Demandes reçues</h3>
+                <p>Consulter et traiter les demandes déposées.</p>
+            </div>
+
+            <div class="choice" onclick="showAdminNotifications()">
+                <h3>Notifications</h3>
+                <p>Consulter les nouvelles demandes et les événements importants.</p>
+            </div>
+
+            <div class="choice" onclick="showAdminMailbox()">
+                <h3>Messagerie administrative</h3>
+                <p>Envoyer et recevoir des messages administratifs.</p>
+            </div>
+
+            <div class="choice" onclick="showAdminPersonalRequests()">
+                <h3>Mes démarches personnelles</h3>
+                <p>Effectuer et suivre vos propres demandes administratives.</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div id="adminRequestsPage" class="container hidden">
+
+    <div class="card">
+
+        <h2>Demandes reçues</h2>
+
+        <div id="adminRequestsList">
+            <p>Aucune demande reçue.</p>
+        </div>
+
+        <button class="secondary" onclick="closeAdminPage()">
+            Retour
+        </button>
+
+    </div>
+
+</div>
+
+<div id="adminRequestDetailsPage" class="container hidden">
+
+    <div class="card">
+
+        <h2>Détails de la demande</h2>
+
+        <div id="adminRequestDetails"></div>
+
+        <h3>Documents déposés</h3>
+
+        <div id="adminRequestDocuments"></div>
+
+        <h3>Modifier le statut</h3>
+
+        <select id="adminStatusSelect">
+            <option value="Dépôt">Dépôt</option>
+            <option value="Instruction en cours">
+                Instruction en cours
+            </option>
+            <option value="Décision prise">
+                Décision prise
+            </option>
+            <option value="Document prêt">
+                Document prêt
+            </option>
+        </select>
+
+        <button class="primary" onclick="updateRequestStatus()">
+            Enregistrer le statut
+        </button>
+
+        <button class="secondary" onclick="showAdminRequests()">
+            Retour aux demandes
+        </button>
+
+    </div>
+
+</div>
+
+<div id="adminNotificationsPage" class="container hidden">
+
+    <div class="card">
+
+        <h2>Notifications</h2>
+
+        <div id="adminNotificationsList">
+            <p>Aucune nouvelle notification.</p>
+        </div>
+
+        <button class="secondary" onclick="closeAdminPage()">
+            Retour
+        </button>
+
+    </div>
+
+</div>
+
+<div id="adminMailboxPage" class="container hidden">
+
+    <div class="card">
+
+        <h2>Messagerie administrative</h2>
+
+        <label for="messageRecipient">
+            Identifiant du destinataire
+        </label>
+
+        <input
+            type="text"
+            id="messageRecipient"
+            placeholder="Numéro d'identification ou numéro étranger"
+        >
+
+        <label for="messageSubject">
+            Objet
+        </label>
+
+        <input
+            type="text"
+            id="messageSubject"
+            placeholder="Objet du message"
+        >
+
+        <label for="messageContent">
+            Message
+        </label>
+
+        <textarea
+            id="messageContent"
+            placeholder="Écrivez votre message..."
+            style="
+                width:100%;
+                min-height:150px;
+                padding:13px;
+                border:1px solid #d7dce5;
+                border-radius:10px;
+                font-size:15px;
+                resize:vertical;
+            "
+        ></textarea>
+
+        <button class="primary" onclick="sendAdminMessage()">
+            Envoyer
+        </button>
+
+        <div id="adminMessageResult" class="message"></div>
+
+        <h3>Messages envoyés</h3>
+
+        <div id="adminSentMessages">
+            <p>Aucun message envoyé.</p>
+        </div>
+
+        <button class="secondary" onclick="closeAdminPage()">
+            Retour
+        </button>
+
+    </div>
+
+</div>
+
+<div id="adminPersonalRequestsPage" class="container hidden">
+
+    <div class="card">
+
+        <h2>Mes démarches personnelles</h2>
+
+        <p>
+            L'agent administratif peut effectuer ses propres démarches
+            personnelles depuis son espace administratif.
+        </p>
+
+        <div class="choice-grid">
+
+            <div
+                class="choice"
+                onclick="openAdminPersonalCNI()"
+            >
+                <h3>Demande de CNI</h3>
+                <p>
+                    Effectuer une demande personnelle de carte nationale
+                    d'identité.
+                </p>
+            </div>
+
+            <div
+                class="choice"
+                onclick="showAdminPersonalRequestList()"
+            >
+                <h3>Suivre mes demandes</h3>
+                <p>
+                    Consulter le suivi de mes propres demandes.
+                </p>
+            </div>
+
+        </div>
+
+        <button class="secondary" onclick="closeAdminPage()">
+            Retour
+        </button>
+
+    </div>
+
+</div>
+
+<div id="adminPersonalCNIPage" class="container hidden">
+
+    <div class="card">
+
+        <h2>Ma demande personnelle de CNI</h2>
+
+        <div id="adminPersonalCNIMessage" class="message"></div>
+
+        <label for="adminCNIType">
+            Type de demande
+        </label>
+
+        <select id="adminCNIType">
+            <option value="">
+                Sélectionner
+            </option>
+
+            <option value="Première demande">
+                Première demande
+            </option>
+
+            <option value="Renouvellement">
+                Renouvellement
+            </option>
+        </select>
+
+        <label>
+            Documents à déposer
+        </label>
+
+        <div id="adminCNIDocuments">
+
+            <label>
+                <input
+                    type="file"
+                    id="adminCNIDocumentOne"
+                >
+                Certificat de nationalité
+            </label>
+
+            <label>
+                <input
+                    type="file"
+                    id="adminCNIDocumentTwo"
+                >
+                E-photo
+            </label>
+
+        </div>
+
+        <button
+            class="primary"
+            onclick="submitAdminPersonalCNI()"
+        >
+            Déposer ma demande
+        </button>
+
+        <button
+            class="secondary"
+            onclick="showAdminPersonalRequests()"
+        >
+            Retour
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+let selectedAdminRequestId = null;
+
+let adminNotifications = [];
+
+let adminMessages = [];
+
+let adminPersonalRequests = [];
+
+function showAdminSpace() {
+
+    document.getElementById("citizenDashboard")
+        .classList.add("hidden");
+
+    document.getElementById("foreignerDashboard")
+        .classList.add("hidden");
+
+    document.getElementById("procedurePage")
+        .classList.add("hidden");
+
+    document.getElementById("requestsPage")
+        .classList.add("hidden");
+
+    document.getElementById("mailboxPage")
+        .classList.add("hidden");
+
+    document.getElementById("adminDashboard")
+        .classList.remove("hidden");
+
+}
+
+function showAdminRequests() {
+
+    hideAdminPages();
+
+    document.getElementById("adminRequestsPage")
+        .classList.remove("hidden");
+
+    const list =
+        document.getElementById("adminRequestsList");
+
+    if (temporaryRequests.length === 0) {
+
+        list.innerHTML =
+            "<p>Aucune demande reçue.</p>";
+
+        return;
+
+    }
+
+    list.innerHTML = "";
+
+    temporaryRequests.forEach(request => {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "choice";
+
+        item.style.marginBottom =
+            "15px";
+
+        item.innerHTML =
+
+            "<h3>" +
+            request.type +
+            "</h3>" +
+
+            "<p>Référence : " +
+            request.id +
+            "</p>" +
+
+            "<p>Identifiant du demandeur : " +
+            request.userIdentifier +
+            "</p>" +
+
+            "<p>Statut : " +
+            request.status +
+            "</p>" +
+
+            "<button class='primary' onclick=\"openAdminRequest('" +
+            request.id +
+            "')\">" +
+            "Ouvrir le dossier" +
+            "</button>";
+
+        list.appendChild(item);
+
+    });
+
+}
+
+function openAdminRequest(requestId) {
+
+    selectedAdminRequestId =
+        requestId;
+
+    const request =
+        temporaryRequests.find(
+            item =>
+                item.id === requestId
+        );
+
+    if (!request) {
+
+        return;
+
+    }
+
+    hideAdminPages();
+
+    document.getElementById(
+        "adminRequestDetailsPage"
+    ).classList.remove("hidden");
+
+    document.getElementById(
+        "adminRequestDetails"
+    ).innerHTML =
+
+        "<p><strong>Référence :</strong> " +
+        request.id +
+        "</p>" +
+
+        "<p><strong>Type :</strong> " +
+        request.type +
+        "</p>" +
+
+        "<p><strong>Demandeur :</strong> " +
+        request.userIdentifier +
+        "</p>" +
+
+        "<p><strong>Type de compte :</strong> " +
+        request.userType +
+        "</p>" +
+
+        "<p><strong>Date de dépôt :</strong> " +
+        new Date(
+            request.createdAt
+        ).toLocaleString("fr-FR") +
+        "</p>";
+
+    const documents =
+        document.getElementById(
+            "adminRequestDocuments"
+        );
+
+    documents.innerHTML = "";
+
+    if (
+        !request.documents ||
+        request.documents.length === 0
+    ) {
+
+        documents.innerHTML =
+            "<p>Aucun document déposé.</p>";
+
+    } else {
+
+        request.documents.forEach(doc => {
+
+            const documentItem =
+                document.createElement("div");
+
+            documentItem.className =
+                "choice";
+
+            documentItem.innerHTML =
+
+                "<h3>" +
+                doc.name +
+                "</h3>" +
+
+                "<p>Fichier : " +
+                doc.file +
+                "</p>";
+
+            documents.appendChild(
+                documentItem
+            );
+
+        });
+
+    }
+
+    document.getElementById(
+        "adminStatusSelect"
+    ).value =
+        request.status;
+
+}
+
+function updateRequestStatus() {
+
+    if (!selectedAdminRequestId) {
+
+        return;
+
+    }
+
+    const request =
+        temporaryRequests.find(
+            item =>
+                item.id ===
+                selectedAdminRequestId
+        );
+
+    if (!request) {
+
+        return;
+
+    }
+
+    const newStatus =
+        document.getElementById(
+            "adminStatusSelect"
+        ).value;
+
+    request.status =
+        newStatus;
+
+    adminNotifications.push({
+
+        id:
+            "NOTIF-" +
+            Date.now(),
+
+        recipient:
+            request.userIdentifier,
+
+        title:
+            "Mise à jour de votre demande",
+
+        content:
+            "Le statut de votre demande " +
+            request.id +
+            " est maintenant : " +
+            newStatus,
+
+        createdAt:
+            new Date().toISOString(),
+
+        read:
+            false
+
+    });
+
+    alert(
+        "Le statut de la demande a été mis à jour."
+    );
+
+    openAdminRequest(
+        selectedAdminRequestId
+    );
+
+}
+
+function showAdminNotifications() {
+
+    hideAdminPages();
+
+    document.getElementById(
+        "adminNotificationsPage"
+    ).classList.remove("hidden");
+
+    const list =
+        document.getElementById(
+            "adminNotificationsList"
+        );
+
+    if (
+        adminNotifications.length === 0
+    ) {
+
+        list.innerHTML =
+            "<p>Aucune nouvelle notification.</p>";
+
+        return;
+
+    }
+
+    list.innerHTML = "";
+
+    adminNotifications.forEach(
+        notification => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "choice";
+
+            item.innerHTML =
+
+                "<h3>" +
+                notification.title +
+                "</h3>" +
+
+                "<p>" +
+                notification.content +
+                "</p>" +
+
+                "<p>Destinataire : " +
+                notification.recipient +
+                "</p>";
+
+            list.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+function sendAdminMessage() {
+
+    const recipient =
+        document.getElementById(
+            "messageRecipient"
+        ).value.trim();
+
+    const subject =
+        document.getElementById(
+            "messageSubject"
+        ).value.trim();
+
+    const content =
+        document.getElementById(
+            "messageContent"
+        ).value.trim();
+
+    const result =
+        document.getElementById(
+            "adminMessageResult"
+        );
+
+    if (
+        !recipient ||
+        !subject ||
+        !content
+    ) {
+
+        result.textContent =
+            "Veuillez remplir tous les champs.";
+
+        result.className =
+            "message error";
+
+        result.style.display =
+            "block";
+
+        return;
+
+    }
+
+    const newMessage = {
+
+        id:
+            "MSG-" +
+            Date.now(),
+
+        recipient:
+            recipient,
+
+        subject:
+            subject,
+
+        content:
+            content,
+
+        createdAt:
+            new Date().toISOString()
+
+    };
+
+    adminMessages.push(
+        newMessage
+    );
+
+    adminNotifications.push({
+
+        id:
+            "NOTIF-" +
+            Date.now(),
+
+        recipient:
+            recipient,
+
+        title:
+            "Nouveau message administratif",
+
+        content:
+            subject,
+
+        createdAt:
+            new Date().toISOString(),
+
+        read:
+            false
+
+    });
+
+    result.textContent =
+        "Le message a été envoyé.";
+
+    result.className =
+        "message success";
+
+    result.style.display =
+        "block";
+
+    document.getElementById(
+        "messageRecipient"
+    ).value = "";
+
+    document.getElementById(
+        "messageSubject"
+    ).value = "";
+
+    document.getElementById(
+        "messageContent"
+    ).value = "";
+
+    renderAdminSentMessages();
+
+}
+
+function renderAdminSentMessages() {
+
+    const list =
+        document.getElementById(
+            "adminSentMessages"
+        );
+
+    if (
+        adminMessages.length === 0
+    ) {
+
+        list.innerHTML =
+            "<p>Aucun message envoyé.</p>";
+
+        return;
+
+    }
+
+    list.innerHTML = "";
+
+    adminMessages.forEach(
+        message => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "choice";
+
+            item.innerHTML =
+
+                "<h3>" +
+                message.subject +
+                "</h3>" +
+
+                "<p>Destinataire : " +
+                message.recipient +
+                "</p>" +
+
+                "<p>" +
+                message.content +
+                "</p>";
+
+            list.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+function showAdminMailbox() {
+
+    hideAdminPages();
+
+    document.getElementById(
+        "adminMailboxPage"
+    ).classList.remove("hidden");
+
+    renderAdminSentMessages();
+
+}
+
+function showAdminPersonalRequests() {
+
+    hideAdminPages();
+
+    document.getElementById(
+        "adminPersonalRequestsPage"
+    ).classList.remove("hidden");
+
+}
+
+function openAdminPersonalCNI() {
+
+    hideAdminPages();
+
+    document.getElementById(
+        "adminPersonalCNIPage"
+    ).classList.remove("hidden");
+
+}
+
+function submitAdminPersonalCNI() {
+
+    const type =
+        document.getElementById(
+            "adminCNIType"
+        ).value;
+
+    const documentOne =
+        document.getElementById(
+            "adminCNIDocumentOne"
+        );
+
+    const documentTwo =
+        document.getElementById(
+            "adminCNIDocumentTwo"
+        );
+
+    const message =
+        document.getElementById(
+            "adminPersonalCNIMessage"
+        );
+
+    if (!type) {
+
+        message.textContent =
+            "Veuillez sélectionner le type de demande.";
+
+        message.className =
+            "message error";
+
+        message.style.display =
+            "block";
+
+        return;
+
+    }
+
+    const personalRequest = {
+
+        id:
+            "ADMIN-REQ-" +
+            Date.now(),
+
+        type:
+            "Demande de CNI - " +
+            type,
+
+        status:
+            "Dépôt",
+
+        createdAt:
+            new Date().toISOString(),
+
+        documents: [
+
+            {
+                name:
+                    "Certificat de nationalité",
+
+                file:
+                    documentOne.files.length > 0
+                    ? documentOne.files[0].name
+                    : null
+
+            },
+
+            {
+                name:
+                    "E-photo",
+
+                file:
+                    documentTwo.files.length > 0
+                    ? documentTwo.files[0].name
+                    : null
+
+            }
+
+        ]
+
+    };
+
+    adminPersonalRequests.push(
+        personalRequest
+    );
+
+    message.textContent =
+        "Votre demande personnelle a été déposée.";
+
+    message.className =
+        "message success";
+
+    message.style.display =
+        "block";
+
+}
+
+function showAdminPersonalRequestList() {
+
+    const list =
+        document.getElementById(
+            "adminPersonalRequestsPage"
+        );
+
+    list.innerHTML =
+
+        "<div class='card'>" +
+
+        "<h2>Mes demandes personnelles</h2>" +
+
+        (
+            adminPersonalRequests.length === 0
+
+            ?
+
+            "<p>Aucune demande personnelle.</p>"
+
+            :
+
+            adminPersonalRequests
+                .map(
+                    request =>
+
+                        "<div class='choice'>" +
+
+                        "<h3>" +
+                        request.type +
+                        "</h3>" +
+
+                        "<p>Référence : " +
+                        request.id +
+                        "</p>" +
+
+                        "<p>Statut : " +
+                        request.status +
+                        "</p>" +
+
+                        "</div>"
+                )
+                .join("")
+        ) +
+
+        "<button class='secondary' onclick='showAdminPersonalRequests()'>" +
+        "Retour" +
+        "</button>" +
+
+        "</div>";
+
+    hideAdminPages();
+
+    list.classList.remove(
+        "hidden"
+    );
+
+}
+
+function hideAdminPages() {
+
+    document.getElementById(
+        "adminDashboard"
+    ).classList.add("hidden");
+
+    document.getElementById(
+        "adminRequestsPage"
+    ).classList.add("hidden");
+
+    document.getElementById(
+        "adminRequestDetailsPage"
+    ).classList.add("hidden");
+
+    document.getElementById(
+        "adminNotificationsPage"
+    ).classList.add("hidden");
+
+    document.getElementById(
+        "adminMailboxPage"
+    ).classList.add("hidden");
+
+    document.getElementById(
+        "adminPersonalRequestsPage"
+    ).classList.add("hidden");
+
+    document.getElementById(
+        "adminPersonalCNIPage"
+    ).classList.add("hidden");
+
+}
+
+function closeAdminPage() {
+
+    hideAdminPages();
+
+    document.getElementById(
+        "adminDashboard"
+    ).classList.remove("hidden");
+
+}
+
+</script>
+<script>
+
+const adminAccount = {
+    identifier: "YOUR_ADMIN_IDENTIFIER",
+    password: "YOUR_ADMIN_PASSWORD",
+    type: "admin"
+};
+
+function openAdminPanel() {
+
+    hideAllPages();
+
+    document.getElementById("adminDashboard")
+        .classList.remove("hidden");
+
+    document.getElementById("logoutButton")
+        .classList.remove("hidden");
+
+}
+
+function authenticateAdmin(identifier, password) {
+
+    if (
+        identifier === adminAccount.identifier &&
+        password === adminAccount.password
+    ) {
+
+        currentUser = {
+            identifier: identifier,
+            type: "admin"
+        };
+
+        openAdminPanel();
+
+        return true;
+
+    }
+
+    return false;
+
+}
+
+async function loadUserNotifications() {
+
+    if (!currentUser) {
+        return;
+    }
+
+    const userNotifications =
+        adminNotifications.filter(
+            notification =>
+                notification.recipient ===
+                currentUser.identifier
+        );
+
+    const list =
+        document.getElementById("mailboxList");
+
+    if (!list) {
+        return;
+    }
+
+    if (userNotifications.length === 0) {
+
+        list.innerHTML =
+            "<p>Aucun nouveau message.</p>";
+
+        return;
+
+    }
+
+    list.innerHTML = "";
+
+    userNotifications.forEach(notification => {
+
+        const item =
+            document.createElement("div");
+
+        item.className = "choice";
+
+        item.innerHTML =
+            "<h3>" +
+            notification.title +
+            "</h3>" +
+
+            "<p>" +
+            notification.content +
+            "</p>";
+
+        list.appendChild(item);
+
+    });
+
+}
+
+function getCurrentUserRequests() {
+
+    if (!currentUser) {
+        return [];
+    }
+
+    return temporaryRequests.filter(
+        request =>
+            request.userIdentifier ===
+            currentUser.identifier
+    );
+
+}
+
+function renderUserRequests() {
+
+    const list =
+        document.getElementById("requestsList");
+
+    if (!list) {
+        return;
+    }
+
+    const requests =
+        getCurrentUserRequests();
+
+    list.innerHTML = "";
+
+    if (requests.length === 0) {
+
+        list.innerHTML =
+            "<p>Aucune demande à afficher.</p>";
+
+        return;
+
+    }
+
+    requests.forEach(request => {
+
+        const item =
+            document.createElement("div");
+
+        item.className = "choice";
+
+        item.innerHTML =
+
+            "<h3>" +
+            request.type +
+            "</h3>" +
+
+            "<p>Référence : " +
+            request.id +
+            "</p>" +
+
+            "<p>Statut : " +
+            request.status +
+            "</p>" +
+
+            "<button class='primary' onclick=\"viewUserRequest('" +
+            request.id +
+            "')\">" +
+            "Voir le dossier" +
+            "</button>";
+
+        list.appendChild(item);
+
+    });
+
+}
+
+function viewUserRequest(requestId) {
+
+    const request =
+        temporaryRequests.find(
+            item =>
+                item.id === requestId
+        );
+
+    if (!request) {
+        return;
+    }
+
+    alert(
+        "Demande : " +
+        request.type +
+        "\n\nStatut : " +
+        request.status
+    );
+
+}
+
+function createNotificationForUser(
+    recipient,
+    title,
+    content
+) {
+
+    adminNotifications.push({
+
+        id:
+            "NOTIF-" +
+            Date.now(),
+
+        recipient:
+            recipient,
+
+        title:
+            title,
+
+        content:
+            content,
+
+        createdAt:
+            new Date().toISOString(),
+
+        read:
+            false
+
+    });
+
+}
+
+function createMessageForUser(
+    recipient,
+    subject,
+    content
+) {
+
+    adminMessages.push({
+
+        id:
+            "MSG-" +
+            Date.now(),
+
+        recipient:
+            recipient,
+
+        subject:
+            subject,
+
+        content:
+            content,
+
+        createdAt:
+            new Date().toISOString()
+
+    });
+
+    createNotificationForUser(
+        recipient,
+        "Nouveau message administratif",
+        subject
+    );
+
+}
+
+function generateRequestReference() {
+
+    const year =
+        new Date().getFullYear();
+
+    const random =
+        Math.floor(
+            100000 +
+            Math.random() * 900000
+        );
+
+    return "REQ-" +
+        year +
+        "-" +
+        random;
+
+}
+
+function generateForeignNumber() {
+
+    const year =
+        new Date().getFullYear();
+
+    let randomPart = "";
+
+    for (
+        let i = 0;
+        i < 11;
+        i++
+    ) {
+
+        randomPart +=
+            Math.floor(
+                Math.random() * 10
+            );
+
+    }
+
+    return year +
+        randomPart;
+
+}
+
+function generateNationalIdentificationNumber(
+    gender
+) {
+
+    const year =
+        new Date().getFullYear();
+
+    let randomNumber = "";
+
+    for (
+        let i = 0;
+        i < 4;
+        i++
+    ) {
+
+        randomNumber +=
+            Math.floor(
+                Math.random() * 10
+            );
+
+    }
+
+    const letters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    const randomLetter =
+        letters[
+            Math.floor(
+                Math.random() *
+                letters.length
+            )
+        ];
+
+    return (
+        "MST_" +
+        year +
+        "_" +
+        randomNumber +
+        "_" +
+        gender +
+        "_" +
+        randomLetter
+    );
+
+}
+
+function validateForeignNumber(number) {
+
+    return /^2026\d{11}$/.test(number);
+
+}
+
+function validateNationalIdentificationNumber(
+    number
+) {
+
+    return /^MST_\d{4}_\d{4}_[MF]_[A-Z]$/.test(
+        number
+    );
+
+}
+
+function resetRegistrationForms() {
+
+    document
+        .querySelectorAll(
+            "input"
+        )
+        .forEach(input => {
+
+            if (
+                input.type !== "file"
+            ) {
+
+                input.value = "";
+
+            }
+
+        });
+
+}
+
+function openUserDashboard() {
+
+    hideAllPages();
+
+    document.getElementById("app")
+        .style.display = "block";
+
+    document.getElementById("logoutButton")
+        .classList.remove("hidden");
+
+    if (
+        currentUser.type === "citizen"
+    ) {
+
+        document.getElementById(
+            "citizenSpace"
+        ).classList.remove("hidden");
+
+    }
+
+    if (
+        currentUser.type === "foreigner"
+    ) {
+
+        document.getElementById(
+            "foreignerSpace"
+        ).classList.remove("hidden");
+
+    }
+
+    if (
+        currentUser.type === "admin"
+    ) {
+
+        openAdminPanel();
+
+    }
+
+}
+
+function handleSuccessfulLogin(
+    type,
+    identifier
+) {
+
+    currentUser = {
+
+        type:
+            type,
+
+        identifier:
+            identifier
+
+    };
+
+    openUserDashboard();
+
+}
+
+function enhancedLogin() {
+
+    const type =
+        document.getElementById(
+            "loginType"
+        ).value;
+
+    const identifier =
+        document.getElementById(
+            "loginIdentifier"
+        ).value.trim();
+
+    const password =
+        document.getElementById(
+            "loginPassword"
+        ).value;
+
+    const message =
+        document.getElementById(
+            "loginMessage"
+        );
+
+    if (
+        !identifier ||
+        !password
+    ) {
+
+        message.textContent =
+            "Veuillez remplir tous les champs.";
+
+        message.className =
+            "message error";
+
+        message.style.display =
+            "block";
+
+        return;
+
+    }
+
+    if (
+        type === "admin"
+    ) {
+
+        if (
+            authenticateAdmin(
+                identifier,
+                password
+            )
+        ) {
+
+            return;
+
+        }
+
+        message.textContent =
+            "Identifiant ou mot de passe incorrect.";
+
+        message.className =
+            "message error";
+
+        message.style.display =
+            "block";
+
+        return;
+
+    }
+
+    handleSuccessfulLogin(
+        type,
+        identifier
+    );
+
+}
+
+function logoutUser() {
+
+    currentUser = null;
+
+    hideAllPages();
+
+    document.getElementById(
+        "logoutButton"
+    ).classList.add("hidden");
+
+    showLogin();
+
+}
+
+</script>
+https://jnwqrlogdkninljrcwwf.supabase.co
+<script>
+
+async function submitProcedureToSupabase() {
+
+    if (!currentUser) {
+
+        return;
+
+    }
+
+    const requestId =
+        generateRequestReference();
+
+    const requestData = {
+
+        id:
+            requestId,
+
+        user_identifier:
+            currentUser.identifier,
+
+        user_type:
+            currentUser.type,
+
+        request_type:
+            currentProcedure.category,
+
+        status:
+            "Dépôt",
+
+        created_at:
+            new Date().toISOString()
+
+    };
+
+    const savedRequest =
+        await saveRequestToDatabase(
+            requestData
+        );
+
+    if (!savedRequest) {
+
+        return;
+
+    }
+
+    createNotificationForUser(
+        currentUser.identifier,
+        "Demande enregistrée",
+        "Votre demande " +
+        requestId +
+        " a bien été enregistrée."
+    );
+
+}
+
+async function refreshUserRequests() {
+
+    if (!currentUser) {
+
+        return;
+
+    }
+
+    const requests =
+        await getUserRequestsFromDatabase(
+            currentUser.identifier
+        );
+
+    const list =
+        document.getElementById(
+            "requestsList"
+        );
+
+    if (!list) {
+
+        return;
+
+    }
+
+    list.innerHTML = "";
+
+    if (
+        requests.length === 0
+    ) {
+
+        list.innerHTML =
+            "<p>Aucune demande à afficher.</p>";
+
+        return;
+
+    }
+
+    requests.forEach(
+        request => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "choice";
+
+            item.innerHTML =
+
+                "<h3>" +
+                request.request_type +
+                "</h3>" +
+
+                "<p>Référence : " +
+                request.id +
+                "</p>" +
+
+                "<p>Statut : " +
+                request.status +
+                "</p>";
+
+            list.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+async function refreshAdminRequests() {
+
+    const requests =
+        await getAllRequestsFromDatabase();
+
+    const list =
+        document.getElementById(
+            "adminRequestsList"
+        );
+
+    if (!list) {
+
+        return;
+
+    }
+
+    list.innerHTML = "";
+
+    if (
+        requests.length === 0
+    ) {
+
+        list.innerHTML =
+            "<p>Aucune demande reçue.</p>";
+
+        return;
+
+    }
+
+    requests.forEach(
+        request => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "choice";
+
+            item.innerHTML =
+
+                "<h3>" +
+                request.request_type +
+                "</h3>" +
+
+                "<p>Référence : " +
+                request.id +
+                "</p>" +
+
+                "<p>Demandeur : " +
+                request.user_identifier +
+                "</p>" +
+
+                "<p>Statut : " +
+                request.status +
+                "</p>";
+
+            list.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+async function refreshUserMailbox() {
+
+    if (!currentUser) {
+
+        return;
+
+    }
+
+    const messages =
+        await getUserMessagesFromDatabase(
+            currentUser.identifier
+        );
+
+    const list =
+        document.getElementById(
+            "mailboxList"
+        );
+
+    if (!list) {
+
+        return;
+
+    }
+
+    list.innerHTML = "";
+
+    if (
+        messages.length === 0
+    ) {
+
+        list.innerHTML =
+            "<p>Aucun message disponible.</p>";
+
+        return;
+
+    }
+
+    messages.forEach(
+        message => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "choice";
+
+            item.innerHTML =
+
+                "<h3>" +
+                message.subject +
+                "</h3>" +
+
+                "<p>" +
+                message.content +
+                "</p>";
+
+            list.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+</script>
+<script>
+
+async function registerForeignerWithDatabase() {
+
+    const lastName =
+        document.getElementById(
+            "foreignerLastName"
+        ).value.trim();
+
+    const firstName =
+        document.getElementById(
+            "foreignerFirstName"
+        ).value.trim();
+
+    const birthDate =
+        document.getElementById(
+            "foreignerBirthDate"
+        ).value;
+
+    const gender =
+        document.getElementById(
+            "foreignerGender"
+        ).value;
+
+    const password =
+        document.getElementById(
+            "foreignerPassword"
+        ).value;
+
+    const confirmation =
+        document.getElementById(
+            "foreignerPasswordConfirm"
+        ).value;
+
+    if (
+        !lastName ||
+        !firstName ||
+        !birthDate ||
+        !gender ||
+        !password
+    ) {
+
+        return;
+
+    }
+
+    if (
+        password !== confirmation
+    ) {
+
+        return;
+
+    }
+
+    const foreignerNumber =
+        generateForeignNumber();
+
+    const userData = {
+
+        identifier:
+            foreignerNumber,
+
+        first_name:
+            firstName,
+
+        last_name:
+            lastName,
+
+        birth_date:
+            birthDate,
+
+        gender:
+            gender,
+
+        account_type:
+            "foreigner",
+
+        password:
+            password,
+
+        created_at:
+            new Date().toISOString()
+
+    };
+
+    const result =
+        await saveUserToDatabase(
+            userData
+        );
+
+    if (!result) {
+
+        return;
+
+    }
+
+    alert(
+        "Votre compte a été créé.\nVotre numéro étranger est : " +
+        foreignerNumber
+    );
+
+}
+
+async function registerCitizenWithDatabase() {
+
+    const lastName =
+        document.getElementById(
+            "citizenLastName"
+        ).value.trim();
+
+    const firstName =
+        document.getElementById(
+            "citizenFirstName"
+        ).value.trim();
+
+    const birthDate =
+        document.getElementById(
+            "citizenBirthDate"
+        ).value;
+
+    const gender =
+        document.getElementById(
+            "citizenGender"
+        ).value;
+
+    const foreignerNumber =
+        document.getElementById(
+            "citizenForeignerNumber"
+        ).value.trim();
+
+    const password =
+        document.getElementById(
+            "citizenPassword"
+        ).value;
+
+    const confirmation =
+        document.getElementById(
+            "citizenPasswordConfirm"
+        ).value;
+
+    if (
+        !validateForeignNumber(
+            foreignerNumber
+        )
+    ) {
+
+        alert(
+            "Le numéro étranger n'est pas valide."
+        );
+
+        return;
+
+    }
+
+    if (
+        password !== confirmation
+    ) {
+
+        alert(
+            "Les mots de passe ne correspondent pas."
+        );
+
+        return;
+
+    }
+
+    const nin =
+        generateNationalIdentificationNumber(
+            gender
+        );
+
+    const userData = {
+
+        identifier:
+            nin,
+
+        previous_foreigner_number:
+            foreignerNumber,
+
+        first_name:
+            firstName,
+
+        last_name:
+            lastName,
+
+        birth_date:
+            birthDate,
+
+        gender:
+            gender,
+
+        account_type:
+            "citizen",
+
+        password:
+            password,
+
+        created_at:
+            new Date().toISOString()
+
+    };
+
+    const result =
+        await saveUserToDatabase(
+            userData
+        );
+
+    if (!result) {
+
+        return;
+
+    }
+
+    alert(
+        "Votre compte citoyen a été créé.\nVotre numéro d'identification national est : " +
+        nin
+    );
+
+}
+
+</script>
+<script>
+
+async function sendOfficialMessage(
+    recipient,
+    subject,
+    content
+) {
+
+    const message = {
+
+        recipient:
+            recipient,
+
+        subject:
+            subject,
+
+        content:
+            content,
+
+        sender:
+            "ADMIN",
+
+        created_at:
+            new Date().toISOString()
+
+    };
+
+    const saved =
+        await saveMessageToDatabase(
+            message
+        );
+
+    if (!saved) {
+
+        return false;
+
+    }
+
+    await saveNotificationToDatabase({
+
+        recipient:
+            recipient,
+
+        title:
+            "Nouveau message administratif",
+
+        content:
+            subject,
+
+        created_at:
+            new Date().toISOString(),
+
+        read:
+            false
+
+    });
+
+    return true;
+
+}
+
+async function sendOfficialNotification(
+    recipient,
+    title,
+    content
+) {
+
+    return await saveNotificationToDatabase({
+
+        recipient:
+            recipient,
+
+        title:
+            title,
+
+        content:
+            content,
+
+        created_at:
+            new Date().toISOString(),
+
+        read:
+            false
+
+    });
+
+}
+
+async function notifyRequestStatusChange(
+    request
+) {
+
+    await sendOfficialNotification(
+
+        request.user_identifier,
+
+        "Mise à jour de votre demande",
+
+        "La demande " +
+        request.id +
+        " est maintenant au statut : " +
+        request.status
+
+    );
+
+}
+
+async function updateRequestStatusOnline(
+    requestId,
+    status
+) {
+
+    const updated =
+        await updateDatabaseRequestStatus(
+            requestId,
+            status
+        );
+
+    if (
+        !updated ||
+        updated.length === 0
+    ) {
+
+        return false;
+
+    }
+
+    const request =
+        updated[0];
+
+    await notifyRequestStatusChange(
+        request
+    );
+
+    return true;
+
+}
+
+</script>
+<script>
+
+function calculateOneWeekFromDate(
+    dateString
+) {
+
+    const date =
+        new Date(
+            dateString
+        );
+
+    date.setDate(
+        date.getDate() + 7
+    );
+
+    return date;
+
+}
+
+function isReceiptAvailable(
+    request
+) {
+
+    if (
+        request.request_type !==
+        "digitalStatus"
+    ) {
+
+        return false;
+
+    }
+
+    if (
+        request.status !==
+        "Instruction en cours"
+    ) {
+
+        return false;
+
+    }
+
+    const availableDate =
+        calculateOneWeekFromDate(
+            request.created_at
+        );
+
+    return (
+        new Date() >=
+        availableDate
+    );
+
+}
+
+async function checkDigitalStatusReceipt(
+    request
+) {
+
+    if (
+        isReceiptAvailable(
+            request
+        )
+    ) {
+
+        await sendOfficialNotification(
+
+            request.user_identifier,
+
+            "Récépissé disponible",
+
+            "Votre récépissé de Carte de Statut Numérique est maintenant disponible."
+
+        );
+
+        return true;
+
+    }
+
+    return false;
+
+}
+
+async function checkAllDigitalStatusRequests() {
+
+    const requests =
+        await getAllRequestsFromDatabase();
+
+    for (
+        const request of requests
+    ) {
+
+        await checkDigitalStatusReceipt(
+            request
+        );
+
+    }
+
+}
+
+</script>
+<script>
+
+function initializeApplication() {
+
+    const savedUser =
+        localStorage.getItem(
+            "currentUser"
+        );
+
+    if (
+        savedUser
+    ) {
+
+        try {
+
+            currentUser =
+                JSON.parse(
+                    savedUser
+                );
+
+            openUserDashboard();
+
+        } catch (
+            error
+        ) {
+
+            localStorage.removeItem(
+                "currentUser"
+            );
+
+        }
+
+    }
+
+}
+
+function saveCurrentUser() {
+
+    if (
+        currentUser
+    ) {
+
+        localStorage.setItem(
+
+            "currentUser",
+
+            JSON.stringify(
+                currentUser
+            )
+
+        );
+
+    }
+
+}
+
+function clearCurrentUser() {
+
+    localStorage.removeItem(
+        "currentUser"
+    );
+
+}
+
+function secureLogout() {
+
+    currentUser = null;
+
+    clearCurrentUser();
+
+    hideAllPages();
+
+    document.getElementById(
+        "logoutButton"
+    ).classList.add(
+        "hidden"
+    );
+
+    showLogin();
+
+}
+
+async function initializeDatabaseFeatures() {
+
+    if (
+        !currentUser
+    ) {
+
+        return;
+
+    }
+
+    if (
+        currentUser.type ===
+        "admin"
+    ) {
+
+        await refreshAdminRequests();
+
+    } else {
+
+        await refreshUserRequests();
+
+        await refreshUserMailbox();
+
+    }
+
+}
+
+</script>
+<script>
+
+async function loadAdminDashboardData() {
+
+    const requests =
+        await getAllRequestsFromDatabase();
+
+    const notifications =
+        await getUserNotificationsFromDatabase(
+            "ADMIN"
+        );
+
+    const requestsList =
+        document.getElementById(
+            "adminRequestsList"
+        );
+
+    const notificationsList =
+        document.getElementById(
+            "adminNotificationsList"
+        );
+
+    if (
+        requestsList
+    ) {
+
+        requestsList.innerHTML = "";
+
+        requests.forEach(
+            request => {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+                item.className =
+                    "choice";
+
+                item.innerHTML =
+
+                    "<h3>" +
+                    request.request_type +
+                    "</h3>" +
+
+                    "<p>Référence : " +
+                    request.id +
+                    "</p>" +
+
+                    "<p>Demandeur : " +
+                    request.user_identifier +
+                    "</p>" +
+
+                    "<p>Statut : " +
+                    request.status +
+                    "</p>";
+
+                requestsList.appendChild(
+                    item
+                );
+
+            }
+        );
+
+    }
+
+    if (
+        notificationsList
+    ) {
+
+        notificationsList.innerHTML = "";
+
+        notifications.forEach(
+            notification => {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+                item.className =
+                    "choice";
+
+                item.innerHTML =
+
+                    "<h3>" +
+                    notification.title +
+                    "</h3>" +
+
+                    "<p>" +
+                    notification.content +
+                    "</p>";
+
+                notificationsList.appendChild(
+                    item
+                );
+
+            }
+        );
+
+    }
+
+}
+
+async function loadPersonalDashboardData() {
+
+    if (
+        !currentUser
+    ) {
+
+        return;
+
+    }
+
+    await refreshUserRequests();
+
+    await refreshUserMailbox();
+
+}
+
+async function refreshApplicationData() {
+
+    if (
+        currentUser.type ===
+        "admin"
+    ) {
+
+        await loadAdminDashboardData();
+
+    } else {
+
+        await loadPersonalDashboardData();
+
+    }
+
+}
+
+</script>
+<script>
+
+function preventUnauthorizedAdminAccess() {
+
+    if (
+        !currentUser
+    ) {
+
+        return false;
+
+    }
+
+    if (
+        currentUser.type !==
+        "admin"
+    ) {
+
+        alert(
+            "Accès non autorisé."
+        );
+
+        return false;
+
+    }
+
+    return true;
+
+}
+
+function preventUnauthorizedRequestAccess(
+    request
+) {
+
+    if (
+        !currentUser ||
+        !request
+    ) {
+
+        return false;
+
+    }
+
+    if (
+        currentUser.type ===
+        "admin"
+    ) {
+
+        return true;
+
+    }
+
+    return (
+        request.user_identifier ===
+        currentUser.identifier
+    );
+
+}
+
+async function openProtectedRequest(
+    requestId
+) {
+
+    const requests =
+        await getAllRequestsFromDatabase();
+
+    const request =
+        requests.find(
+            item =>
+                item.id ===
+                requestId
+        );
+
+    if (
+        !preventUnauthorizedRequestAccess(
+            request
+        )
+    ) {
+
+        alert(
+            "Vous n'avez pas accès à cette demande."
+        );
+
+        return;
+
+    }
+
+    return request;
+
+}
+
+</script>
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        initializeApplication();
+
+    }
+);
+
+const originalLogin =
+    typeof login ===
+    "function"
+        ? login
+        : null;
+
+login = function() {
+
+    enhancedLogin();
+
+    saveCurrentUser();
+
+};
+
+const originalLogout =
+    typeof logout ===
+    "function"
+        ? logout
+        : null;
+
+logout = function() {
+
+    secureLogout();
+
+};
+
+const originalShowMyRequests =
+    typeof showMyRequests ===
+    "function"
+        ? showMyRequests
+        : null;
+
+showMyRequests = async function() {
+
+    document.getElementById(
+        "citizenDashboard"
+    ).classList.add(
+        "hidden"
+    );
+
+    document.getElementById(
+        "foreignerDashboard"
+    ).classList.add(
+        "hidden"
+    );
+
+    document.getElementById(
+        "requestsPage"
+    ).classList.remove(
+        "hidden"
+    );
+
+    await refreshUserRequests();
+
+};
+
+const originalShowMailbox =
+    typeof showMailbox ===
+    "function"
+        ? showMailbox
+        : null;
+
+showMailbox = async function() {
+
+    document.getElementById(
+        "citizenDashboard"
+    ).classList.add(
+        "hidden"
+    );
+
+    document.getElementById(
+        "foreignerDashboard"
+    ).classList.add(
+        "hidden"
+    );
+
+    document.getElementById(
+        "mailboxPage"
+    ).classList.remove(
+        "hidden"
+    );
+
+    await refreshUserMailbox();
+
+};
+
+</script>
+<script>
+
+async function finalSubmitRequest() {
+
+    if (
+        !currentUser
+    ) {
+
+        return;
+
+    }
+
+    const requestReference =
+        generateRequestReference();
+
+    const request = {
+
+        id:
+            requestReference,
+
+        user_identifier:
+            currentUser.identifier,
+
+        user_type:
+            currentUser.type,
+
+        request_type:
+            currentProcedure.category,
+
+        status:
+            "Dépôt",
+
+        created_at:
+            new Date().toISOString()
+
+    };
+
+    const saved =
+        await saveRequestToDatabase(
+            request
+        );
+
+    if (!saved) {
+
+        alert(
+            "La demande n'a pas pu être enregistrée."
+        );
+
+        return;
+
+    }
+
+    await sendOfficialNotification(
+
+        currentUser.identifier,
+
+        "Demande déposée",
+
+        "Votre demande " +
+        requestReference +
+        " a été enregistrée."
+
+    );
+
+    alert(
+        "Votre demande a été déposée avec succès."
+    );
+
+    await refreshUserRequests();
+
+}
+
+</script>
