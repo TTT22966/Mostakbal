@@ -1,0 +1,5626 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1220">
+  <title>MOSTAKBAL</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #07111f;
+      --panel: rgba(15, 27, 45, 0.82);
+      --panel-light: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.11);
+      --text: #f5f7fb;
+      --muted: #9aa9bc;
+      --primary: #2f80ed;
+      --primary-dark: #1764c0;
+      --success: #20c997;
+      --shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Inter, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(47, 128, 237, 0.18), transparent 30%),
+        radial-gradient(circle at 85% 80%, rgba(32, 201, 151, 0.12), transparent 30%),
+        var(--bg);
+      overflow-x: hidden;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .navbar {
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+      border-bottom: 1px solid var(--border);
+      background: rgba(7, 17, 31, 0.78);
+      backdrop-filter: blur(18px);
+      position: relative;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), #164f91);
+      box-shadow: 0 10px 30px rgba(47, 128, 237, 0.3);
+      font-size: 22px;
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 19px;
+      letter-spacing: 1.5px;
+    }
+
+    .brand-text span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .security-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 12px var(--success);
+    }
+
+    .main {
+      flex: 1;
+      width: 100%;
+      max-width: 1250px;
+      margin: 0 auto;
+      padding: 70px 6%;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .hero-content {
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border: 1px solid rgba(47, 128, 237, 0.3);
+      border-radius: 30px;
+      color: #8ebeff;
+      background: rgba(47, 128, 237, 0.08);
+      font-size: 12px;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: 0.98;
+      letter-spacing: -3px;
+      margin-bottom: 25px;
+    }
+
+    .hero-content h1 span {
+      background: linear-gradient(100deg, #ffffff, #72aef8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-description {
+      max-width: 600px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.7;
+      margin-bottom: 34px;
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .feature {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: #c5d0de;
+      background: rgba(255, 255, 255, 0.035);
+      font-size: 12px;
+    }
+
+    .access-panel {
+      padding: 32px;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background: var(--panel);
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+
+    .panel-header {
+      margin-bottom: 26px;
+    }
+
+    .panel-header h2 {
+      font-size: 25px;
+      margin-bottom: 8px;
+    }
+
+    .panel-header p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .profiles {
+      display: grid;
+      gap: 12px;
+    }
+
+    .profile-card {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 17px;
+      color: var(--text);
+      text-align: left;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: var(--panel-light);
+      transition: 0.25s ease;
+    }
+
+    .profile-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(47, 128, 237, 0.55);
+      background: rgba(47, 128, 237, 0.09);
+    }
+
+    .profile-icon {
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: rgba(47, 128, 237, 0.12);
+      font-size: 21px;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-info strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .profile-info span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .arrow {
+      color: #6e829d;
+      font-size: 20px;
+    }
+
+    .footer {
+      padding: 20px 6%;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      color: #66778e;
+      font-size: 11px;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(12px);
+    }
+
+    .modal-overlay.active {
+      display: grid;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 480px;
+      padding: 32px;
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      background: #0d1a2c;
+      box-shadow: var(--shadow);
+      animation: modalIn 0.3s ease both;
+    }
+
+    .modal-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 25px;
+    }
+
+    .modal-top h2 {
+      font-size: 23px;
+      margin-bottom: 7px;
+    }
+
+    .modal-top p {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .close-btn {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .close-btn:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .form-group {
+      margin-bottom: 17px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #b9c5d4;
+      font-size: 12px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 15px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      color: white;
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .form-group input:focus {
+      border-color: rgba(47, 128, 237, 0.7);
+      box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.1);
+    }
+
+    .primary-btn {
+      width: 100%;
+      padding: 14px;
+      margin-top: 8px;
+      border: 0;
+      border-radius: 12px;
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      font-weight: 600;
+      transition: 0.2s ease;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 25px rgba(47, 128, 237, 0.25);
+    }
+
+    .secondary-action {
+      width: 100%;
+      margin-top: 14px;
+      padding: 12px;
+      border: 0;
+      background: transparent;
+      color: #79adf5;
+      font-size: 12px;
+    }
+
+    .error-message {
+      display: none;
+      margin-top: 15px;
+      padding: 11px;
+      border-radius: 10px;
+      color: #ff9e9e;
+      background: rgba(255, 70, 70, 0.08);
+      border: 1px solid rgba(255, 70, 70, 0.15);
+      font-size: 12px;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(25px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @media (max-width: 850px) {
+      .navbar {
+        padding: 0 5%;
+      }
+
+      .security-status {
+        display: none;
+      }
+
+      .main {
+        padding: 45px 5%;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      h1 {
+        font-size: 55px;
+      }
+
+      .hero-description {
+        font-size: 15px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .access-panel {
+        padding: 22px;
+        border-radius: 20px;
+      }
+
+      h1 {
+        font-size: 46px;
+        letter-spacing: -2px;
+      }
+
+      .modal {
+        padding: 23px;
+      }
+
+      .brand-text span {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <nav class="navbar">
+      <div class="brand">
+        <div class="brand-icon">🏛️</div>
+        <div class="brand-text">
+          <strong>MOSTAKBAL</strong>
+          <span>PORTAIL ADMINISTRATIF DE LA CYBERSOUVERAINETÉ</span>
+        </div>
+      </div>
+
+      <div class="security-status">
+        <span class="status-dot"></span>
+        Système sécurisé
+      </div>
+    </nav>
+
+    <main class="main">
+      <section class="hero">
+
+        <div class="hero-content">
+          <div class="eyebrow">
+            <span>●</span>
+            PORTAIL ADMINISTRATIF CENTRAL
+          </div>
+
+          <h1>
+            Votre avenir.<br>
+            <span>Vos démarches.</span>
+          </h1>
+
+          <p class="hero-description">
+            Bienvenue sur le portail administratif de la Cybersouveraineté
+            MOSTAKBAL. Accédez à vos services administratifs et suivez
+            vos demandes depuis un espace personnel sécurisé.
+          </p>
+
+          <div class="features">
+            <div class="feature">Identité numérique</div>
+            <div class="feature">Démarches en ligne</div>
+            <div class="feature">Suivi des dossiers</div>
+            <div class="feature">Accès sécurisé</div>
+          </div>
+        </div>
+
+        <div class="access-panel">
+          <div class="panel-header">
+            <h2>Accéder au portail</h2>
+            <p>Sélectionnez votre espace pour continuer.</p>
+          </div>
+
+          <div class="profiles">
+
+            <button class="profile-card" onclick="openLogin('citoyen')">
+              <div class="profile-icon">👤</div>
+              <div class="profile-info">
+                <strong>Espace Citoyen</strong>
+                <span>Accéder à vos démarches citoyennes</span>
+              </div>
+              <div class="arrow">›</div>
+            </button>
+
+            <button class="profile-card" onclick="openLogin('etranger')">
+              <div class="profile-icon">🌍</div>
+              <div class="profile-info">
+                <strong>Espace Étranger</strong>
+                <span>Accéder aux services destinés aux étrangers</span>
+              </div>
+              <div class="arrow">›</div>
+            </button>
+
+            <button class="profile-card" onclick="openLogin('president')">
+              <div class="profile-icon">👑</div>
+              <div class="profile-info">
+                <strong>Espace Administratif</strong>
+                <span>Accès réservé à l'administration</span>
+              </div>
+              <div class="arrow">›</div>
+            </button>
+
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <footer class="footer">
+      MOSTAKBAL — Portail administratif de la Cybersouveraineté
+    </footer>
+
+  </div>
+
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal">
+
+      <div class="modal-top">
+        <div>
+          <h2 id="modalTitle">Connexion</h2>
+          <p id="modalDescription">Accédez à votre espace personnel.</p>
+        </div>
+
+        <button class="close-btn" onclick="closeLogin()">×</button>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label id="identifierLabel">Identifiant</label>
+          <input
+            type="text"
+            id="identifier"
+            autocomplete="username"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input
+            type="password"
+            id="password"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <button class="primary-btn" type="submit">
+          Se connecter
+        </button>
+
+        <button
+          class="secondary-action"
+          type="button"
+          id="createAccountButton"
+          onclick="createAccount()"
+        >
+          Je n'ai pas encore de compte
+        </button>
+
+        <div class="error-message" id="errorMessage"></div>
+      </form>
+
+    </div>
+  </div>
+
+  <script>
+    let selectedProfile = null;
+
+    const modal = document.getElementById("loginModal");
+    const loginForm = document.getElementById("loginForm");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDescription = document.getElementById("modalDescription");
+    const identifierLabel = document.getElementById("identifierLabel");
+    const identifierInput = document.getElementById("identifier");
+    const createAccountButton = document.getElementById("createAccountButton");
+    const errorMessage = document.getElementById("errorMessage");
+
+    function openLogin(profile) {
+      selectedProfile = profile;
+
+      errorMessage.style.display = "none";
+      loginForm.reset();
+
+      if (profile === "citoyen") {
+        modalTitle.textContent = "Espace Citoyen";
+        modalDescription.textContent = "Connectez-vous avec votre NIN et votre mot de passe.";
+        identifierLabel.textContent = "NIN";
+        identifierInput.placeholder = "Votre NIN";
+        createAccountButton.style.display = "block";
+      }
+
+      if (profile === "etranger") {
+        modalTitle.textContent = "Espace Étranger";
+        modalDescription.textContent = "Connectez-vous avec votre numéro étranger et votre mot de passe.";
+        identifierLabel.textContent = "Numéro étranger";
+        identifierInput.placeholder = "Votre numéro étranger";
+        createAccountButton.style.display = "block";
+      }
+
+      if (profile === "president") {
+        modalTitle.textContent = "Espace Administratif";
+        modalDescription.textContent = "Accès réservé à l'administration de MOSTAKBAL.";
+        identifierLabel.textContent = "Identifiant administratif";
+        identifierInput.placeholder = "Votre identifiant administratif";
+        createAccountButton.style.display = "none";
+      }
+
+      modal.classList.add("active");
+      setTimeout(() => identifierInput.focus(), 100);
+    }
+
+    function closeLogin() {
+      modal.classList.remove("active");
+      selectedProfile = null;
+    }
+
+    function createAccount() {
+      if (selectedProfile === "citoyen") {
+        alert("La création du compte citoyen sera intégrée dans la prochaine partie.");
+      }
+
+      if (selectedProfile === "etranger") {
+        alert("La création du compte étranger sera intégrée dans la prochaine partie.");
+      }
+    }
+
+    loginForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const identifier = identifierInput.value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!identifier || !password) {
+        showError("Veuillez remplir tous les champs.");
+        return;
+      }
+
+      if (selectedProfile === "president") {
+        showError("L'authentification administrative sera connectée au système sécurisé dans les prochaines parties.");
+        return;
+      }
+
+      showError("La connexion sera reliée à la base de données et au système d'authentification dans les prochaines parties.");
+    });
+
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.style.display = "block";
+    }
+
+    modal.addEventListener("click", function(event) {
+      if (event.target === modal) {
+        closeLogin();
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape" && modal.classList.contains("active")) {
+        closeLogin();
+      }
+    });
+  </script>
+</body>
+  </html>
+  <section id="account-access" class="account-access-section">
+
+  <div class="account-container">
+
+    <div class="account-intro">
+      <div class="account-badge">IDENTITÉ NUMÉRIQUE</div>
+
+      <h2>Créer votre espace personnel</h2>
+
+      <p>
+        Créez votre compte MOSTAKBAL afin d'accéder à vos démarches
+        administratives et à votre espace personnel sécurisé.
+      </p>
+    </div>
+
+    <div class="account-tabs">
+      <button
+        type="button"
+        class="account-tab active"
+        onclick="switchAccountMode('citoyen')"
+        id="citoyenTab"
+      >
+        👤 Citoyen
+      </button>
+
+      <button
+        type="button"
+        class="account-tab"
+        onclick="switchAccountMode('etranger')"
+        id="etrangerTab"
+      >
+        🌍 Étranger
+      </button>
+    </div>
+
+    <div class="account-form-card">
+
+      <form id="citoyenAccountForm" class="account-form">
+
+        <div class="form-title">
+          <h3>Créer un compte citoyen</h3>
+          <p>
+            Votre NIN sera attribué automatiquement après validation
+            de votre identité.
+          </p>
+        </div>
+
+        <div class="form-grid">
+
+          <div class="input-group">
+            <label for="citoyenPrenom">Prénom</label>
+            <input
+              type="text"
+              id="citoyenPrenom"
+              placeholder="Votre prénom"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label for="citoyenNom">Nom</label>
+            <input
+              type="text"
+              id="citoyenNom"
+              placeholder="Votre nom"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label for="citoyenDateNaissance">Date de naissance</label>
+            <input
+              type="date"
+              id="citoyenDateNaissance"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label for="citoyenEmail">Adresse e-mail</label>
+            <input
+              type="email"
+              id="citoyenEmail"
+              placeholder="exemple@email.com"
+              required
+            >
+          </div>
+
+          <div class="input-group full-width">
+            <label for="citoyenAdresse">Adresse</label>
+            <input
+              type="text"
+              id="citoyenAdresse"
+              placeholder="Votre adresse"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label for="citoyenTelephone">Téléphone</label>
+            <input
+              type="tel"
+              id="citoyenTelephone"
+              placeholder="Votre numéro de téléphone"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label for="citoyenIdentite">Document d'identité</label>
+            <select id="citoyenIdentite" required>
+              <option value="">Sélectionner</option>
+              <option value="cni">CNI</option>
+              <option value="passeport">Passeport</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="citoyenMotDePasse">Créer un mot de passe</label>
+            <input
+              type="password"
+              id="citoyenMotDePasse"
+              placeholder="Créer votre mot de passe"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label for="citoyenConfirmation">Confirmer le mot de passe</label>
+            <input
+              type="password"
+              id="citoyenConfirmation"
+              placeholder="Confirmer votre mot de passe"
+              required
+            >
+          </div>
+
+        </div>
+
+        <div class="identity-notice">
+          <span>🔐</span>
+          <p>
+            Après vérification de vos informations, le système vous attribuera
+            automatiquement un nouveau NIN qui deviendra votre identifiant
+            officiel pour vos prochaines connexions.
+          </p>
+        </div>
+
+        <button type="submit" class="account-submit">
+          Créer mon compte citoyen
+        </button>
+
+      </form>
+
+
+      <form id="etrangerAccountForm" class="account-form hidden">
+
+        <div class="form-title">
+          <h3>Créer un compte étranger</h3>
+          <p>
+            Si vous possédez un ancien numéro étranger, vous pouvez
+            le renseigner afin de permettre la vérification de votre identité.
+          </p>
+        </div>
+
+        <div class="form-grid">
+
+          <div class="input-group">
+            <label for="etrangerPrenom">Prénom</label>
+            <input
+              type="text"
+              id="etrangerPrenom"
+              placeholder="Votre prénom"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label for="etrangerNom">Nom</label>
+            <input
+              type="text"
+              id="etrangerNom"
+              placeholder="Votre nom"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label for="etrangerDateNaissance">Date de naissance</label>
+            <input
+              type="date"
+              id="etrangerDateNaissance"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label for="etrangerNationalite">Nationalité</label>
+            <input
+              type="text"
+              id="etrangerNationalite"
+              placeholder="Votre nationalité"
+              required
+            >
+          </div>
+
+          <div class="input-group full-width">
+            <label for="ancienNumeroEtranger">
+              Ancien numéro étranger
+            </label>
+
+            <input
+              type="text"
+              id="ancienNumeroEtranger"
+              placeholder="Si vous en possédez un"
+            >
+
+            <small>
+              Laissez ce champ vide si vous n'avez jamais eu de numéro étranger.
+            </small>
+          </div>
+
+          <div class="input-group">
+            <label for="etrangerEmail">Adresse e-mail</label>
+            <input
+              type="email"
+              id="etrangerEmail"
+              placeholder="exemple@email.com"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label for="etrangerTelephone">Téléphone</label>
+            <input
+              type="tel"
+              id="etrangerTelephone"
+              placeholder="Votre numéro de téléphone"
+              required
+            >
+          </div>
+
+          <div class="input-group full-width">
+            <label for="etrangerAdresse">Adresse actuelle</label>
+            <input
+              type="text"
+              id="etrangerAdresse"
+              placeholder="Votre adresse actuelle"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label for="etrangerMotDePasse">Créer un mot de passe</label>
+            <input
+              type="password"
+              id="etrangerMotDePasse"
+              placeholder="Créer votre mot de passe"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label for="etrangerConfirmation">Confirmer le mot de passe</label>
+            <input
+              type="password"
+              id="etrangerConfirmation"
+              placeholder="Confirmer votre mot de passe"
+              required
+            >
+          </div>
+
+        </div>
+
+        <div class="identity-notice">
+          <span>🌍</span>
+          <p>
+            Après vérification de votre identité, le système attribuera
+            automatiquement un nouveau numéro étranger qui deviendra
+            votre identifiant officiel.
+          </p>
+        </div>
+
+        <button type="submit" class="account-submit">
+          Créer mon compte étranger
+        </button>
+
+      </form>
+
+      <div id="accountResult" class="account-result hidden">
+
+        <div class="result-icon">✓</div>
+
+        <h3>Vérification en cours</h3>
+
+        <p id="accountResultText">
+          Vos informations ont été enregistrées.
+          Le système va procéder à la vérification de votre identité.
+        </p>
+
+        <div class="result-loading">
+          <span></span>
+          Vérification sécurisée en cours...
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<style>
+
+.account-access-section {
+  width: 100%;
+  min-height: 100vh;
+  padding: 80px 6%;
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(47, 128, 237, 0.08),
+      transparent 35%
+    ),
+    #07111f;
+  color: #f5f7fb;
+}
+
+.account-container {
+  width: 100%;
+  max-width: 1050px;
+  margin: auto;
+}
+
+.account-intro {
+  text-align: center;
+  max-width: 650px;
+  margin: 0 auto 35px;
+}
+
+.account-badge {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 30px;
+  border: 1px solid rgba(47, 128, 237, 0.3);
+  color: #8ebeff;
+  background: rgba(47, 128, 237, 0.08);
+  font-size: 11px;
+  letter-spacing: 1px;
+  margin-bottom: 18px;
+}
+
+.account-intro h2 {
+  font-size: clamp(30px, 5vw, 48px);
+  letter-spacing: -1.5px;
+  margin-bottom: 14px;
+}
+
+.account-intro p {
+  color: #9aa9bc;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.account-tabs {
+  display: flex;
+  max-width: 500px;
+  margin: 0 auto 20px;
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.account-tab {
+  flex: 1;
+  padding: 13px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: #8e9daf;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.account-tab.active {
+  color: white;
+  background: rgba(47, 128, 237, 0.2);
+}
+
+.account-form-card {
+  padding: 35px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  background: rgba(15, 27, 45, 0.82);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+}
+
+.form-title {
+  margin-bottom: 28px;
+}
+
+.form-title h3 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.form-title p {
+  color: #9aa9bc;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.input-group label {
+  color: #bdc9d8;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  outline: none;
+  color: white;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.input-group select option {
+  color: #111;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  border-color: rgba(47, 128, 237, 0.7);
+  box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.1);
+}
+
+.input-group small {
+  margin-top: 7px;
+  color: #728299;
+  font-size: 10px;
+}
+
+.identity-notice {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+  padding: 15px;
+  border-radius: 13px;
+  border: 1px solid rgba(47, 128, 237, 0.15);
+  background: rgba(47, 128, 237, 0.06);
+}
+
+.identity-notice span {
+  font-size: 19px;
+}
+
+.identity-notice p {
+  color: #9aa9bc;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.account-submit {
+  width: 100%;
+  margin-top: 22px;
+  padding: 15px;
+  border: 0;
+  border-radius: 12px;
+  color: white;
+  background: linear-gradient(135deg, #2f80ed, #1764c0);
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.account-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(47, 128, 237, 0.25);
+}
+
+.account-result {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.result-icon {
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  color: white;
+  background: #20c997;
+  font-size: 28px;
+}
+
+.account-result h3 {
+  margin-bottom: 10px;
+}
+
+.account-result p {
+  max-width: 500px;
+  margin: auto;
+  color: #9aa9bc;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.result-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 25px;
+  color: #79adf5;
+  font-size: 12px;
+}
+
+.result-loading span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2f80ed;
+  animation: accountPulse 1s infinite;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@keyframes accountPulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 650px) {
+
+  .account-access-section {
+    padding: 50px 5%;
+  }
+
+  .account-form-card {
+    padding: 22px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .input-group.full-width {
+    grid-column: auto;
+  }
+
+}
+
+</style>
+
+
+<script>
+
+function switchAccountMode(mode) {
+
+  const citoyenForm =
+    document.getElementById("citoyenAccountForm");
+
+  const etrangerForm =
+    document.getElementById("etrangerAccountForm");
+
+  const citoyenTab =
+    document.getElementById("citoyenTab");
+
+  const etrangerTab =
+    document.getElementById("etrangerTab");
+
+  if (mode === "citoyen") {
+
+    citoyenForm.classList.remove("hidden");
+    etrangerForm.classList.add("hidden");
+
+    citoyenTab.classList.add("active");
+    etrangerTab.classList.remove("active");
+
+  }
+
+  if (mode === "etranger") {
+
+    citoyenForm.classList.add("hidden");
+    etrangerForm.classList.remove("hidden");
+
+    citoyenTab.classList.remove("active");
+    etrangerTab.classList.add("active");
+
+  }
+
+}
+
+
+function validatePassword(password, confirmation) {
+
+  if (password.length < 8) {
+    return "Le mot de passe doit contenir au moins 8 caractères.";
+  }
+
+  if (password !== confirmation) {
+    return "Les deux mots de passe ne correspondent pas.";
+  }
+
+  return null;
+
+}
+
+
+function generateTemporaryReference(prefix) {
+
+  const randomNumber =
+    Math.floor(100000 + Math.random() * 900000);
+
+  return prefix + "-" + new Date().getFullYear() + "-" + randomNumber;
+
+}
+
+
+document
+  .getElementById("citoyenAccountForm")
+  .addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const password =
+      document.getElementById("citoyenMotDePasse").value;
+
+    const confirmation =
+      document.getElementById("citoyenConfirmation").value;
+
+    const passwordError =
+      validatePassword(password, confirmation);
+
+    if (passwordError) {
+      alert(passwordError);
+      return;
+    }
+
+    const temporaryReference =
+      generateTemporaryReference("CITOYEN");
+
+    document.getElementById("accountResultText").textContent =
+      "Votre demande de création de compte a été enregistrée sous la référence " +
+      temporaryReference +
+      ". Après vérification de votre identité, votre nouveau NIN sera attribué automatiquement.";
+
+    document
+      .getElementById("citoyenAccountForm")
+      .classList.add("hidden");
+
+    document
+      .getElementById("etrangerAccountForm")
+      .classList.add("hidden");
+
+    document
+      .getElementById("accountResult")
+      .classList.remove("hidden");
+
+  });
+
+
+document
+  .getElementById("etrangerAccountForm")
+  .addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const password =
+      document.getElementById("etrangerMotDePasse").value;
+
+    const confirmation =
+      document.getElementById("etrangerConfirmation").value;
+
+    const passwordError =
+      validatePassword(password, confirmation);
+
+    if (passwordError) {
+      alert(passwordError);
+      return;
+    }
+
+    const ancienNumero =
+      document
+        .getElementById("ancienNumeroEtranger")
+        .value
+        .trim();
+
+    const temporaryReference =
+      generateTemporaryReference("ETRANGER");
+
+    let message =
+      "Votre demande de création de compte a été enregistrée sous la référence " +
+      temporaryReference +
+      ".";
+
+    if (ancienNumero) {
+
+      message +=
+        " Votre ancien numéro étranger sera vérifié avant l'attribution de votre nouveau numéro étranger.";
+
+    } else {
+
+      message +=
+        " Après vérification de votre identité, un nouveau numéro étranger vous sera attribué automatiquement.";
+
+    }
+
+    document.getElementById("accountResultText").textContent =
+      message;
+
+    document
+      .getElementById("citoyenAccountForm")
+      .classList.add("hidden");
+
+    document
+      .getElementById("etrangerAccountForm")
+      .classList.add("hidden");
+
+    document
+      .getElementById("accountResult")
+      .classList.remove("hidden");
+
+  });
+
+    </script>
+    <section id="citizen-dashboard" class="dashboard-section">
+  <div class="dashboard-container">
+
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-profile">
+        <div class="avatar">👤</div>
+        <div>
+          <strong id="citizenName">Citoyen</strong>
+          <span id="citizenNIN">NIN non attribué</span>
+        </div>
+      </div>
+
+      <nav class="dashboard-nav">
+        <button class="nav-item active" onclick="showCitizenView('home', this)">🏠 Accueil</button>
+        <button class="nav-item" onclick="showCitizenView('procedures', this)">📂 Mes démarches</button>
+        <button class="nav-item" onclick="showCitizenView('tracking', this)">🔎 Suivre mes demandes</button>
+        <button class="nav-item" onclick="showCitizenView('documents', this)">📄 Mes documents</button>
+        <button class="nav-item" onclick="showCitizenView('profile', this)">👤 Informations personnelles</button>
+      </nav>
+    </aside>
+
+    <main class="dashboard-main">
+
+      <header class="dashboard-header">
+        <div>
+          <span class="welcome-label">ESPACE PERSONNEL</span>
+          <h1>Bienvenue dans votre espace</h1>
+          <p>Gérez vos démarches administratives depuis un seul endroit.</p>
+        </div>
+
+        <button class="logout-button" onclick="logoutCitizen()">Se déconnecter</button>
+      </header>
+
+      <div id="citizenHome" class="citizen-view">
+
+        <div class="quick-grid">
+
+          <button class="quick-card" onclick="openCitizenProcedure('cni')">
+            <span>🪪</span>
+            <strong>Demande de CNI</strong>
+            <small>Première demande ou renouvellement</small>
+          </button>
+
+          <button class="quick-card" onclick="openCitizenProcedure('passport')">
+            <span>🛂</span>
+            <strong>Demande de passeport</strong>
+            <small>Première demande ou renouvellement</small>
+          </button>
+
+          <button class="quick-card" onclick="openCitizenProcedure('birth')">
+            <span>📜</span>
+            <strong>Extrait de naissance</strong>
+            <small>Effectuer une demande</small>
+          </button>
+
+          <button class="quick-card" onclick="openCitizenProcedure('nationality')">
+            <span>🏛️</span>
+            <strong>Certificat de nationalité</strong>
+            <small>Accéder à la démarche</small>
+          </button>
+
+          <button class="quick-card" onclick="openCitizenProcedure('criminal')">
+            <span>⚖️</span>
+            <strong>Casier judiciaire</strong>
+            <small>Demander un document</small>
+          </button>
+
+          <button class="quick-card" onclick="openCitizenProcedure('health')">
+            <span>🏥</span>
+            <strong>Passe santé</strong>
+            <small>Accéder au service</small>
+          </button>
+
+          <button class="quick-card danger-card" onclick="openLostDocument()">
+            <span>❗</span>
+            <strong>J'ai perdu mon document</strong>
+            <small>Signaler une perte</small>
+          </button>
+
+        </div>
+
+        <div class="dashboard-summary">
+          <div class="summary-card">
+            <span>📂</span>
+            <div>
+              <strong id="totalRequests">0</strong>
+              <small>Demandes déposées</small>
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <span>🔎</span>
+            <div>
+              <strong id="activeRequests">0</strong>
+              <small>Dossiers en cours</small>
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <span>📄</span>
+            <div>
+              <strong id="readyDocuments">0</strong>
+              <small>Documents disponibles</small>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="citizenProcedures" class="citizen-view hidden">
+
+        <div class="view-header">
+          <div>
+            <h2>Mes démarches</h2>
+            <p>Sélectionnez le service administratif souhaité.</p>
+          </div>
+        </div>
+
+        <div class="procedure-list">
+
+          <button onclick="openCitizenProcedure('cni')">
+            🪪
+            <div>
+              <strong>Carte Nationale d'Identité</strong>
+              <span>Première demande, renouvellement ou perte</span>
+            </div>
+          </button>
+
+          <button onclick="openCitizenProcedure('passport')">
+            🛂
+            <div>
+              <strong>Passeport</strong>
+              <span>Première demande, renouvellement ou perte</span>
+            </div>
+          </button>
+
+          <button onclick="openCitizenProcedure('birth')">
+            📜
+            <div>
+              <strong>Extrait de naissance</strong>
+              <span>Demander un extrait officiel</span>
+            </div>
+          </button>
+
+          <button onclick="openCitizenProcedure('nationality')">
+            🏛️
+            <div>
+              <strong>Certificat de nationalité</strong>
+              <span>Effectuer une demande administrative</span>
+            </div>
+          </button>
+
+          <button onclick="openCitizenProcedure('criminal')">
+            ⚖️
+            <div>
+              <strong>Casier judiciaire</strong>
+              <span>Effectuer une demande</span>
+            </div>
+          </button>
+
+          <button onclick="openCitizenProcedure('health')">
+            🏥
+            <div>
+              <strong>Passe santé</strong>
+              <span>Accéder au service de santé</span>
+            </div>
+          </button>
+
+        </div>
+
+      </div>
+
+      <div id="citizenTracking" class="citizen-view hidden">
+
+        <div class="view-header">
+          <h2>Suivre mes demandes</h2>
+          <p>Consultez l'état de vos dossiers administratifs.</p>
+        </div>
+
+        <div id="citizenRequestList" class="request-list">
+          <div class="empty-state">
+            <span>📂</span>
+            <h3>Aucune demande</h3>
+            <p>Vos demandes apparaîtront ici après leur dépôt.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="citizenDocuments" class="citizen-view hidden">
+
+        <div class="view-header">
+          <h2>Mes documents</h2>
+          <p>Retrouvez vos documents administratifs disponibles.</p>
+        </div>
+
+        <div class="documents-grid">
+          <div class="empty-state">
+            <span>📄</span>
+            <h3>Aucun document disponible</h3>
+            <p>Les documents délivrés seront accessibles ici.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="citizenProfile" class="citizen-view hidden">
+
+        <div class="view-header">
+          <h2>Informations personnelles</h2>
+          <p>Consultez les informations associées à votre compte.</p>
+        </div>
+
+        <div class="personal-info-grid">
+
+          <div>
+            <label>Nom et prénom</label>
+            <strong id="profileFullName">Non renseigné</strong>
+          </div>
+
+          <div>
+            <label>NIN</label>
+            <strong id="profileNIN">Non attribué</strong>
+          </div>
+
+          <div>
+            <label>Date de naissance</label>
+            <strong id="profileBirthDate">Non renseignée</strong>
+          </div>
+
+          <div>
+            <label>Adresse</label>
+            <strong id="profileAddress">Non renseignée</strong>
+          </div>
+
+          <div>
+            <label>Téléphone</label>
+            <strong id="profilePhone">Non renseigné</strong>
+          </div>
+
+          <div>
+            <label>Adresse e-mail</label>
+            <strong id="profileEmail">Non renseignée</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+</section>
+
+<div id="procedureModal" class="procedure-modal hidden">
+  <div class="procedure-modal-content">
+
+    <button class="modal-close" onclick="closeProcedureModal()">×</button>
+
+    <div id="procedureContent"></div>
+
+  </div>
+</div>
+
+<style>
+
+.dashboard-section {
+  min-height: 100vh;
+  padding: 40px 5%;
+  background: #07111f;
+  color: #f5f7fb;
+}
+
+.dashboard-container {
+  max-width: 1250px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 30px;
+}
+
+.dashboard-sidebar {
+  padding: 22px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 22px;
+  background: rgba(15,27,45,.8);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.sidebar-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.avatar {
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: rgba(47,128,237,.15);
+}
+
+.sidebar-profile strong,
+.sidebar-profile span {
+  display: block;
+}
+
+.sidebar-profile strong {
+  font-size: 13px;
+}
+
+.sidebar-profile span {
+  margin-top: 4px;
+  color: #8191a5;
+  font-size: 10px;
+}
+
+.dashboard-nav {
+  display: grid;
+  gap: 7px;
+  margin-top: 20px;
+}
+
+.nav-item {
+  padding: 12px;
+  border: 0;
+  border-radius: 11px;
+  text-align: left;
+  color: #8d9caf;
+  background: transparent;
+  cursor: pointer;
+}
+
+.nav-item.active,
+.nav-item:hover {
+  color: white;
+  background: rgba(47,128,237,.14);
+}
+
+.dashboard-main {
+  min-width: 0;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 35px;
+}
+
+.welcome-label {
+  color: #6ea9f5;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+}
+
+.dashboard-header h1 {
+  margin: 8px 0;
+  font-size: 32px;
+}
+
+.dashboard-header p,
+.view-header p {
+  color: #8e9daf;
+  font-size: 13px;
+}
+
+.logout-button {
+  padding: 11px 15px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 10px;
+  color: #aab7c6;
+  background: transparent;
+  cursor: pointer;
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.quick-card {
+  min-height: 155px;
+  padding: 22px;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 18px;
+  text-align: left;
+  color: white;
+  background: rgba(15,27,45,.75);
+  cursor: pointer;
+  transition: .25s ease;
+}
+
+.quick-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(47,128,237,.5);
+}
+
+.quick-card span {
+  display: block;
+  margin-bottom: 22px;
+  font-size: 25px;
+}
+
+.quick-card strong,
+.quick-card small {
+  display: block;
+}
+
+.quick-card strong {
+  font-size: 14px;
+}
+
+.quick-card small {
+  margin-top: 6px;
+  color: #8190a2;
+  font-size: 11px;
+}
+
+.danger-card:hover {
+  border-color: rgba(255,100,100,.4);
+}
+
+.dashboard-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  background: rgba(255,255,255,.025);
+}
+
+.summary-card > span {
+  font-size: 22px;
+}
+
+.summary-card strong,
+.summary-card small {
+  display: block;
+}
+
+.summary-card strong {
+  font-size: 21px;
+}
+
+.summary-card small {
+  color: #8190a2;
+  margin-top: 3px;
+  font-size: 10px;
+}
+
+.view-header {
+  margin-bottom: 25px;
+}
+
+.view-header h2 {
+  margin-bottom: 7px;
+}
+
+.procedure-list {
+  display: grid;
+  gap: 10px;
+}
+
+.procedure-list button {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 15px;
+  color: white;
+  background: rgba(15,27,45,.75);
+  text-align: left;
+  cursor: pointer;
+}
+
+.procedure-list button:hover {
+  border-color: rgba(47,128,237,.45);
+}
+
+.procedure-list button > div {
+  display: grid;
+  gap: 5px;
+}
+
+.procedure-list span {
+  color: #8190a2;
+  font-size: 11px;
+}
+
+.personal-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.personal-info-grid > div {
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 15px;
+  background: rgba(15,27,45,.75);
+}
+
+.personal-info-grid label,
+.personal-info-grid strong {
+  display: block;
+}
+
+.personal-info-grid label {
+  color: #8190a2;
+  font-size: 10px;
+  margin-bottom: 8px;
+}
+
+.personal-info-grid strong {
+  font-size: 13px;
+}
+
+.empty-state {
+  padding: 50px 20px;
+  text-align: center;
+  border: 1px dashed rgba(255,255,255,.12);
+  border-radius: 18px;
+}
+
+.empty-state span {
+  font-size: 30px;
+}
+
+.empty-state h3 {
+  margin: 15px 0 7px;
+}
+
+.empty-state p {
+  color: #8190a2;
+  font-size: 12px;
+}
+
+.procedure-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0,0,0,.75);
+  backdrop-filter: blur(10px);
+}
+
+.procedure-modal-content {
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 30px;
+  position: relative;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 22px;
+  background: #0d1a2c;
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 35px;
+  height: 35px;
+  border: 0;
+  border-radius: 10px;
+  color: white;
+  background: rgba(255,255,255,.07);
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media(max-width:900px) {
+
+  .dashboard-container {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-sidebar {
+    position: static;
+  }
+
+  .dashboard-nav {
+    grid-template-columns: repeat(2,1fr);
+  }
+
+  .quick-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+
+}
+
+@media(max-width:600px) {
+
+  .dashboard-section {
+    padding: 25px 4%;
+  }
+
+  .dashboard-header {
+    display: block;
+  }
+
+  .logout-button {
+    margin-top: 15px;
+  }
+
+  .quick-grid,
+  .dashboard-summary,
+  .personal-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+</style>
+
+<script>
+
+const citizenRequests = [];
+
+function showCitizenView(view, button) {
+
+  document.querySelectorAll(".citizen-view").forEach(element => {
+    element.classList.add("hidden");
+  });
+
+  const target = document.getElementById("citizen" + view.charAt(0).toUpperCase() + view.slice(1));
+
+  if (target) {
+    target.classList.remove("hidden");
+  }
+
+  document.querySelectorAll(".nav-item").forEach(item => {
+    item.classList.remove("active");
+  });
+
+  if (button) {
+    button.classList.add("active");
+  }
+
+}
+
+function openCitizenProcedure(type) {
+
+  const content = document.getElementById("procedureContent");
+
+  const procedures = {
+
+    cni: {
+      title: "🪪 Demande de CNI",
+      text: "Choisissez le type de demande.",
+      options: [
+        ["Première demande", "first-cni"],
+        ["Renouvellement", "renew-cni"],
+        ["CNI perdue", "lost-cni"]
+      ]
+    },
+
+    passport: {
+      title: "🛂 Demande de passeport",
+      text: "Choisissez le type de demande.",
+      options: [
+        ["Première demande", "first-passport"],
+        ["Renouvellement", "renew-passport"],
+        ["Passeport perdu", "lost-passport"]
+      ]
+    },
+
+    birth: {
+      title: "📜 Extrait de naissance",
+      text: "Déposez votre demande d'extrait de naissance.",
+      options: [
+        ["Faire une demande", "birth-request"]
+      ]
+    },
+
+    nationality: {
+      title: "🏛️ Certificat de nationalité",
+      text: "Accédez à la demande de certificat de nationalité.",
+      options: [
+        ["Commencer la demande", "nationality-request"]
+      ]
+    },
+
+    criminal: {
+      title: "⚖️ Casier judiciaire",
+      text: "Effectuez votre demande de casier judiciaire.",
+      options: [
+        ["Commencer la demande", "criminal-request"]
+      ]
+    },
+
+    health: {
+      title: "🏥 Passe santé",
+      text: "Accédez au service Passe santé.",
+      options: [
+        ["Commencer la demande", "health-request"]
+      ]
+    }
+
+  };
+
+  const selected = procedures[type];
+
+  let html = `
+    <h2>${selected.title}</h2>
+    <p style="color:#8e9daf;margin:10px 0 25px;">
+      ${selected.text}
+    </p>
+    <div style="display:grid;gap:10px;">
+  `;
+
+  selected.options.forEach(option => {
+
+    html += `
+      <button
+        onclick="startCitizenRequest('${option[1]}')"
+        style="
+          padding:15px;
+          border:1px solid rgba(255,255,255,.1);
+          border-radius:12px;
+          color:white;
+          background:rgba(255,255,255,.04);
+          text-align:left;
+          cursor:pointer;
+        "
+      >
+        ${option[0]}
+      </button>
+    `;
+
+  });
+
+  html += `</div>`;
+
+  content.innerHTML = html;
+
+  document
+    .getElementById("procedureModal")
+    .classList.remove("hidden");
+
+}
+
+function startCitizenRequest(type) {
+
+  const requestNumber =
+    "MOST-" +
+    new Date().getFullYear() +
+    "-" +
+    String(citizenRequests.length + 1).padStart(6,"0");
+
+  citizenRequests.push({
+    id: requestNumber,
+    type: type,
+    status: "Dépôt en cours",
+    date: new Date().toLocaleDateString("fr-FR")
+  });
+
+  updateCitizenStats();
+
+  closeProcedureModal();
+
+  alert(
+    "Votre demande a été créée.\n\n" +
+    "Numéro de dossier : " +
+    requestNumber
+  );
+
+}
+
+function updateCitizenStats() {
+
+  document.getElementById("totalRequests").textContent =
+    citizenRequests.length;
+
+  document.getElementById("activeRequests").textContent =
+    citizenRequests.filter(request =>
+      request.status !== "Document prêt"
+    ).length;
+
+  document.getElementById("readyDocuments").textContent =
+    citizenRequests.filter(request =>
+      request.status === "Document prêt"
+    ).length;
+
+}
+
+function closeProcedureModal() {
+
+  document
+    .getElementById("procedureModal")
+    .classList.add("hidden");
+
+}
+
+function openLostDocument() {
+
+  const content = document.getElementById("procedureContent");
+
+  content.innerHTML = `
+    <h2>❗ Document perdu</h2>
+
+    <p style="color:#8e9daf;margin:10px 0 25px;">
+      Sélectionnez le document que vous avez perdu.
+    </p>
+
+    <div style="display:grid;gap:10px;">
+
+      <button
+        onclick="openCitizenProcedure('cni')"
+        style="
+          padding:16px;
+          border:1px solid rgba(255,255,255,.1);
+          border-radius:12px;
+          color:white;
+          background:rgba(255,255,255,.04);
+          text-align:left;
+          cursor:pointer;
+        "
+      >
+        🪪 CNI perdue
+      </button>
+
+      <button
+        onclick="openCitizenProcedure('passport')"
+        style="
+          padding:16px;
+          border:1px solid rgba(255,255,255,.1);
+          border-radius:12px;
+          color:white;
+          background:rgba(255,255,255,.04);
+          text-align:left;
+          cursor:pointer;
+        "
+      >
+        🛂 Passeport perdu
+      </button>
+
+    </div>
+  `;
+
+  document
+    .getElementById("procedureModal")
+    .classList.remove("hidden");
+
+}
+
+function logoutCitizen() {
+
+  alert("Vous êtes déconnecté de votre espace personnel.");
+
+}
+
+document
+  .getElementById("procedureModal")
+  .addEventListener("click", function(event) {
+
+    if (event.target === this) {
+      closeProcedureModal();
+    }
+
+  });
+
+            </script>
+            <section id="foreign-dashboard" class="foreign-section">
+
+  <div class="foreign-layout">
+
+    <aside class="foreign-sidebar">
+
+      <div class="foreign-user">
+        <div class="foreign-avatar">🌍</div>
+        <div>
+          <strong id="foreignName">Étranger</strong>
+          <span id="foreignNumber">Numéro non attribué</span>
+        </div>
+      </div>
+
+      <nav class="foreign-nav">
+
+        <button class="foreign-nav-item active" onclick="showForeignView('home',this)">
+          🏠 Accueil
+        </button>
+
+        <button class="foreign-nav-item" onclick="showForeignView('procedures',this)">
+          📂 Mes démarches
+        </button>
+
+        <button class="foreign-nav-item" onclick="showForeignView('tracking',this)">
+          🔎 Suivre mes demandes
+        </button>
+
+        <button class="foreign-nav-item" onclick="showForeignView('profile',this)">
+          👤 Informations personnelles
+        </button>
+
+      </nav>
+
+    </aside>
+
+    <main class="foreign-main">
+
+      <header class="foreign-header">
+
+        <div>
+          <span>ESPACE ÉTRANGER</span>
+          <h1>Votre espace personnel</h1>
+          <p>Accédez aux démarches et services administratifs disponibles.</p>
+        </div>
+
+        <button onclick="foreignLogout()">Se déconnecter</button>
+
+      </header>
+
+      <div id="foreignHome" class="foreign-view">
+
+        <div class="foreign-cards">
+
+          <button onclick="openForeignProcedure('status')">
+            🪪
+            <strong>Carte de Statut</strong>
+            <small>Demander ou renouveler votre carte de statut</small>
+          </button>
+
+          <button onclick="openForeignProcedure('time')">
+            🧒
+            <strong>TIME</strong>
+            <small>Titre d'Identification du Mineur Étranger</small>
+          </button>
+
+          <button onclick="openForeignProcedure('birth')">
+            📜
+            <strong>Acte de naissance affilié</strong>
+            <small>Effectuer une demande</small>
+          </button>
+
+          <button onclick="openForeignProcedure('naturalization')">
+            🏛️
+            <strong>Naturalisation</strong>
+            <small>Demander l'acquisition de la nationalité</small>
+          </button>
+
+          <button onclick="openForeignProcedure('passport')">
+            🛂
+            <strong>Passeport pour étranger</strong>
+            <small>Effectuer une demande</small>
+          </button>
+
+          <button onclick="openForeignProcedure('health')">
+            🏥
+            <strong>Passe santé</strong>
+            <small>Accéder au service</small>
+          </button>
+
+          <button onclick="openForeignProcedure('work')">
+            💼
+            <strong>Autorisation de travail</strong>
+            <small>Effectuer une demande</small>
+          </button>
+
+        </div>
+
+      </div>
+
+      <div id="foreignProcedures" class="foreign-view hidden">
+
+        <h2>Mes démarches</h2>
+
+        <div class="foreign-procedure-list">
+
+          <button onclick="openForeignProcedure('status')">🪪 Carte de Statut</button>
+          <button onclick="openForeignProcedure('time')">🧒 TIME</button>
+          <button onclick="openForeignProcedure('birth')">📜 Acte de naissance affilié</button>
+          <button onclick="openForeignProcedure('naturalization')">🏛️ Naturalisation</button>
+          <button onclick="openForeignProcedure('passport')">🛂 Passeport pour étranger</button>
+          <button onclick="openForeignProcedure('health')">🏥 Passe santé</button>
+          <button onclick="openForeignProcedure('work')">💼 Autorisation de travail</button>
+
+        </div>
+
+      </div>
+
+      <div id="foreignTracking" class="foreign-view hidden">
+
+        <h2>Suivre mes demandes</h2>
+
+        <div id="foreignRequestList" class="foreign-request-list">
+
+          <div class="foreign-empty">
+            <span>📂</span>
+            <h3>Aucune demande</h3>
+            <p>Vos dossiers apparaîtront ici.</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div id="foreignProfile" class="foreign-view hidden">
+
+        <h2>Informations personnelles</h2>
+
+        <div class="foreign-profile-grid">
+
+          <div>
+            <label>Nom et prénom</label>
+            <strong id="foreignProfileName">Non renseigné</strong>
+          </div>
+
+          <div>
+            <label>Numéro étranger</label>
+            <strong id="foreignProfileNumber">Non attribué</strong>
+          </div>
+
+          <div>
+            <label>Date de naissance</label>
+            <strong id="foreignProfileBirth">Non renseignée</strong>
+          </div>
+
+          <div>
+            <label>Adresse</label>
+            <strong id="foreignProfileAddress">Non renseignée</strong>
+          </div>
+
+          <div>
+            <label>Téléphone</label>
+            <strong id="foreignProfilePhone">Non renseigné</strong>
+          </div>
+
+          <div>
+            <label>Adresse e-mail</label>
+            <strong id="foreignProfileEmail">Non renseignée</strong>
+          </div>
+
+          <div>
+            <label>Nationalité</label>
+            <strong id="foreignProfileNationality">Non renseignée</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+</section>
+
+<div id="foreignProcedureModal" class="foreign-modal hidden">
+
+  <div class="foreign-modal-box">
+
+    <button class="foreign-close" onclick="closeForeignModal()">×</button>
+
+    <div id="foreignProcedureContent"></div>
+
+  </div>
+
+</div>
+
+<style>
+
+.foreign-section {
+  min-height:100vh;
+  padding:40px 5%;
+  color:#f5f7fb;
+  background:#07111f;
+}
+
+.foreign-layout {
+  max-width:1250px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:250px 1fr;
+  gap:30px;
+}
+
+.foreign-sidebar {
+  height:max-content;
+  padding:22px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:22px;
+  background:rgba(15,27,45,.8);
+}
+
+.foreign-user {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding-bottom:20px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.foreign-avatar {
+  width:45px;
+  height:45px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:rgba(32,201,151,.12);
+}
+
+.foreign-user strong,
+.foreign-user span {
+  display:block;
+}
+
+.foreign-user strong {
+  font-size:13px;
+}
+
+.foreign-user span {
+  color:#8190a2;
+  font-size:10px;
+  margin-top:4px;
+}
+
+.foreign-nav {
+  display:grid;
+  gap:7px;
+  margin-top:20px;
+}
+
+.foreign-nav-item {
+  padding:12px;
+  border:0;
+  border-radius:10px;
+  color:#8e9daf;
+  background:transparent;
+  text-align:left;
+  cursor:pointer;
+}
+
+.foreign-nav-item.active,
+.foreign-nav-item:hover {
+  color:white;
+  background:rgba(32,201,151,.1);
+}
+
+.foreign-header {
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:35px;
+}
+
+.foreign-header span {
+  color:#55d9b4;
+  font-size:10px;
+  letter-spacing:1.5px;
+}
+
+.foreign-header h1 {
+  margin:8px 0;
+  font-size:32px;
+}
+
+.foreign-header p {
+  color:#8e9daf;
+  font-size:13px;
+}
+
+.foreign-header button {
+  height:max-content;
+  padding:11px 15px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;
+  color:#aab7c6;
+  background:transparent;
+  cursor:pointer;
+}
+
+.foreign-cards {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.foreign-cards button {
+  min-height:160px;
+  padding:22px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:18px;
+  color:white;
+  background:rgba(15,27,45,.75);
+  text-align:left;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.foreign-cards button:hover {
+  transform:translateY(-3px);
+  border-color:rgba(32,201,151,.45);
+}
+
+.foreign-cards button::first-line {
+  font-size:24px;
+}
+
+.foreign-cards strong,
+.foreign-cards small {
+  display:block;
+}
+
+.foreign-cards strong {
+  margin-top:18px;
+  font-size:14px;
+}
+
+.foreign-cards small {
+  margin-top:6px;
+  color:#8190a2;
+  font-size:11px;
+  line-height:1.5;
+}
+
+.foreign-procedure-list {
+  display:grid;
+  gap:10px;
+  margin-top:25px;
+}
+
+.foreign-procedure-list button {
+  padding:17px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:14px;
+  color:white;
+  background:rgba(15,27,45,.75);
+  text-align:left;
+  cursor:pointer;
+}
+
+.foreign-profile-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+  margin-top:25px;
+}
+
+.foreign-profile-grid div {
+  padding:20px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:15px;
+  background:rgba(15,27,45,.75);
+}
+
+.foreign-profile-grid label,
+.foreign-profile-grid strong {
+  display:block;
+}
+
+.foreign-profile-grid label {
+  color:#8190a2;
+  font-size:10px;
+  margin-bottom:8px;
+}
+
+.foreign-profile-grid strong {
+  font-size:13px;
+}
+
+.foreign-empty {
+  padding:50px 20px;
+  margin-top:25px;
+  text-align:center;
+  border:1px dashed rgba(255,255,255,.12);
+  border-radius:18px;
+}
+
+.foreign-empty span {
+  font-size:30px;
+}
+
+.foreign-empty h3 {
+  margin:15px 0 7px;
+}
+
+.foreign-empty p {
+  color:#8190a2;
+  font-size:12px;
+}
+
+.foreign-modal {
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:grid;
+  place-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(10px);
+}
+
+.foreign-modal-box {
+  width:100%;
+  max-width:650px;
+  max-height:90vh;
+  overflow-y:auto;
+  position:relative;
+  padding:30px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:22px;
+  background:#0d1a2c;
+}
+
+.foreign-close {
+  position:absolute;
+  top:15px;
+  right:15px;
+  width:35px;
+  height:35px;
+  border:0;
+  border-radius:10px;
+  color:white;
+  background:rgba(255,255,255,.07);
+  cursor:pointer;
+}
+
+.hidden {
+  display:none !important;
+}
+
+@media(max-width:900px) {
+
+  .foreign-layout {
+    grid-template-columns:1fr;
+  }
+
+  .foreign-cards {
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+@media(max-width:600px) {
+
+  .foreign-section {
+    padding:25px 4%;
+  }
+
+  .foreign-header {
+    display:block;
+  }
+
+  .foreign-header button {
+    margin-top:15px;
+  }
+
+  .foreign-cards,
+  .foreign-profile-grid {
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+
+<script>
+
+const foreignRequests = [];
+
+function showForeignView(view, button) {
+
+  document.querySelectorAll(".foreign-view").forEach(element => {
+    element.classList.add("hidden");
+  });
+
+  const target =
+    document.getElementById(
+      "foreign" +
+      view.charAt(0).toUpperCase() +
+      view.slice(1)
+    );
+
+  if (target) {
+    target.classList.remove("hidden");
+  }
+
+  document.querySelectorAll(".foreign-nav-item").forEach(item => {
+    item.classList.remove("active");
+  });
+
+  if (button) {
+    button.classList.add("active");
+  }
+
+}
+
+function openForeignProcedure(type) {
+
+  const content =
+    document.getElementById("foreignProcedureContent");
+
+  const procedures = {
+
+    status: {
+      title:"🪪 Demande de Carte de Statut",
+      description:"La procédure de Carte de Statut suit les étapes administratives prévues.",
+      documents:[
+        "Pièce d'identité du pays d'origine",
+        "Photo d'identité"
+      ]
+    },
+
+    time: {
+      title:"🧒 Titre d'Identification du Mineur Étranger",
+      description:"La procédure TIME suit les mêmes étapes administratives de suivi que la Carte de Statut.",
+      documents:[
+        "Acte de naissance du pays d'origine",
+        "Pièce d'identité du pays d'origine, si disponible",
+        "Photo d'identité",
+        "Informations sur le représentant légal",
+        "Pièce d'identité du représentant légal",
+        "Justificatif du lien avec le représentant légal"
+      ]
+    },
+
+    birth: {
+      title:"📜 Acte de naissance affilié",
+      description:"Déposez votre demande d'acte de naissance affilié.",
+      documents:[
+        "Acte de naissance du pays d'origine",
+        "Carte de Statut"
+      ]
+    },
+
+    naturalization: {
+      title:"🏛️ Naturalisation",
+      description:"Déposez une demande d'acquisition de la nationalité.",
+      documents:[
+        "Justificatif de statut",
+        "Justificatif de trois ans de présence",
+        "Documents nécessaires à l'instruction"
+      ]
+    },
+
+    passport: {
+      title:"🛂 Passeport pour étranger",
+      description:"Effectuez une demande de passeport pour étranger.",
+      documents:[
+        "Récépissé de Carte de Statut",
+        "Document de statut requis"
+      ]
+    },
+
+    health: {
+      title:"🏥 Passe santé",
+      description:"Accédez au service Passe santé.",
+      documents:[
+        "Informations personnelles"
+      ]
+    },
+
+    work: {
+      title:"💼 Autorisation de travail",
+      description:"Effectuez votre demande d'autorisation de travail.",
+      documents:[
+        "Carte de Statut",
+        "Informations professionnelles"
+      ]
+    }
+
+  };
+
+  const selected = procedures[type];
+
+  let html = `
+    <h2>${selected.title}</h2>
+
+    <p style="color:#8e9daf;margin:10px 0 20px;">
+      ${selected.description}
+    </p>
+
+    <h3 style="font-size:14px;margin-bottom:12px;">
+      Documents demandés
+    </h3>
+
+    <div style="
+      display:grid;
+      gap:8px;
+      margin-bottom:25px;
+    ">
+  `;
+
+  selected.documents.forEach(document => {
+
+    html += `
+      <div style="
+        padding:12px;
+        border-radius:10px;
+        background:rgba(255,255,255,.04);
+        color:#b9c5d4;
+        font-size:12px;
+      ">
+        📄 ${document}
+      </div>
+    `;
+
+  });
+
+  html += `
+
+    </div>
+
+    <button
+      onclick="submitForeignRequest('${type}')"
+      style="
+        width:100%;
+        padding:14px;
+        border:0;
+        border-radius:12px;
+        color:white;
+        background:#168f72;
+        cursor:pointer;
+      "
+    >
+      Déposer ma demande
+    </button>
+  `;
+
+  content.innerHTML = html;
+
+  document
+    .getElementById("foreignProcedureModal")
+    .classList.remove("hidden");
+
+}
+
+function submitForeignRequest(type) {
+
+  const number =
+    "MOST-" +
+    new Date().getFullYear() +
+    "-" +
+    String(foreignRequests.length + 1).padStart(6,"0");
+
+  foreignRequests.push({
+    id:number,
+    type:type,
+    status:"Dépôt en cours",
+    date:new Date().toLocaleDateString("fr-FR")
+  });
+
+  closeForeignModal();
+
+  alert(
+    "Votre demande a été enregistrée.\n\n" +
+    "Numéro de dossier : " +
+    number
+  );
+
+}
+
+function closeForeignModal() {
+
+  document
+    .getElementById("foreignProcedureModal")
+    .classList.add("hidden");
+
+}
+
+function foreignLogout() {
+
+  alert("Vous êtes déconnecté de votre espace étranger.");
+
+}
+
+                     </script>
+                     <section id="identity-procedures" class="identity-procedures">
+
+  <div class="identity-wrapper">
+
+    <div class="identity-header">
+      <span>DOCUMENTS OFFICIELS</span>
+      <h2>Vos demandes d'identité</h2>
+      <p>Effectuez vos démarches de CNI et de passeport depuis votre espace.</p>
+    </div>
+
+    <div class="identity-choice">
+
+      <button onclick="openIdentityForm('cni')">
+        🪪
+        <strong>Carte Nationale d'Identité</strong>
+        <small>Première demande, renouvellement ou perte</small>
+      </button>
+
+      <button onclick="openIdentityForm('passport')">
+        🛂
+        <strong>Passeport</strong>
+        <small>Première demande, renouvellement ou perte</small>
+      </button>
+
+    </div>
+
+    <div id="identityFormArea" class="identity-form-area hidden"></div>
+
+  </div>
+
+</section>
+
+<style>
+
+.identity-procedures {
+  min-height:100vh;
+  padding:70px 5%;
+  color:#f5f7fb;
+  background:#07111f;
+}
+
+.identity-wrapper {
+  max-width:900px;
+  margin:auto;
+}
+
+.identity-header {
+  text-align:center;
+  margin-bottom:35px;
+}
+
+.identity-header span {
+  color:#6ea9f5;
+  font-size:10px;
+  letter-spacing:1.5px;
+}
+
+.identity-header h2 {
+  margin:10px 0;
+  font-size:38px;
+}
+
+.identity-header p {
+  color:#8e9daf;
+  font-size:13px;
+}
+
+.identity-choice {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.identity-choice button {
+  padding:30px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:20px;
+  color:white;
+  background:rgba(15,27,45,.8);
+  text-align:left;
+  cursor:pointer;
+}
+
+.identity-choice button:hover {
+  border-color:rgba(47,128,237,.5);
+}
+
+.identity-choice strong,
+.identity-choice small {
+  display:block;
+}
+
+.identity-choice strong {
+  margin-top:20px;
+}
+
+.identity-choice small {
+  margin-top:7px;
+  color:#8190a2;
+}
+
+.identity-form-area {
+  margin-top:25px;
+  padding:30px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;
+  background:rgba(15,27,45,.8);
+}
+
+.identity-form-area h3 {
+  margin-bottom:8px;
+}
+
+.identity-form-area p {
+  color:#8e9daf;
+  font-size:12px;
+  margin-bottom:25px;
+}
+
+.identity-type-buttons {
+  display:grid;
+  gap:10px;
+}
+
+.identity-type-buttons button {
+  padding:15px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;
+  color:white;
+  background:rgba(255,255,255,.04);
+  text-align:left;
+  cursor:pointer;
+}
+
+.identity-upload {
+  margin-top:20px;
+}
+
+.identity-upload label {
+  display:block;
+  color:#b9c5d4;
+  font-size:12px;
+  margin-bottom:8px;
+}
+
+.identity-upload input {
+  width:100%;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;
+  color:#aab7c6;
+  background:rgba(255,255,255,.04);
+}
+
+.identity-submit {
+  width:100%;
+  margin-top:20px;
+  padding:14px;
+  border:0;
+  border-radius:11px;
+  color:white;
+  background:#2f80ed;
+  cursor:pointer;
+}
+
+.hidden {
+  display:none !important;
+}
+
+@media(max-width:600px) {
+
+  .identity-choice {
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+
+<script>
+
+function openIdentityForm(type) {
+
+  const area =
+    document.getElementById("identityFormArea");
+
+  const isCNI = type === "cni";
+
+  area.innerHTML = `
+
+    <h3>
+      ${isCNI ? "🪪 Demande de CNI" : "🛂 Demande de passeport"}
+    </h3>
+
+    <p>
+      Sélectionnez le type de demande que vous souhaitez effectuer.
+    </p>
+
+    <div class="identity-type-buttons">
+
+      <button onclick="selectIdentityRequest('${type}','first')">
+        🆕 Première demande
+      </button>
+
+      <button onclick="selectIdentityRequest('${type}','renew')">
+        🔄 Renouvellement
+      </button>
+
+      <button onclick="selectIdentityRequest('${type}','lost')">
+        ❗ Document perdu
+      </button>
+
+    </div>
+
+    <div id="identityUploadArea"></div>
+
+  `;
+
+  area.classList.remove("hidden");
+
+}
+
+function selectIdentityRequest(documentType, requestType) {
+
+  const area =
+    document.getElementById("identityUploadArea");
+
+  let documents = [];
+
+  if (documentType === "cni" && requestType === "first") {
+    documents = [
+      "Photo d'identité",
+      "Certificat de nationalité"
+    ];
+  }
+
+  if (documentType === "cni" && requestType === "renew") {
+    documents = [
+      "Ancienne CNI",
+      "Photo d'identité"
+    ];
+  }
+
+  if (documentType === "cni" && requestType === "lost") {
+    documents = [
+      "Déclaration de perte",
+      "Photo d'identité"
+    ];
+  }
+
+  if (documentType === "passport" && requestType === "first") {
+    documents = [
+      "Photo d'identité",
+      "Certificat de nationalité"
+    ];
+  }
+
+  if (documentType === "passport" && requestType === "renew") {
+    documents = [
+      "Ancien passeport",
+      "Photo d'identité"
+    ];
+  }
+
+  if (documentType === "passport" && requestType === "lost") {
+    documents = [
+      "Déclaration de perte",
+      "Photo d'identité"
+    ];
+  }
+
+  let html = `
+    <div class="identity-upload">
+      <h4>Documents nécessaires</h4>
+  `;
+
+  documents.forEach((document,index) => {
+
+    html += `
+      <label>
+        ${document}
+      </label>
+
+      <input
+        type="file"
+        id="identityFile${index}"
+        accept="image/*,.pdf"
+        required
+      >
+    `;
+
+  });
+
+  html += `
+
+      <button
+        class="identity-submit"
+        onclick="submitIdentityRequest('${documentType}','${requestType}')"
+      >
+        Envoyer ma demande
+      </button>
+
+    </div>
+  `;
+
+  area.innerHTML = html;
+
+}
+
+function submitIdentityRequest(documentType, requestType) {
+
+  const number =
+    "MOST-" +
+    new Date().getFullYear() +
+    "-" +
+    Math.floor(100000 + Math.random() * 900000);
+
+  alert(
+    "Votre demande a été enregistrée.\n\n" +
+    "Numéro de dossier : " +
+    number +
+    "\n\nStatut : Dépôt en cours"
+  );
+
+}
+
+</script>
+<section id="foreign-status-time" class="status-time-section">
+
+  <div class="status-time-wrapper">
+
+    <div class="status-time-header">
+      <span>DÉMARCHES POUR ÉTRANGERS</span>
+      <h2>Carte de Statut et TIME</h2>
+      <p>
+        Les deux démarches utilisent le même parcours administratif
+        et le même système de suivi des étapes.
+      </p>
+    </div>
+
+    <div class="status-time-selector">
+
+      <button class="status-time-tab active" onclick="selectStatusTime('status',this)">
+        🪪 Carte de Statut
+      </button>
+
+      <button class="status-time-tab" onclick="selectStatusTime('time',this)">
+        🧒 TIME
+      </button>
+
+    </div>
+
+    <div id="statusTimeContent" class="status-time-content"></div>
+
+  </div>
+
+</section>
+
+<style>
+
+.status-time-section {
+  min-height:100vh;
+  padding:70px 5%;
+  color:#f5f7fb;
+  background:#07111f;
+}
+
+.status-time-wrapper {
+  max-width:900px;
+  margin:auto;
+}
+
+.status-time-header {
+  text-align:center;
+  margin-bottom:35px;
+}
+
+.status-time-header span {
+  color:#55d9b4;
+  font-size:10px;
+  letter-spacing:1.5px;
+}
+
+.status-time-header h2 {
+  margin:10px 0;
+  font-size:38px;
+}
+
+.status-time-header p {
+  color:#8e9daf;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.status-time-selector {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
+  padding:5px;
+  margin-bottom:20px;
+  border-radius:15px;
+  background:rgba(255,255,255,.04);
+}
+
+.status-time-tab {
+  padding:13px;
+  border:0;
+  border-radius:11px;
+  color:#8e9daf;
+  background:transparent;
+  cursor:pointer;
+}
+
+.status-time-tab.active {
+  color:white;
+  background:rgba(32,201,151,.13);
+}
+
+.status-time-content {
+  padding:30px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:22px;
+  background:rgba(15,27,45,.8);
+}
+
+.status-time-content h3 {
+  margin-bottom:8px;
+}
+
+.status-time-content p {
+  color:#8e9daf;
+  font-size:12px;
+  line-height:1.6;
+}
+
+.status-documents {
+  display:grid;
+  gap:8px;
+  margin-top:20px;
+}
+
+.status-document {
+  padding:13px;
+  border-radius:10px;
+  color:#b9c5d4;
+  background:rgba(255,255,255,.04);
+  font-size:12px;
+}
+
+.status-submit {
+  width:100%;
+  margin-top:25px;
+  padding:14px;
+  border:0;
+  border-radius:11px;
+  color:white;
+  background:#168f72;
+  cursor:pointer;
+}
+
+.status-timeline {
+  margin-top:30px;
+}
+
+.status-step {
+  display:flex;
+  align-items:flex-start;
+  gap:15px;
+  padding:15px 0;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.status-step:last-child {
+  border-bottom:0;
+}
+
+.status-step-number {
+  width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+  border-radius:50%;
+  color:white;
+  background:#168f72;
+  font-size:11px;
+}
+
+.status-step strong,
+.status-step span {
+  display:block;
+}
+
+.status-step strong {
+  font-size:12px;
+}
+
+.status-step span {
+  margin-top:4px;
+  color:#8190a2;
+  font-size:10px;
+}
+
+</style>
+
+<script>
+
+const statusTimeData = {
+
+  status: {
+    title:"🪪 Carte de Statut",
+    description:
+      "La demande de Carte de Statut permet à l'étranger éligible d'obtenir son document de statut.",
+    documents:[
+      "Pièce d'identité du pays d'origine",
+      "Photo d'identité"
+    ]
+  },
+
+  time: {
+    title:"🧒 Titre d'Identification du Mineur Étranger",
+    description:
+      "La demande TIME est destinée aux étrangers mineurs éligibles.",
+    documents:[
+      "Acte de naissance du pays d'origine",
+      "Pièce d'identité du pays d'origine, si disponible",
+      "Photo d'identité",
+      "Informations sur le représentant légal",
+      "Pièce d'identité du représentant légal",
+      "Justificatif du lien avec le représentant légal"
+    ]
+  }
+
+};
+
+function selectStatusTime(type,button) {
+
+  document
+    .querySelectorAll(".status-time-tab")
+    .forEach(tab => tab.classList.remove("active"));
+
+  button.classList.add("active");
+
+  renderStatusTime(type);
+
+}
+
+function renderStatusTime(type) {
+
+  const data = statusTimeData[type];
+
+  let html = `
+
+    <h3>${data.title}</h3>
+
+    <p>${data.description}</p>
+
+    <div class="status-documents">
+
+  `;
+
+  data.documents.forEach(document => {
+
+    html += `
+      <div class="status-document">
+        📄 ${document}
+      </div>
+    `;
+
+  });
+
+  html += `
+
+    </div>
+
+    <button
+      class="status-submit"
+      onclick="submitStatusTime('${type}')"
+    >
+      Déposer ma demande
+    </button>
+
+    <div class="status-timeline">
+
+      <div class="status-step">
+        <div class="status-step-number">1</div>
+        <div>
+          <strong>📨 Dépôt en cours</strong>
+          <span>Votre demande est en préparation.</span>
+        </div>
+      </div>
+
+      <div class="status-step">
+        <div class="status-step-number">2</div>
+        <div>
+          <strong>📥 Dépôt fait</strong>
+          <span>Votre dossier a été transmis.</span>
+        </div>
+      </div>
+
+      <div class="status-step">
+        <div class="status-step-number">3</div>
+        <div>
+          <strong>🔎 Instruction en cours</strong>
+          <span>Votre dossier est en cours d'examen.</span>
+        </div>
+      </div>
+
+      <div class="status-step">
+        <div class="status-step-number">4</div>
+        <div>
+          <strong>🧾 Récépissé valide</strong>
+          <span>Un récépissé peut être disponible selon la procédure.</span>
+        </div>
+      </div>
+
+      <div class="status-step">
+        <div class="status-step-number">5</div>
+        <div>
+          <strong>⚖️ Décision prise</strong>
+          <span>Une décision administrative a été rendue.</span>
+        </div>
+      </div>
+
+      <div class="status-step">
+        <div class="status-step-number">6</div>
+        <div>
+          <strong>📄 Document prêt</strong>
+          <span>Le document est disponible dans votre espace.</span>
+        </div>
+      </div>
+
+    </div>
+
+  `;
+
+  document.getElementById("statusTimeContent").innerHTML = html;
+
+}
+
+function submitStatusTime(type) {
+
+  const number =
+    "MOST-" +
+    new Date().getFullYear() +
+    "-" +
+    Math.floor(100000 + Math.random() * 900000);
+
+  alert(
+    "Votre demande a été déposée.\n\n" +
+    "Numéro de dossier : " +
+    number +
+    "\n\nStatut : Dépôt fait"
+  );
+
+}
+
+renderStatusTime("status");
+
+</script>
+<section id="foreign-naturalization" class="naturalization-section">
+
+  <div class="naturalization-wrapper">
+
+    <div class="naturalization-header">
+      <span>ACQUISITION DE NATIONALITÉ</span>
+      <h2>Demande de naturalisation</h2>
+      <p>
+        Déposez votre demande et suivez son évolution depuis votre espace personnel.
+      </p>
+    </div>
+
+    <div class="naturalization-card">
+
+      <div class="criteria">
+
+        <h3>Critères et justificatifs</h3>
+
+        <div class="criteria-item">
+          <span>🪪</span>
+          <div>
+            <strong>Justificatif de statut</strong>
+            <p>Document permettant de vérifier votre situation administrative.</p>
+          </div>
+        </div>
+
+        <div class="criteria-item">
+          <span>📅</span>
+          <div>
+            <strong>Présence sur le territoire</strong>
+            <p>Justificatif de trois années de présence selon les critères applicables.</p>
+          </div>
+        </div>
+
+        <div class="criteria-item">
+          <span>⚖️</span>
+          <div>
+            <strong>Situation juridique</strong>
+            <p>Vérification de la situation juridique du demandeur.</p>
+          </div>
+        </div>
+
+        <div class="criteria-item">
+          <span>📄</span>
+          <div>
+            <strong>Critères de naturalisation</strong>
+            <p>Vérification du respect des critères administratifs prévus.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <form id="naturalizationForm">
+
+        <div class="naturalization-input">
+          <label>Justificatif de statut</label>
+          <input type="file" required>
+        </div>
+
+        <div class="naturalization-input">
+          <label>Justificatif de présence</label>
+          <input type="file" required>
+        </div>
+
+        <div class="naturalization-input">
+          <label>Documents complémentaires</label>
+          <input type="file" multiple>
+        </div>
+
+        <button type="submit">
+          Déposer ma demande de naturalisation
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</section>
+
+<style>
+
+.naturalization-section {
+  min-height:100vh;
+  padding:70px 5%;
+  color:#f5f7fb;
+  background:#07111f;
+}
+
+.naturalization-wrapper {
+  max-width:900px;
+  margin:auto;
+}
+
+.naturalization-header {
+  text-align:center;
+  margin-bottom:35px;
+}
+
+.naturalization-header span {
+  color:#b995ff;
+  font-size:10px;
+  letter-spacing:1.5px;
+}
+
+.naturalization-header h2 {
+  margin:10px 0;
+  font-size:38px;
+}
+
+.naturalization-header p {
+  color:#8e9daf;
+  font-size:13px;
+}
+
+.naturalization-card {
+  padding:30px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:22px;
+  background:rgba(15,27,45,.8);
+}
+
+.criteria {
+  display:grid;
+  gap:12px;
+  margin-bottom:30px;
+}
+
+.criteria h3 {
+  margin-bottom:5px;
+}
+
+.criteria-item {
+  display:flex;
+  gap:14px;
+  padding:15px;
+  border-radius:13px;
+  background:rgba(255,255,255,.04);
+}
+
+.criteria-item > span {
+  font-size:20px;
+}
+
+.criteria-item strong {
+  font-size:12px;
+}
+
+.criteria-item p {
+  margin-top:5px;
+  color:#8190a2;
+  font-size:10px;
+  line-height:1.5;
+}
+
+.naturalization-input {
+  margin-top:15px;
+}
+
+.naturalization-input label {
+  display:block;
+  margin-bottom:8px;
+  color:#b9c5d4;
+  font-size:11px;
+}
+
+.naturalization-input input {
+  width:100%;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;
+  color:#aab7c6;
+  background:rgba(255,255,255,.04);
+}
+
+#naturalizationForm button {
+  width:100%;
+  margin-top:25px;
+  padding:14px;
+  border:0;
+  border-radius:11px;
+  color:white;
+  background:#7252b8;
+  cursor:pointer;
+}
+
+</style>
+
+<script>
+
+document
+  .getElementById("naturalizationForm")
+  .addEventListener("submit",function(event){
+
+    event.preventDefault();
+
+    const number =
+      "MOST-" +
+      new Date().getFullYear() +
+      "-" +
+      Math.floor(100000 + Math.random() * 900000);
+
+    alert(
+      "Votre demande de naturalisation a été déposée.\n\n" +
+      "Numéro de dossier : " +
+      number +
+      "\n\nStatut : Dépôt fait"
+    );
+
+  });
+
+</script>
+<section id="request-tracking" class="request-tracking-section">
+
+  <div class="tracking-wrapper">
+
+    <div class="tracking-header">
+      <span>SUIVI ADMINISTRATIF</span>
+      <h2>Suivre un dossier</h2>
+      <p>Entrez votre numéro de dossier pour consulter son état.</p>
+    </div>
+
+    <div class="tracking-search">
+
+      <input
+        type="text"
+        id="trackingNumber"
+        placeholder="Exemple : MOST-2026-000001"
+      >
+
+      <button onclick="trackRequest()">
+        🔎 Rechercher
+      </button>
+
+    </div>
+
+    <div id="trackingResult" class="tracking-result hidden"></div>
+
+  </div>
+
+</section>
+
+<style>
+
+.request-tracking-section {
+  min-height:100vh;
+  padding:70px 5%;
+  color:#f5f7fb;
+  background:#07111f;
+}
+
+.tracking-wrapper {
+  max-width:800px;
+  margin:auto;
+}
+
+.tracking-header {
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.tracking-header span {
+  color:#6ea9f5;
+  font-size:10px;
+  letter-spacing:1.5px;
+}
+
+.tracking-header h2 {
+  margin:10px 0;
+  font-size:38px;
+}
+
+.tracking-header p {
+  color:#8e9daf;
+  font-size:13px;
+}
+
+.tracking-search {
+  display:flex;
+  gap:10px;
+}
+
+.tracking-search input {
+  flex:1;
+  padding:15px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;
+  outline:none;
+  color:white;
+  background:rgba(15,27,45,.8);
+}
+
+.tracking-search button {
+  padding:15px 22px;
+  border:0;
+  border-radius:12px;
+  color:white;
+  background:#2f80ed;
+  cursor:pointer;
+}
+
+.tracking-result {
+  margin-top:25px;
+  padding:25px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;
+  background:rgba(15,27,45,.8);
+}
+
+.tracking-result h3 {
+  margin-bottom:15px;
+}
+
+.tracking-meta {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.tracking-meta div {
+  padding:15px;
+  border-radius:11px;
+  background:rgba(255,255,255,.04);
+}
+
+.tracking-meta label,
+.tracking-meta strong {
+  display:block;
+}
+
+.tracking-meta label {
+  color:#8190a2;
+  font-size:10px;
+  margin-bottom:6px;
+}
+
+.tracking-meta strong {
+  font-size:12px;
+}
+
+.tracking-status {
+  margin-top:20px;
+  padding:15px;
+  border-radius:12px;
+  color:#55d9b4;
+  background:rgba(32,201,151,.08);
+}
+
+.hidden {
+  display:none !important;
+}
+
+@media(max-width:600px) {
+
+  .tracking-search {
+    display:grid;
+  }
+
+  .tracking-meta {
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+
+<script>
+
+const demoRequests = {
+
+  "MOST-2026-000001": {
+    identity:"Citoyen",
+    type:"Demande de CNI",
+    status:"Instruction en cours",
+    date:"27/07/2026",
+    observation:"Votre dossier est actuellement en cours d'instruction."
+  },
+
+  "MOST-2026-000002": {
+    identity:"Étranger",
+    type:"Carte de Statut",
+    status:"Récépissé valide",
+    date:"27/07/2026",
+    observation:"Votre récépissé est actuellement valide."
+  }
+
+};
+
+function trackRequest() {
+
+  const number =
+    document
+      .getElementById("trackingNumber")
+      .value
+      .trim()
+      .toUpperCase();
+
+  const result =
+    document.getElementById("trackingResult");
+
+  if (!number) {
+
+    result.innerHTML = `
+      <p style="color:#ff9e9e;">
+        Veuillez saisir un numéro de dossier.
+      </p>
+    `;
+
+    result.classList.remove("hidden");
+
+    return;
+
+  }
+
+  const request = demoRequests[number];
+
+  if (!request) {
+
+    result.innerHTML = `
+      <h3>Dossier introuvable</h3>
+      <p style="color:#8e9daf;">
+        Aucun dossier correspondant à ce numéro n'a été trouvé.
+      </p>
+    `;
+
+    result.classList.remove("hidden");
+
+    return;
+
+  }
+
+  result.innerHTML = `
+
+    <h3>📂 Dossier ${number}</h3>
+
+    <div class="tracking-meta">
+
+      <div>
+        <label>Type de demande</label>
+        <strong>${request.type}</strong>
+      </div>
+
+      <div>
+        <label>Profil</label>
+        <strong>${request.identity}</strong>
+      </div>
+
+      <div>
+        <label>Date de dépôt</label>
+        <strong>${request.date}</strong>
+      </div>
+
+      <div>
+        <label>Numéro de dossier</label>
+        <strong>${number}</strong>
+      </div>
+
+    </div>
+
+    <div class="tracking-status">
+      <strong>📊 ${request.status}</strong>
+      <p style="margin-top:7px;font-size:11px;">
+        ${request.observation}
+      </p>
+    </div>
+
+  `;
+
+  result.classList.remove("hidden");
+
+}
+
+</script>
+<section id="admin-dashboard" class="admin-section">
+
+  <div class="admin-layout">
+
+    <aside class="admin-sidebar">
+
+      <div class="admin-brand">
+        <div>👑</div>
+        <strong>MOSTAKBAL</strong>
+        <span>Administration</span>
+      </div>
+
+      <nav>
+
+        <button class="admin-nav active" onclick="showAdminView('dashboard',this)">
+          📊 Tableau de bord
+        </button>
+
+        <button class="admin-nav" onclick="showAdminView('requests',this)">
+          📂 Tous les dossiers
+        </button>
+
+        <button class="admin-nav" onclick="showAdminView('documents',this)">
+          📄 Documents
+        </button>
+
+        <button class="admin-nav" onclick="showAdminView('decisions',this)">
+          ⚖️ Décisions
+        </button>
+
+      </nav>
+
+      <button class="admin-logout" onclick="adminLogout()">
+        Se déconnecter
+      </button>
+
+    </aside>
+
+    <main class="admin-main">
+
+      <header class="admin-header">
+
+        <div>
+          <span>ESPACE ADMINISTRATIF</span>
+          <h1>Tableau de bord</h1>
+          <p>Gestion centralisée des dossiers administratifs.</p>
+        </div>
+
+        <div class="admin-user">
+          👑 Président
+        </div>
+
+      </header>
+
+      <div id="adminDashboardView" class="admin-view">
+
+        <div class="admin-stats">
+
+          <div>
+            <span>📨</span>
+            <strong id="newRequestsCount">0</strong>
+            <small>Nouvelles demandes</small>
+          </div>
+
+          <div>
+            <span>🔎</span>
+            <strong id="instructionCount">0</strong>
+            <small>En instruction</small>
+          </div>
+
+          <div>
+            <span>⏳</span>
+            <strong id="pendingCount">0</strong>
+            <small>En attente</small>
+          </div>
+
+          <div>
+            <span>📄</span>
+            <strong id="readyCount">0</strong>
+            <small>Documents prêts</small>
+          </div>
+
+        </div>
+
+        <div class="admin-recent">
+
+          <div class="admin-section-title">
+            <h2>Demandes récentes</h2>
+            <button onclick="showAdminView('requests')">
+              Voir tout
+            </button>
+          </div>
+
+          <div id="recentAdminRequests"></div>
+
+        </div>
+
+      </div>
+
+      <div id="adminRequestsView" class="admin-view hidden">
+
+        <div class="admin-section-title">
+          <div>
+            <h2>Tous les dossiers</h2>
+            <p>Rechercher et gérer les demandes.</p>
+          </div>
+
+          <input
+            id="adminSearch"
+            type="search"
+            placeholder="Rechercher un dossier..."
+            oninput="filterAdminRequests()"
+          >
+        </div>
+
+        <div id="adminRequestTable" class="admin-request-table"></div>
+
+      </div>
+
+      <div id="adminDocumentsView" class="admin-view hidden">
+
+        <h2>Documents</h2>
+
+        <div class="admin-empty">
+          📄
+          <p>Les documents déposés et les documents finaux apparaîtront ici.</p>
+        </div>
+
+      </div>
+
+      <div id="adminDecisionsView" class="admin-view hidden">
+
+        <h2>Décisions administratives</h2>
+
+        <div class="admin-empty">
+          ⚖️
+          <p>Les décisions prises seront centralisées dans cet espace.</p>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+</section>
+
+<div id="adminCaseModal" class="admin-case-modal hidden">
+
+  <div class="admin-case-box">
+
+    <button class="admin-case-close" onclick="closeAdminCase()">×</button>
+
+    <div id="adminCaseContent"></div>
+
+  </div>
+
+</div>
+
+<style>
+
+.admin-section {
+  min-height:100vh;
+  padding:35px 4%;
+  color:#f5f7fb;
+  background:#060d18;
+}
+
+.admin-layout {
+  max-width:1400px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:240px 1fr;
+  gap:25px;
+}
+
+.admin-sidebar {
+  min-height:calc(100vh - 70px);
+  display:flex;
+  flex-direction:column;
+  padding:22px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:20px;
+  background:#0b1626;
+}
+
+.admin-brand {
+  padding-bottom:22px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.admin-brand div {
+  font-size:28px;
+}
+
+.admin-brand strong,
+.admin-brand span {
+  display:block;
+}
+
+.admin-brand strong {
+  margin-top:10px;
+  letter-spacing:1px;
+}
+
+.admin-brand span {
+  margin-top:4px;
+  color:#8190a2;
+  font-size:10px;
+}
+
+.admin-sidebar nav {
+  display:grid;
+  gap:7px;
+  margin-top:25px;
+}
+
+.admin-nav {
+  padding:12px;
+  border:0;
+  border-radius:10px;
+  color:#8e9daf;
+  background:transparent;
+  text-align:left;
+  cursor:pointer;
+}
+
+.admin-nav.active,
+.admin-nav:hover {
+  color:white;
+  background:rgba(47,128,237,.12);
+}
+
+.admin-logout {
+  margin-top:auto;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  color:#aab7c6;
+  background:transparent;
+  cursor:pointer;
+}
+
+.admin-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:30px;
+}
+
+.admin-header > div:first-child span {
+  color:#f2bd68;
+  font-size:10px;
+  letter-spacing:1.5px;
+}
+
+.admin-header h1 {
+  margin:8px 0;
+  font-size:32px;
+}
+
+.admin-header p {
+  color:#8190a2;
+  font-size:12px;
+}
+
+.admin-user {
+  padding:11px 15px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  color:#c8d1dd;
+  background:rgba(255,255,255,.03);
+  font-size:12px;
+}
+
+.admin-stats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+
+.admin-stats > div {
+  padding:20px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:15px;
+  background:#0b1626;
+}
+
+.admin-stats span,
+.admin-stats strong,
+.admin-stats small {
+  display:block;
+}
+
+.admin-stats span {
+  font-size:20px;
+}
+
+.admin-stats strong {
+  margin-top:15px;
+  font-size:25px;
+}
+
+.admin-stats small {
+  margin-top:4px;
+  color:#8190a2;
+  font-size:10px;
+}
+
+.admin-recent {
+  margin-top:30px;
+}
+
+.admin-section-title {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.admin-section-title h2 {
+  font-size:19px;
+}
+
+.admin-section-title p {
+  color:#8190a2;
+  margin-top:5px;
+  font-size:11px;
+}
+
+.admin-section-title button {
+  padding:10px 14px;
+  border:0;
+  border-radius:9px;
+  color:white;
+  background:#2f80ed;
+  cursor:pointer;
+}
+
+.admin-section-title input {
+  padding:11px 14px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;
+  outline:none;
+  color:white;
+  background:#0b1626;
+}
+
+.admin-request-item {
+  display:grid;
+  grid-template-columns:1fr 1fr 150px 100px;
+  align-items:center;
+  gap:15px;
+  padding:17px;
+  margin-bottom:8px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:13px;
+  background:#0b1626;
+}
+
+.admin-request-item strong,
+.admin-request-item span {
+  display:block;
+}
+
+.admin-request-item strong {
+  font-size:12px;
+}
+
+.admin-request-item span {
+  color:#8190a2;
+  font-size:10px;
+  margin-top:4px;
+}
+
+.admin-status {
+  padding:6px 9px;
+  border-radius:7px;
+  color:#74d9bd;
+  background:rgba(32,201,151,.08);
+  font-size:9px;
+  text-align:center;
+}
+
+.admin-open {
+  padding:9px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;
+  color:white;
+  background:transparent;
+  cursor:pointer;
+}
+
+.admin-empty {
+  padding:60px;
+  margin-top:20px;
+  text-align:center;
+  border:1px dashed rgba(255,255,255,.1);
+  border-radius:18px;
+  color:#8190a2;
+}
+
+.admin-case-modal {
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:grid;
+  place-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(10px);
+}
+
+.admin-case-box {
+  width:100%;
+  max-width:700px;
+  max-height:90vh;
+  overflow-y:auto;
+  position:relative;
+  padding:30px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;
+  background:#0d1a2c;
+}
+
+.admin-case-close {
+  position:absolute;
+  top:15px;
+  right:15px;
+  width:34px;
+  height:34px;
+  border:0;
+  border-radius:9px;
+  color:white;
+  background:rgba(255,255,255,.07);
+  cursor:pointer;
+}
+
+.hidden {
+  display:none !important;
+}
+
+@media(max-width:1000px) {
+
+  .admin-layout {
+    grid-template-columns:1fr;
+  }
+
+  .admin-sidebar {
+    min-height:auto;
+  }
+
+  .admin-stats {
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+@media(max-width:650px) {
+
+  .admin-section {
+    padding:20px 4%;
+  }
+
+  .admin-header {
+    display:block;
+  }
+
+  .admin-user {
+    display:inline-block;
+    margin-top:15px;
+  }
+
+  .admin-stats {
+    grid-template-columns:1fr;
+  }
+
+  .admin-request-item {
+    grid-template-columns:1fr;
+  }
+
+  .admin-section-title {
+    display:block;
+  }
+
+  .admin-section-title input {
+    width:100%;
+    margin-top:15px;
+  }
+
+}
+
+</style>
+
+<script>
+
+const adminRequests = [
+
+  {
+    id:"MOST-2026-000001",
+    name:"Demandeur Citoyen",
+    identifier:"NIN-EXEMPLE",
+    type:"Demande de CNI",
+    status:"Instruction en cours",
+    date:"27/07/2026",
+    observation:"Dossier en cours d'examen."
+  },
+
+  {
+    id:"MOST-2026-000002",
+    name:"Demandeur Étranger",
+    identifier:"ETR-EXEMPLE",
+    type:"Carte de Statut",
+    status:"Dépôt fait",
+    date:"27/07/2026",
+    observation:"Dossier transmis à l'administration."
+  }
+
+];
+
+function showAdminView(view,button) {
+
+  document
+    .querySelectorAll(".admin-view")
+    .forEach(element => element.classList.add("hidden"));
+
+  const target =
+    document.getElementById(
+      "admin" +
+      view.charAt(0).toUpperCase() +
+      view.slice(1) +
+      "View"
+    );
+
+  if (target) {
+    target.classList.remove("hidden");
+  }
+
+  document
+    .querySelectorAll(".admin-nav")
+    .forEach(item => item.classList.remove("active"));
+
+  if (button) {
+    button.classList.add("active");
+  }
+
+  if (view === "requests") {
+    renderAdminRequests(adminRequests);
+  }
+
+}
+
+function renderAdminRequests(requests) {
+
+  const container =
+    document.getElementById("adminRequestTable");
+
+  if (!requests.length) {
+
+    container.innerHTML = `
+      <div class="admin-empty">
+        Aucun dossier trouvé.
+      </div>
+    `;
+
+    return;
+
+  }
+
+  container.innerHTML = requests.map(request => `
+
+    <div class="admin-request-item">
+
+      <div>
+        <strong>${request.id}</strong>
+        <span>${request.name}</span>
+      </div>
+
+      <div>
+        <strong>${request.type}</strong>
+        <span>${request.identifier}</span>
+      </div>
+
+      <div>
+        <div class="admin-status">
+          ${request.status}
+        </div>
+      </div>
+
+      <button
+        class="admin-open"
+        onclick="openAdminCase('${request.id}')"
+      >
+        Ouvrir
+      </button>
+
+    </div>
+
+  `).join("");
+
+}
+
+function filterAdminRequests() {
+
+  const query =
+    document
+      .getElementById("adminSearch")
+      .value
+      .toLowerCase();
+
+  const filtered =
+    adminRequests.filter(request =>
+      Object.values(request)
+        .join(" ")
+        .toLowerCase()
+        .includes(query)
+    );
+
+  renderAdminRequests(filtered);
+
+}
+
+function openAdminCase(id) {
+
+  const request =
+    adminRequests.find(item => item.id === id);
+
+  if (!request) return;
+
+  document
+    .getElementById("adminCaseContent")
+    .innerHTML = `
+
+      <h2>${request.id}</h2>
+
+      <p style="color:#8190a2;margin:8px 0 25px;">
+        Dossier administratif
+      </p>
+
+      <div style="
+        display:grid;
+        gap:10px;
+      ">
+
+        <div>
+          <strong>Demandeur</strong>
+          <p style="color:#8190a2;">
+            ${request.name}
+          </p>
+        </div>
+
+        <div>
+          <strong>Identifiant</strong>
+          <p style="color:#8190a2;">
+            ${request.identifier}
+          </p>
+        </div>
+
+        <div>
+          <strong>Type de demande</strong>
+          <p style="color:#8190a2;">
+            ${request.type}
+          </p>
+        </div>
+
+        <div>
+          <strong>Date de dépôt</strong>
+          <p style="color:#8190a2;">
+            ${request.date}
+          </p>
+        </div>
+
+        <div>
+          <strong>Observation</strong>
+          <p style="color:#8190a2;">
+            ${request.observation}
+          </p>
+        </div>
+
+      </div>
+
+      <div style="
+        display:grid;
+        gap:10px;
+        margin-top:25px;
+      ">
+
+        <button
+          onclick="changeAdminStatus('${request.id}','Instruction en cours')"
+          style="
+            padding:13px;
+            border:0;
+            border-radius:10px;
+            color:white;
+            background:#2f80ed;
+            cursor:pointer;
+          "
+        >
+          🔎 Mettre en instruction
+        </button>
+
+        <button
+          onclick="changeAdminStatus('${request.id}','Décision prise')"
+          style="
+            padding:13px;
+            border:0;
+            border-radius:10px;
+            color:white;
+            background:#7252b8;
+            cursor:pointer;
+          "
+        >
+          ⚖️ Prendre une décision
+        </button>
+
+        <button
+          onclick="changeAdminStatus('${request.id}','Document prêt')"
+          style="
+            padding:13px;
+            border:0;
+            border-radius:10px;
+            color:white;
+            background:#168f72;
+            cursor:pointer;
+          "
+        >
+          📄 Marquer le document comme prêt
+        </button>
+
+      </div>
+
+    `;
+
+  document
+    .getElementById("adminCaseModal")
+    .classList.remove("hidden");
+
+}
+
+function changeAdminStatus(id,status) {
+
+  const request =
+    adminRequests.find(item => item.id === id);
+
+  if (!request) return;
+
+  request.status = status;
+
+  closeAdminCase();
+
+  updateAdminStats();
+
+  renderAdminRequests(adminRequests);
+
+}
+
+function updateAdminStats() {
+
+  document.getElementById("newRequestsCount").textContent =
+    adminRequests.filter(item =>
+      item.status === "Dépôt fait"
+    ).length;
+
+  document.getElementById("instructionCount").textContent =
+    adminRequests.filter(item =>
+      item.status === "Instruction en cours"
+    ).length;
+
+  document.getElementById("pendingCount").textContent =
+    adminRequests.filter(item =>
+      item.status === "En attente"
+    ).length;
+
+  document.getElementById("readyCount").textContent =
+    adminRequests.filter(item =>
+      item.status === "Document prêt"
+    ).length;
+
+}
+
+function closeAdminCase() {
+
+  document
+    .getElementById("adminCaseModal")
+    .classList.add("hidden");
+
+}
+
+function adminLogout() {
+
+  alert("Session administrative terminée.");
+
+}
+
+document
+  .getElementById("recentAdminRequests")
+  .innerHTML = adminRequests
+  .map(request => `
+
+    <div class="admin-request-item">
+
+      <div>
+        <strong>${request.id}</strong>
+        <span>${request.name}</span>
+      </div>
+
+      <div>
+        <strong>${request.type}</strong>
+        <span>${request.date}</span>
+      </div>
+
+      <div class="admin-status">
+        ${request.status}
+      </div>
+
+      <button
+        class="admin-open"
+        onclick="openAdminCase('${request.id}')"
+      >
+        Ouvrir
+      </button>
+
+    </div>
+
+  `)
+  .join("");
+
+updateAdminStats();
+
+  </script>
+  <section id="admin-authentication" class="admin-auth-section">
+
+  <div class="admin-auth-box">
+
+    <div class="admin-auth-logo">👑</div>
+
+    <span>ACCÈS ADMINISTRATIF SÉCURISÉ</span>
+
+    <h2>Espace administratif</h2>
+
+    <p>
+      Cet espace est réservé au Président de la Cybersouveraineté MOSTAKBAL.
+    </p>
+
+    <form id="adminLoginForm">
+
+      <label>
+        Identifiant administratif
+      </label>
+
+      <input
+        type="text"
+        id="adminIdentifier"
+        placeholder="Identifiant administratif"
+        autocomplete="username"
+        required
+      >
+
+      <label>
+        Mot de passe
+      </label>
+
+      <input
+        type="password"
+        id="adminPasswordInput"
+        placeholder="Mot de passe"
+        autocomplete="current-password"
+        required
+      >
+
+      <button type="submit">
+        Se connecter
+      </button>
+
+      <div id="adminLoginError"></div>
+
+    </form>
+
+  </div>
+
+</section>
+
+<style>
+
+.admin-auth-section {
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:30px;
+  color:#f5f7fb;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(47,128,237,.12),transparent 35%),
+    #060d18;
+}
+
+.admin-auth-box {
+  width:100%;
+  max-width:430px;
+  padding:35px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:24px;
+  background:rgba(11,22,38,.9);
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
+}
+
+.admin-auth-logo {
+  width:60px;
+  height:60px;
+  display:grid;
+  place-items:center;
+  margin:0 auto 20px;
+  border-radius:17px;
+  background:rgba(47,128,237,.13);
+  font-size:27px;
+}
+
+.admin-auth-box > span {
+  color:#6ea9f5;
+  font-size:10px;
+  letter-spacing:1.5px;
+}
+
+.admin-auth-box h2 {
+  margin:12px 0 10px;
+  font-size:26px;
+}
+
+.admin-auth-box > p {
+  color:#8190a2;
+  font-size:12px;
+  line-height:1.6;
+  margin-bottom:28px;
+}
+
+.admin-auth-box form {
+  text-align:left;
+}
+
+.admin-auth-box label {
+  display:block;
+  margin:15px 0 8px;
+  color:#b9c5d4;
+  font-size:11px;
+}
+
+.admin-auth-box input {
+  width:100%;
+  padding:14px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:11px;
+  outline:none;
+  color:white;
+  background:rgba(255,255,255,.04);
+}
+
+.admin-auth-box input:focus {
+  border-color:rgba(47,128,237,.7);
+}
+
+.admin-auth-box button {
+  width:100%;
+  margin-top:22px;
+  padding:14px;
+  border:0;
+  border-radius:11px;
+  color:white;
+  background:#2f80ed;
+  cursor:pointer;
+}
+
+#adminLoginError {
+  display:none;
+  margin-top:15px;
+  padding:10px;
+  border-radius:9px;
+  color:#ff9e9e;
+  background:rgba(255,70,70,.08);
+  font-size:11px;
+}
+
+</style>
+
+<script>
+
+const ADMIN_IDENTIFIER =
+  "NR-2601-0001-M-FON";
+
+document
+  .getElementById("adminLoginForm")
+  .addEventListener("submit",function(event){
+
+    event.preventDefault();
+
+    const identifier =
+      document
+        .getElementById("adminIdentifier")
+        .value
+        .trim();
+
+    const password =
+      document
+        .getElementById("adminPasswordInput")
+        .value;
+
+    const error =
+      document.getElementById("adminLoginError");
+
+    if (identifier !== ADMIN_IDENTIFIER) {
+
+      error.textContent =
+        "Identifiant administratif incorrect.";
+
+      error.style.display = "block";
+
+      return;
+
+    }
+
+    if (!password) {
+
+      error.textContent =
+        "Veuillez saisir votre mot de passe.";
+
+      error.style.display = "block";
+
+      return;
+
+    }
+
+    error.style.display = "none";
+
+    alert(
+      "Authentification réussie. " +
+      "La connexion sécurisée à l'espace administratif sera reliée à la base de données."
+    );
+
+  });
+
+</script>
+<section id="mostakbal-database" class="database-section">
+
+  <div class="database-wrapper">
+
+    <div class="database-header">
+      <span>INFRASTRUCTURE</span>
+      <h2>Connexion à la base de données</h2>
+      <p>
+        Cette partie prépare la structure des données nécessaires
+        au portail MOSTAKBAL.
+      </p>
+    </div>
+
+    <div class="database-status">
+
+      <div class="database-status-icon">●</div>
+
+      <div>
+        <strong>Architecture prête</strong>
+        <p>
+          Les données peuvent être reliées à Supabase.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="database-modules">
+
+      <div>
+        <span>👤</span>
+        <strong>Citoyens</strong>
+        <small>Comptes et NIN</small>
+      </div>
+
+      <div>
+        <span>🌍</span>
+        <strong>Étrangers</strong>
+        <small>Comptes et numéros étrangers</small>
+      </div>
+
+      <div>
+        <span>📂</span>
+        <strong>Dossiers</strong>
+        <small>Demandes administratives</small>
+      </div>
+
+      <div>
+        <span>📄</span>
+        <strong>Documents</strong>
+        <small>Pièces déposées</small>
+      </div>
+
+      <div>
+        <span>📊</span>
+        <strong>Statuts</strong>
+        <small>Évolution des dossiers</small>
+      </div>
+
+      <div>
+        <span>⚖️</span>
+        <strong>Décisions</strong>
+        <small>Décisions administratives</small>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<style>
+
+.database-section {
+  min-height:100vh;
+  padding:70px 5%;
+  color:#f5f7fb;
+  background:#07111f;
+}
+
+.database-wrapper {
+  max-width:950px;
+  margin:auto;
+}
+
+.database-header {
+  text-align:center;
+  margin-bottom:35px;
+}
+
+.database-header span {
+  color:#6ea9f5;
+  font-size:10px;
+  letter-spacing:1.5px;
+}
+
+.database-header h2 {
+  margin:10px 0;
+  font-size:36px;
+}
+
+.database-header p {
+  color:#8e9daf;
+  font-size:13px;
+}
+
+.database-status {
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:20px;
+  border:1px solid rgba(32,201,151,.2);
+  border-radius:16px;
+  background:rgba(32,201,151,.06);
+}
+
+.database-status-icon {
+  color:#20c997;
+  font-size:22px;
+}
+
+.database-status strong {
+  display:block;
+}
+
+.database-status p {
+  margin-top:5px;
+  color:#8190a2;
+  font-size:11px;
+}
+
+.database-modules {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+  margin-top:25px;
+}
+
+.database-modules div {
+  padding:22px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  background:rgba(15,27,45,.8);
+}
+
+.database-modules span,
+.database-modules strong,
+.database-modules small {
+  display:block;
+}
+
+.database-modules span {
+  font-size:24px;
+}
+
+.database-modules strong {
+  margin-top:15px;
+  font-size:13px;
+}
+
+.database-modules small {
+  margin-top:5px;
+  color:#8190a2;
+  font-size:10px;
+}
+
+@media(max-width:650px) {
+
+  .database-modules {
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+
+<script>
+
+const MOSTAKBAL_DATABASE_CONFIG = {
+
+  provider: "Supabase",
+
+  tables: {
+    citizens: "citizens",
+    foreigners: "foreigners",
+    requests: "requests",
+    documents: "documents",
+    statuses: "request_statuses",
+    decisions: "decisions"
+  },
+
+  security: {
+    authentication: true,
+    rowLevelSecurity: true,
+    adminAccessControl: true
+  }
+
+};
+
+function getMostakbalDatabaseConfig() {
+
+  return MOSTAKBAL_DATABASE_CONFIG;
+
+}
+
+</script>
+<script>
+
+const MOSTAKBAL_CONFIG = {
+
+  portalName:
+    "MOSTAKBAL",
+
+  portalDescription:
+    "Portail administratif de la Cybersouveraineté",
+
+  adminIdentifier:
+    "NR-2601-0001-M-FON",
+
+  authentication: {
+    citizenIdentifier:
+      "NIN",
+
+    foreignerIdentifier:
+      "NUMERO_ETRANGER"
+  },
+
+  requestPrefix:
+    "MOST",
+
+  profiles: [
+    "citoyen",
+    "etranger",
+    "president"
+  ]
+
+};
+
+function generateRequestNumber() {
+
+  const year =
+    new Date().getFullYear();
+
+  const random =
+    Math.floor(
+      100000 +
+      Math.random() * 900000
+    );
+
+  return (
+    MOSTAKBAL_CONFIG.requestPrefix +
+    "-" +
+    year +
+    "-" +
+    random
+  );
+
+}
+
+function generateCitizenNIN() {
+
+  const year =
+    new Date().getFullYear();
+
+  const random =
+    Math.floor(
+      10000000 +
+      Math.random() * 90000000
+    );
+
+  return "NIN-" + year + "-" + random;
+
+}
+
+function generateForeignNumber() {
+
+  const year =
+    new Date().getFullYear();
+
+  const random =
+    Math.floor(
+      100000 +
+      Math.random() * 900000
+    );
+
+  return "ETR-" + year + "-" + random;
+
+}
+
+function getRequestStatusFlow(type) {
+
+  const commonFlow = [
+    "Dépôt en cours",
+    "Dépôt fait",
+    "Instruction en cours",
+    "Décision prise",
+    "Document prêt"
+  ];
+
+  if (
+    type === "status" ||
+    type === "time"
+  ) {
+
+    return [
+      "Dépôt en cours",
+      "Dépôt fait",
+      "Instruction en cours",
+      "Récépissé valide",
+      "Décision prise",
+      "Document prêt"
+    ];
+
+  }
+
+  return commonFlow;
+
+}
+
+function createLocalRequest(profile,type) {
+
+  const request = {
+
+    id:
+      generateRequestNumber(),
+
+    profile:
+      profile,
+
+    type:
+      type,
+
+    status:
+      "Dépôt en cours",
+
+    createdAt:
+      new Date().toISOString(),
+
+    observations:
+      [],
+
+    decision:
+      null,
+
+    finalDocument:
+      null
+
+  };
+
+  return request;
+
+}
+
+function validateMostakbalProfile(profile) {
+
+  return MOSTAKBAL_CONFIG
+    .profiles
+    .includes(profile);
+
+}
+
+window.MOSTAKBAL = {
+
+  config:
+    MOSTAKBAL_CONFIG,
+
+  generateRequestNumber:
+    generateRequestNumber,
+
+  generateCitizenNIN:
+    generateCitizenNIN,
+
+  generateForeignNumber:
+    generateForeignNumber,
+
+  getRequestStatusFlow:
+    getRequestStatusFlow,
+
+  createLocalRequest:
+    createLocalRequest,
+
+  validateProfile:
+    validateMostakbalProfile
+
+};
+
+</script>
+
+<script>
+
+const ADMIN_PASSWORD = "Alamimohammed12?";
+
+</script>
