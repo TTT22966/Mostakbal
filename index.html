@@ -1,0 +1,2578 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MOSTAKBAL — Portail administratif</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+font-family:Inter,Arial,sans-serif;
+background:#f4f7fb;
+color:#172033;
+min-height:100vh
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+#loginScreen{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:24px;
+background:linear-gradient(135deg,#eef4ff,#f8fbff)
+}
+.login-card{
+width:100%;
+max-width:460px;
+background:#fff;
+border:1px solid #e7ebf2;
+border-radius:28px;
+padding:36px;
+box-shadow:0 20px 60px rgba(30,50,90,.12)
+}
+.logo{
+font-size:30px;
+font-weight:900;
+letter-spacing:2px;
+color:#1d4ed8;
+margin-bottom:8px
+}
+.login-card h1{
+font-size:28px;
+margin-bottom:8px
+}
+.login-card p{
+color:#718096;
+margin-bottom:26px;
+line-height:1.6
+}
+.field{
+margin-bottom:18px
+}
+.field label{
+display:block;
+font-weight:700;
+font-size:14px;
+margin-bottom:8px
+}
+.field input,
+.field select,
+.field textarea{
+width:100%;
+border:1px solid #dce3ed;
+border-radius:14px;
+padding:13px 14px;
+background:#fff;
+outline:none;
+transition:.2s
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+border-color:#2563eb;
+box-shadow:0 0 0 4px rgba(37,99,235,.08)
+}
+.btn{
+border:0;
+border-radius:13px;
+padding:12px 17px;
+font-weight:800;
+transition:.2s
+}
+.btn-primary{
+background:#2563eb;
+color:#fff
+}
+.btn-primary:hover{
+background:#1d4ed8;
+transform:translateY(-1px)
+}
+.btn-light{
+background:#eef2f7;
+color:#263449
+}
+.btn-danger{
+background:#fee2e2;
+color:#991b1b
+}
+.actions{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:20px
+}
+#app{
+min-height:100vh
+}
+.topbar{
+height:74px;
+background:#fff;
+border-bottom:1px solid #e8edf3;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 28px;
+position:sticky;
+top:0;
+z-index:20
+}
+.brand{
+font-size:22px;
+font-weight:900;
+letter-spacing:1.5px;
+color:#1d4ed8
+}
+.user-area{
+display:flex;
+align-items:center;
+gap:12px
+}
+.user-badge{
+background:#f1f5ff;
+padding:9px 13px;
+border-radius:12px;
+font-size:13px;
+font-weight:700
+}
+.layout{
+display:grid;
+grid-template-columns:250px 1fr;
+min-height:calc(100vh - 74px)
+}
+.sidebar{
+background:#fff;
+border-right:1px solid #e8edf3;
+padding:22px 14px
+}
+.menu-title{
+font-size:11px;
+font-weight:900;
+text-transform:uppercase;
+letter-spacing:1px;
+color:#94a3b8;
+padding:12px
+}
+.menu-btn{
+width:100%;
+border:0;
+background:transparent;
+text-align:left;
+padding:13px 14px;
+border-radius:12px;
+margin-bottom:4px;
+color:#475569;
+font-weight:700
+}
+.menu-btn:hover,
+.menu-btn.active{
+background:#edf4ff;
+color:#1d4ed8
+}
+.content{
+padding:30px;
+max-width:1500px;
+width:100%;
+margin:auto
+}
+.page{
+display:none
+}
+.page.active{
+display:block
+}
+.hero{
+background:linear-gradient(135deg,#1d4ed8,#2563eb 55%,#3b82f6);
+color:#fff;
+border-radius:26px;
+padding:34px;
+margin-bottom:24px;
+box-shadow:0 18px 45px rgba(37,99,235,.2)
+}
+.hero h1{
+font-size:30px;
+margin-bottom:8px
+}
+.hero p{
+opacity:.9;
+line-height:1.6
+}
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:16px;
+margin-bottom:24px
+}
+.stat{
+background:#fff;
+border:1px solid #e7ebf2;
+border-radius:20px;
+padding:20px
+}
+.stat span{
+display:block;
+font-size:13px;
+color:#718096;
+margin-bottom:8px
+}
+.stat strong{
+font-size:28px
+}
+.section-title{
+display:flex;
+align-items:end;
+justify-content:space-between;
+gap:15px;
+margin:28px 0 16px
+}
+.section-title h2{
+font-size:22px
+}
+.section-title p{
+color:#718096;
+font-size:14px
+}
+.procedure-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:18px
+}
+.procedure-card{
+background:#fff;
+border:1px solid #e7ebf2;
+border-radius:20px;
+padding:22px;
+box-shadow:0 8px 25px rgba(30,50,90,.05)
+}
+.procedure-icon{
+width:46px;
+height:46px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#edf4ff;
+color:#1d4ed8;
+border-radius:14px;
+font-size:12px;
+font-weight:900;
+margin-bottom:16px
+}
+.procedure-card h3{
+font-size:17px;
+margin-bottom:8px
+}
+.procedure-card p{
+color:#718096;
+font-size:14px;
+line-height:1.5;
+margin-bottom:18px
+}
+.form-box{
+background:#fff;
+border:1px solid #e7ebf2;
+border-radius:22px;
+padding:26px;
+margin-top:20px;
+box-shadow:0 10px 30px rgba(30,50,90,.06)
+}
+.form-box h2{
+margin-bottom:8px
+}
+.form-box>p{
+color:#718096;
+margin-bottom:22px;
+line-height:1.5
+}
+.form-row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px
+}
+.card-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px
+}
+.card{
+background:#f8fafc;
+border:1px solid #e7ebf2;
+border-radius:16px;
+padding:18px
+}
+.card h3{
+font-size:15px;
+margin-bottom:8px
+}
+.card p{
+color:#64748b;
+line-height:1.6;
+font-size:14px
+}
+.empty{
+background:#fff;
+border:1px dashed #cbd5e1;
+border-radius:18px;
+padding:35px;
+text-align:center;
+color:#718096
+}
+.list{
+display:grid;
+gap:10px
+}
+.list-item{
+background:#fff;
+border:1px solid #e7ebf2;
+border-radius:16px;
+padding:17px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px
+}
+.list-item strong{
+display:block;
+margin-bottom:5px
+}
+.list-item small{
+display:block;
+color:#718096;
+margin-top:3px
+}
+.status{
+display:inline-flex;
+align-items:center;
+padding:7px 10px;
+border-radius:999px;
+background:#edf4ff;
+color:#1d4ed8;
+font-size:12px;
+font-weight:800
+}
+.tabs{
+display:flex;
+gap:8px;
+margin-bottom:18px
+}
+.tab{
+border:0;
+padding:11px 17px;
+border-radius:12px;
+background:#e9eef5;
+font-weight:800;
+color:#64748b
+}
+.tab.active{
+background:#2563eb;
+color:#fff
+}
+.file-requirement{
+border:1px solid #e2e8f0;
+border-radius:16px;
+padding:17px;
+margin-bottom:12px;
+background:#fbfdff
+}
+.file-head{
+display:flex;
+justify-content:space-between;
+gap:12px;
+align-items:center;
+margin-bottom:12px
+}
+.file-name{
+font-weight:800
+}
+.required{
+font-size:11px;
+font-weight:900;
+color:#b91c1c;
+background:#fee2e2;
+padding:5px 8px;
+border-radius:999px
+}
+.file-input{
+width:100%;
+padding:11px;
+border:1px dashed #b8c4d4;
+border-radius:12px;
+background:#fff
+}
+.file-state{
+font-size:12px;
+margin-top:8px;
+color:#64748b
+}
+@media(max-width:1050px){
+.layout{grid-template-columns:1fr}
+.sidebar{display:none}
+.procedure-grid{grid-template-columns:repeat(2,1fr)}
+.stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:700px){
+.content{padding:16px}
+.topbar{padding:0 16px}
+.procedure-grid,
+.form-row,
+.card-grid,
+.stats{grid-template-columns:1fr}
+.hero{padding:24px}
+.hero h1{font-size:25px}
+.list-item{align-items:flex-start;flex-direction:column}
+}
+</style>
+</head>
+<body>
+  <div id="loginScreen">
+<div class="login-card">
+<div class="logo">MOSTAKBAL</div>
+<h1>Connexion</h1>
+<p>
+Portail administratif de la cybersouveraineté.
+Connectez-vous à votre espace.
+</p>
+
+<div class="field">
+<label>Identifiant</label>
+<input id="loginIdentifier" type="text" autocomplete="username">
+</div>
+
+<div class="field">
+<label>Mot de passe</label>
+<input id="loginPassword" type="password" autocomplete="current-password">
+</div>
+
+<div class="field">
+<label>Espace</label>
+<select id="loginRole">
+<option value="citoyen">Espace Citoyen</option>
+<option value="etranger">Espace Étranger</option>
+<option value="president">Espace administratif du Président</option>
+</select>
+</div>
+
+<button class="btn btn-primary" style="width:100%" onclick="login()">
+Se connecter
+</button>
+
+<p id="loginError" style="color:#b91c1c;margin-top:14px;margin-bottom:0"></p>
+</div>
+</div>
+
+<div id="app" class="hidden">
+
+<header class="topbar">
+<div class="brand">MOSTAKBAL</div>
+
+<div class="user-area">
+<div class="user-badge">
+<span id="currentUserName">Utilisateur</span>
+—
+<span id="currentUserRole">Espace</span>
+</div>
+
+<button class="btn btn-light" onclick="logout()">
+Déconnexion
+</button>
+</div>
+</header>
+
+<div class="layout">
+
+<aside class="sidebar">
+
+<div class="menu-title">
+Navigation
+</div>
+
+<button class="menu-btn active" data-page="dashboard" onclick="showPage('dashboard')">
+Tableau de bord
+</button>
+
+<button class="menu-btn" data-page="procedures" onclick="showPage('procedures')">
+Démarches administratives
+</button>
+
+<button class="menu-btn" data-page="dossiers" onclick="showPage('dossiers')">
+Consulter mes dossiers
+</button>
+
+<button id="instructionMenu"
+class="menu-btn hidden"
+data-page="instruction"
+onclick="showPage('instruction');loadInstruction('citoyen')">
+Instruire les demandes
+</button>
+
+</aside>
+
+<main class="content">
+
+<section id="dashboard" class="page active">
+
+<div class="hero">
+<h1 id="welcomeTitle">
+Bienvenue dans MOSTAKBAL
+</h1>
+<p id="welcomeText">
+Votre espace administratif sécurisé.
+</p>
+</div>
+
+<div id="statsArea" class="stats">
+
+<div class="stat">
+<span>Dossiers</span>
+<strong id="statTotal">0</strong>
+</div>
+
+<div class="stat">
+<span>En cours</span>
+<strong id="statPending">0</strong>
+</div>
+
+<div class="stat">
+<span>Terminés</span>
+<strong id="statDone">0</strong>
+</div>
+
+<div class="stat">
+<span>Documents déposés</span>
+<strong id="statFiles">0</strong>
+</div>
+
+</div>
+
+<div id="presidentInstructionCard" class="form-box hidden">
+<h2>Instruction des demandes</h2>
+<p>
+En tant que Président, vous pouvez instruire les demandes
+des citoyens et des étrangers.
+</p>
+
+<div class="actions">
+<button class="btn btn-primary"
+onclick="showPage('instruction');loadInstruction('citoyen')">
+Instruire les citoyens
+</button>
+
+<button class="btn btn-light"
+onclick="showPage('instruction');loadInstruction('etranger')">
+Instruire les étrangers
+</button>
+</div>
+</div>
+
+<div class="section-title">
+<div>
+<h2>Démarches administratives</h2>
+<p>Accédez rapidement aux principales démarches.</p>
+</div>
+</div>
+
+<div id="dashboardProcedures" class="procedure-grid"></div>
+
+</section>
+
+<section id="procedures" class="page">
+
+<div class="hero">
+<h1>Démarches administratives</h1>
+<p>
+Choisissez une démarche pour commencer votre dossier.
+</p>
+</div>
+
+<div id="procedureGrid" class="procedure-grid"></div>
+
+<div id="procedureForm" class="hidden"></div>
+
+</section>
+
+<section id="dossiers" class="page">
+
+<div class="hero">
+<h1>Mes dossiers</h1>
+<p>
+Consultez l'état et l'historique de vos démarches administratives.
+</p>
+</div>
+
+<div id="myRequests"></div>
+
+</section>
+
+<section id="instruction" class="page">
+
+<div class="hero">
+<h1>Instruction des demandes</h1>
+<p>
+Espace réservé au Président pour examiner et instruire les dossiers.
+</p>
+</div>
+
+<div class="tabs">
+
+<button id="citizenTab"
+class="tab active"
+onclick="loadInstruction('citoyen')">
+Citoyens
+</button>
+
+<button id="foreignTab"
+class="tab"
+onclick="loadInstruction('etranger')">
+Étrangers
+</button>
+
+</div>
+
+<div id="instructionSearchBox"></div>
+
+<div id="instructionList"></div>
+
+<div id="instructionDetail"></div>
+
+</section>
+
+</main>
+</div>
+  </div>
+  <script>
+const MOSTAKBAL_CONFIG={
+presidentIdentifier:"PRESIDENT",
+presidentPassword:"CHANGE_ME"
+};
+
+let currentUser=null;
+let requests=[];
+
+const procedures=[
+{
+id:"cni",
+title:"Demande de CNI",
+category:"Identité",
+description:"Demande de Carte Nationale d'Identité."
+},
+{
+id:"passport",
+title:"Demande de passeport",
+category:"Voyage",
+description:"Demande de passeport."
+},
+{
+id:"nationality",
+title:"Demande de certificat de nationalité",
+category:"Nationalité",
+description:"Demande ou renouvellement d'un certificat de nationalité."
+},
+{
+id:"birth",
+title:"Demande d'extrait de naissance",
+category:"État civil",
+description:"Demande réservée à l'Espace Citoyen."
+},
+{
+id:"status",
+title:"Demande de carte de statut",
+category:"Statut",
+description:"Demande de carte de statut dans l'Espace Étranger."
+},
+{
+id:"time",
+title:"Demande de carte TIME",
+category:"Mineurs",
+description:"Demande de carte TIME."
+},
+{
+id:"acquisition",
+title:"Demande d'acquisition de nationalité",
+category:"Nationalité",
+description:"Demande d'acquisition de nationalité."
+},
+{
+id:"lost",
+title:"Déclaration de perte d'un document",
+category:"Documents",
+description:"Déclarez la perte d'un document."
+}
+];
+
+const citizenProcedures=[
+"cni",
+"passport",
+"nationality",
+"birth",
+"lost"
+];
+
+const foreignProcedures=[
+"cni",
+"passport",
+"nationality",
+"status",
+"time",
+"acquisition",
+"lost"
+];
+
+function generateId(){
+const year=new Date().getFullYear();
+const random=Math.random()
+.toString(36)
+.substring(2,9)
+.toUpperCase();
+return"MOSTAKBAL-"+year+"-"+random;
+}
+
+function saveRequests(){
+localStorage.setItem(
+"MOSTAKBAL_REQUESTS",
+JSON.stringify(requests)
+);
+}
+
+function loadRequests(){
+try{
+const data=localStorage.getItem(
+"MOSTAKBAL_REQUESTS"
+);
+requests=data?JSON.parse(data):[];
+}catch(e){
+requests=[];
+}
+}
+
+function saveSession(){
+if(currentUser){
+sessionStorage.setItem(
+"MOSTAKBAL_USER",
+JSON.stringify(currentUser)
+);
+}
+}
+
+function loadSession(){
+try{
+const data=sessionStorage.getItem(
+"MOSTAKBAL_USER"
+);
+currentUser=data?JSON.parse(data):null;
+}catch(e){
+currentUser=null;
+}
+}
+
+function login(){
+
+const identifier=
+document.getElementById(
+"loginIdentifier"
+).value.trim();
+
+const password=
+document.getElementById(
+"loginPassword"
+).value;
+
+const role=
+document.getElementById(
+"loginRole"
+).value;
+
+const error=
+document.getElementById(
+"loginError"
+);
+
+error.textContent="";
+
+if(!identifier||!password){
+error.textContent=
+"Veuillez renseigner vos identifiants.";
+return;
+}
+
+if(role==="president"){
+
+if(
+identifier!==
+MOSTAKBAL_CONFIG.presidentIdentifier||
+password!==
+MOSTAKBAL_CONFIG.presidentPassword
+){
+error.textContent=
+"Identifiant ou mot de passe incorrect.";
+return;
+}
+
+currentUser={
+identifier,
+role:"president"
+};
+
+}else{
+
+currentUser={
+identifier,
+role
+};
+
+}
+
+saveSession();
+
+openApplication();
+}
+
+function logout(){
+
+currentUser=null;
+
+sessionStorage.removeItem(
+"MOSTAKBAL_USER"
+);
+
+document
+.getElementById("app")
+.classList.add("hidden");
+
+document
+.getElementById("loginScreen")
+.classList.remove("hidden");
+
+document
+.getElementById("loginPassword")
+.value="";
+}
+
+function openApplication(){
+
+document
+.getElementById("loginScreen")
+.classList.add("hidden");
+
+document
+.getElementById("app")
+.classList.remove("hidden");
+
+initializeInterface();
+}
+
+function showPage(id){
+
+document
+.querySelectorAll(".page")
+.forEach(
+page=>page.classList.remove("active")
+);
+
+const page=
+document.getElementById(id);
+
+if(page){
+page.classList.add("active");
+}
+
+document
+.querySelectorAll(".menu-btn")
+.forEach(
+button=>{
+button.classList.toggle(
+"active",
+button.dataset.page===id
+);
+}
+);
+
+if(id==="dossiers"){
+renderMyRequests();
+}
+
+if(id==="procedures"){
+renderProcedures();
+}
+
+if(id==="instruction"&&
+currentUser?.role==="president"){
+loadInstruction("citoyen");
+}
+}
+  </script>
+  <script>
+function getAvailableProcedures(){
+
+if(currentUser.role==="president"){
+return procedures;
+}
+
+if(currentUser.role==="citoyen"){
+return procedures.filter(
+p=>citizenProcedures.includes(p.id)
+);
+}
+
+return procedures.filter(
+p=>foreignProcedures.includes(p.id)
+);
+}
+
+function renderProcedures(){
+
+const grid=
+document.getElementById(
+"procedureGrid"
+);
+
+const dashboard=
+document.getElementById(
+"dashboardProcedures"
+);
+
+const available=
+getAvailableProcedures();
+
+const html=
+available.map(
+p=>`
+<div class="procedure-card">
+<div class="procedure-icon">
+${p.category.substring(0,3).toUpperCase()}
+</div>
+<h3>${p.title}</h3>
+<p>${p.description}</p>
+<button class="btn btn-primary"
+onclick="openProcedure('${p.id}')">
+Faire la démarche
+</button>
+</div>
+`
+).join("");
+
+if(grid)grid.innerHTML=html;
+if(dashboard)dashboard.innerHTML=html;
+}
+
+function openProcedure(id){
+
+const procedure=
+procedures.find(
+p=>p.id===id
+);
+
+if(!procedure)return;
+
+const container=
+document.getElementById(
+"procedureForm"
+);
+
+showPage("procedures");
+
+container.classList.remove("hidden");
+
+if(id==="cni"){
+renderCniForm(container);
+return;
+}
+
+if(id==="passport"){
+renderPassportForm(container);
+return;
+}
+
+if(id==="nationality"){
+renderNationalityForm(container);
+return;
+}
+
+if(id==="birth"){
+
+if(
+currentUser.role!=="citoyen"&&
+currentUser.role!=="president"
+){
+showToast(
+"Cette démarche est disponible uniquement dans l'Espace Citoyen."
+);
+return;
+}
+
+renderBirthForm(container);
+return;
+}
+
+if(id==="status"){
+renderStatusForm(container);
+return;
+}
+
+if(id==="time"){
+renderTimeForm(container);
+return;
+}
+
+if(id==="acquisition"){
+renderAcquisitionForm(container);
+return;
+}
+
+if(id==="lost"){
+renderLostForm(container);
+return;
+}
+}
+
+function renderBaseForm(
+container,
+title,
+intro,
+fields
+){
+
+container.innerHTML=`
+<div class="form-box">
+<h2>${title}</h2>
+<p>${intro}</p>
+
+<div class="form-row">
+
+<div class="field">
+<label>Nom et prénom</label>
+<input id="formName" type="text">
+</div>
+
+<div class="field">
+<label>Date de naissance</label>
+<input id="formBirth" type="date">
+</div>
+
+</div>
+
+<div class="form-row">
+
+<div class="field">
+<label>Numéro d'identification</label>
+<input id="formNin" type="text">
+</div>
+
+<div class="field">
+<label>Adresse e-mail</label>
+<input id="formEmail" type="email">
+</div>
+
+</div>
+
+<div class="field">
+<label>Adresse coordonnée</label>
+<textarea id="formAddress" rows="3"></textarea>
+</div>
+
+<div id="specificFields">
+${fields}
+</div>
+
+<div class="field">
+<label>Observation / message</label>
+<textarea id="formMessage" rows="4"
+placeholder="Ajoutez une observation ou un message si nécessaire."></textarea>
+</div>
+
+<div class="actions">
+<button class="btn btn-light"
+onclick="closeProcedure()">
+Annuler
+</button>
+
+<button class="btn btn-primary"
+onclick="submitCurrentProcedure()">
+Déposer la demande
+</button>
+</div>
+
+</div>
+`;
+
+window.currentProcedure=
+{
+title,
+fields
+};
+}
+
+function requirement(
+id,
+label,
+required=true
+){
+
+return`
+<div class="file-requirement">
+<div class="file-head">
+<div class="file-name">${label}</div>
+<span class="required">
+${required?"OBLIGATOIRE":"OPTIONNEL"}
+</span>
+</div>
+
+<input
+class="file-input"
+id="file_${id}"
+type="file"
+accept=".pdf,.jpg,.jpeg,.png"
+onchange="updateFileState('${id}')">
+
+<div class="file-state"
+id="state_${id}">
+Aucun fichier déposé.
+</div>
+</div>
+`;
+}
+
+function updateFileState(id){
+
+const input=
+document.getElementById(
+"file_"+id
+);
+
+const state=
+document.getElementById(
+"state_"+id
+);
+
+if(!input||!state)return;
+
+if(input.files.length){
+
+state.textContent=
+"Fichier déposé : "+
+input.files[0].name;
+
+state.style.color="#15803d";
+
+}else{
+
+state.textContent=
+"Aucun fichier déposé.";
+
+state.style.color="#64748b";
+}
+}
+
+function closeProcedure(){
+
+const container=
+document.getElementById(
+"procedureForm"
+);
+
+container.classList.add("hidden");
+container.innerHTML="";
+}
+  </script>
+  <script>
+function renderCniForm(container){
+
+renderBaseForm(
+container,
+"Demande de CNI",
+"Choisissez le type de demande et déposez chaque pièce justificative.",
+`
+<div class="field">
+<label>Type de demande</label>
+<select id="requestType"
+onchange="renderCniRequirements()">
+<option value="premiere">
+Première demande
+</option>
+<option value="renouvellement">
+Renouvellement
+</option>
+</select>
+</div>
+
+<div id="cniRequirements"></div>
+`
+);
+
+renderCniRequirements();
+}
+
+function renderCniRequirements(){
+
+const type=
+document.getElementById(
+"requestType"
+).value;
+
+const box=
+document.getElementById(
+"cniRequirements"
+);
+
+if(type==="premiere"){
+
+box.innerHTML=
+requirement(
+"cni_nationality",
+"Certificat de nationalité"
+)+
+requirement(
+"cni_photo",
+"Photo d'identité"
+);
+
+}else{
+
+box.innerHTML=
+requirement(
+"cni_old",
+"Ancienne CNI"
+)+
+requirement(
+"cni_photo",
+"Photo d'identité"
+);
+}
+}
+
+function renderPassportForm(container){
+
+renderBaseForm(
+container,
+"Demande de passeport",
+"Choisissez le type de demande et déposez les pièces justificatives.",
+`
+<div class="field">
+<label>Type de demande</label>
+<select id="requestType"
+onchange="renderPassportRequirements()">
+<option value="premiere">
+Première demande
+</option>
+<option value="renouvellement">
+Renouvellement
+</option>
+</select>
+</div>
+
+<div id="passportRequirements"></div>
+`
+);
+
+renderPassportRequirements();
+}
+
+function renderPassportRequirements(){
+
+const type=
+document.getElementById(
+"requestType"
+).value;
+
+const box=
+document.getElementById(
+"passportRequirements"
+);
+
+if(type==="premiere"){
+
+box.innerHTML=
+requirement(
+"passport_nationality",
+"Certificat de nationalité"
+)+
+requirement(
+"passport_photo",
+"Photo d'identité"
+);
+
+}else{
+
+box.innerHTML=
+requirement(
+"passport_old",
+"Ancien passeport"
+)+
+requirement(
+"passport_photo",
+"Photo d'identité"
+);
+}
+}
+
+function renderNationalityForm(container){
+
+renderBaseForm(
+container,
+"Demande de certificat de nationalité",
+"Choisissez le type de demande puis déposez les pièces correspondantes.",
+`
+<div class="field">
+<label>Type de demande</label>
+<select id="requestType"
+onchange="renderNationalityRequirements()">
+<option value="premiere">
+Première demande
+</option>
+<option value="deuxieme">
+Deuxième demande
+</option>
+</select>
+</div>
+
+<div id="nationalityRequirements"></div>
+`
+);
+
+renderNationalityRequirements();
+}
+
+function renderNationalityRequirements(){
+
+const type=
+document.getElementById(
+"requestType"
+).value;
+
+const box=
+document.getElementById(
+"nationalityRequirements"
+);
+
+if(type==="premiere"){
+
+box.innerHTML=
+requirement(
+"nationality_acquisition",
+"Déclaration d'acquisition de nationalité"
+)+
+requirement(
+"nationality_photo",
+"Photo d'identité"
+);
+
+}else{
+
+box.innerHTML=
+requirement(
+"nationality_photo2",
+"Photo d'identité"
+)+
+requirement(
+"nationality_identity",
+"CNI ou passeport"
+);
+}
+}
+
+function renderBirthForm(container){
+
+renderBaseForm(
+container,
+"Demande d'extrait de naissance",
+"Cette démarche est disponible uniquement dans l'Espace Citoyen.",
+requirement(
+"birth_identity",
+"Pièce d'identité délivrée par les autorités intérieures (MOSTAKBAL)"
+)
+);
+}
+
+function renderStatusForm(container){
+
+renderBaseForm(
+container,
+"Demande de carte de statut",
+"Déposez toutes les pièces justificatives du dossier.",
+requirement(
+"status_identity",
+"Pièce d'identité étrangère"
+)+
+requirement(
+"status_photo",
+"Photo d'identité"
+)+
+requirement(
+"status_birth",
+"Acte de naissance"
+)+
+requirement(
+"status_address",
+"Justificatif de domicile"
+)
+);
+}
+  </script>
+  <script>
+function renderTimeForm(container){
+
+renderBaseForm(
+container,
+"Demande de carte TIME",
+"Déposez les pièces justificatives du mineur.",
+`
+${requirement(
+"time_identity",
+"Pièce d'identité étrangère du mineur"
+)}
+
+${requirement(
+"time_representative",
+"Carte de statut du représentant légal"
+)}
+
+${requirement(
+"time_photo",
+"Photo du mineur"
+)}
+
+${requirement(
+"time_birth",
+"Extrait de naissance étranger du mineur"
+)}
+
+${requirement(
+"time_parental",
+"Document justifiant l'autorité parentale"
+)}
+
+${requirement(
+"time_address",
+"Justificatif de domicile"
+)}
+`
+);
+}
+
+function renderAcquisitionForm(container){
+
+renderBaseForm(
+container,
+"Demande d'acquisition de nationalité",
+"Le dossier est soumis aux conditions définies par le portail.",
+`
+<div class="card" style="margin-bottom:18px">
+<h3>Conditions du dossier</h3>
+<p>
+Le demandeur doit disposer d'une carte de statut
+ou d'une carte TIME et d'un extrait de naissance
+étranger. Le titre doit être dans la période
+permettant la demande, entre la troisième et la
+cinquième année de validité. Les cartes de statut
+et TIME sont valables cinq ans.
+</p>
+</div>
+
+${requirement(
+"acq_status",
+"Carte de statut ou carte TIME"
+)}
+
+${requirement(
+"acq_birth",
+"Extrait de naissance étranger"
+)}
+
+<div class="card" style="margin-top:16px">
+<h3>Condition juridique</h3>
+<p>
+Le demandeur ne doit pas avoir de problème juridique
+incompatible avec la demande.
+</p>
+</div>
+`
+);
+}
+
+function renderLostForm(container){
+
+renderBaseForm(
+container,
+"Déclaration de perte d'un document",
+"Indiquez le document concerné et déposez les justificatifs disponibles.",
+`
+<div class="field">
+<label>Document perdu</label>
+<select id="lostDocument">
+<option>CNI</option>
+<option>Passeport</option>
+<option>Carte de statut</option>
+<option>Carte TIME</option>
+<option>Autre document</option>
+</select>
+</div>
+
+${requirement(
+"lost_proof",
+"Justificatif ou document disponible concernant la perte"
+)}
+`
+);
+}
+
+function collectFiles(){
+
+const files=[];
+
+document
+.querySelectorAll(
+".file-input"
+)
+.forEach(
+input=>{
+
+if(input.files.length){
+
+files.push({
+field:input.id,
+name:input.files[0].name
+});
+
+}
+
+}
+);
+
+return files;
+}
+
+function validateRequiredFiles(){
+
+const required=
+document.querySelectorAll(
+".file-input"
+);
+
+const missing=[];
+
+required.forEach(
+input=>{
+
+if(!input.files.length){
+
+const label=
+input.parentElement
+.querySelector(
+".file-name"
+);
+
+if(label){
+missing.push(
+label.textContent
+);
+}
+
+}
+
+}
+);
+
+return missing;
+}
+
+function submitCurrentProcedure(){
+
+const missing=
+validateRequiredFiles();
+
+if(missing.length){
+
+showToast(
+"Pièce(s) manquante(s) : "+
+missing.join(", ")
+);
+
+return;
+}
+
+const name=
+document.getElementById(
+"formName"
+).value.trim();
+
+const birth=
+document.getElementById(
+"formBirth"
+).value;
+
+const nin=
+document.getElementById(
+"formNin"
+).value.trim();
+
+const email=
+document.getElementById(
+"formEmail"
+).value.trim();
+
+const address=
+document.getElementById(
+"formAddress"
+).value.trim();
+
+if(
+!name||
+!birth||
+!nin||
+!email||
+!address
+){
+
+showToast(
+"Veuillez compléter les informations obligatoires."
+);
+
+return;
+}
+
+if(
+!email.includes("@")
+){
+
+showToast(
+"Adresse e-mail invalide."
+);
+
+return;
+}
+
+const files=
+collectFiles();
+
+const request={
+id:generateId(),
+title:window.currentProcedure.title,
+ownerRole:currentUser.role,
+ownerIdentifier:currentUser.identifier,
+name,
+birthDate:birth,
+nin,
+email,
+address,
+files,
+message:
+document.getElementById(
+"formMessage"
+).value.trim(),
+status:"Dépôt fait",
+createdAt:
+new Date().toLocaleString("fr-FR"),
+observation:"",
+instruction:"",
+messages:[],
+history:[
+{
+status:"Dépôt fait",
+date:
+new Date().toLocaleString("fr-FR")
+}
+]
+};
+
+const type=
+document.getElementById(
+"requestType"
+);
+
+if(type){
+request.requestType=type.value;
+}
+
+requests.push(request);
+
+saveRequests();
+
+closeProcedure();
+
+renderMyRequests();
+
+updateStats();
+
+showToast(
+"Demande déposée avec succès. Référence : "+
+request.id
+);
+
+showPage("dossiers");
+}
+  </script>
+  <script>
+function renderMyRequests(){
+
+const container=document.getElementById("myRequests");
+if(!container)return;
+
+const mine=requests.filter(
+r=>r.ownerIdentifier===currentUser.identifier
+);
+
+if(!mine.length){
+container.innerHTML=`
+<div class="empty">
+Vous n'avez encore déposé aucune démarche administrative.
+</div>`;
+return;
+}
+
+container.innerHTML=`
+<div class="list">
+${mine.map(r=>`
+<div class="list-item">
+<div>
+<strong>${escapeHtml(r.title)}</strong>
+<small>Référence : ${escapeHtml(r.id)}</small>
+<small>Déposée le : ${escapeHtml(r.createdAt)}</small>
+<small>Statut : ${escapeHtml(r.status)}</small>
+</div>
+<div>
+<span class="status">${escapeHtml(r.status)}</span>
+<button class="btn btn-light"
+onclick="viewRequest('${r.id}')">
+Consulter
+</button>
+</div>
+</div>
+`).join("")}
+</div>`;
+}
+
+function viewRequest(id){
+
+const request=requests.find(r=>r.id===id);
+if(!request)return;
+
+showPage("dossiers");
+
+const container=document.getElementById("myRequests");
+
+container.innerHTML=`
+<div class="form-box">
+
+<h2>${escapeHtml(request.title)}</h2>
+
+<p>
+Référence : ${escapeHtml(request.id)}
+</p>
+
+<div class="card-grid">
+
+<div class="card">
+<h3>Informations du demandeur</h3>
+<p>
+Nom : ${escapeHtml(request.name)}<br>
+NIN : ${escapeHtml(request.nin)}<br>
+Date de naissance : ${escapeHtml(request.birthDate)}<br>
+E-mail : ${escapeHtml(request.email)}<br>
+Adresse : ${escapeHtml(request.address)}
+</p>
+</div>
+
+<div class="card">
+<h3>État du dossier</h3>
+<p>
+Statut actuel :
+<strong>${escapeHtml(request.status)}</strong>
+</p>
+</div>
+
+</div>
+
+<div style="margin-top:22px">
+<h3>Pièces justificatives</h3>
+
+<div class="list" style="margin-top:12px">
+
+${request.files.length
+?request.files.map(file=>`
+<div class="list-item">
+<div>
+<strong>${escapeHtml(file.label||file.field)}</strong>
+<small>${escapeHtml(file.name)}</small>
+</div>
+<span class="status">Fichier déposé</span>
+</div>
+`).join("")
+:`
+<div class="empty">
+Aucune pièce déposée.
+</div>
+`}
+
+</div>
+</div>
+
+<div style="margin-top:22px">
+<h3>Observation administrative</h3>
+<p style="margin-top:8px;color:#64748b">
+${escapeHtml(request.observation||"Aucune observation.")}
+</p>
+</div>
+
+<div style="margin-top:22px">
+<h3>Messages</h3>
+
+<div class="list" style="margin-top:12px">
+
+${request.messages.length
+?request.messages.map(m=>`
+<div class="list-item">
+<div>
+<strong>${escapeHtml(m.author)}</strong>
+<small>${escapeHtml(m.date)}</small>
+<p style="margin-top:8px;color:#64748b">
+${escapeHtml(m.message)}
+</p>
+</div>
+</div>
+`).join("")
+:`
+<div class="empty">
+Aucun message.
+</div>
+`}
+
+</div>
+</div>
+
+<div style="margin-top:22px">
+<h3>Historique du dossier</h3>
+
+<div class="list" style="margin-top:12px">
+
+${request.history.map(h=>`
+<div class="list-item">
+<div>
+<strong>${escapeHtml(h.status)}</strong>
+<small>${escapeHtml(h.date)}</small>
+</div>
+</div>
+`).join("")}
+
+</div>
+</div>
+
+<div class="actions">
+<button class="btn btn-light"
+onclick="renderMyRequests()">
+Retour à mes dossiers
+</button>
+</div>
+
+</div>`;
+}
+
+function updateStats(){
+
+if(!currentUser)return;
+
+const mine=requests.filter(
+r=>r.ownerIdentifier===currentUser.identifier
+);
+
+const finished=[
+"Document prêt",
+"Document valable",
+"Décision favorable"
+];
+
+const done=mine.filter(
+r=>finished.includes(r.status)
+).length;
+
+document.getElementById("statTotal").textContent=mine.length;
+document.getElementById("statDone").textContent=done;
+document.getElementById("statPending").textContent=
+Math.max(0,mine.length-done);
+
+document.getElementById("statFiles").textContent=
+mine.reduce(
+(total,r)=>total+r.files.length,
+0
+);
+}
+
+function showToast(message){
+
+let toast=document.getElementById("toast");
+
+if(!toast){
+
+toast=document.createElement("div");
+toast.id="toast";
+
+toast.style.position="fixed";
+toast.style.right="20px";
+toast.style.bottom="20px";
+toast.style.zIndex="1000";
+toast.style.background="#172033";
+toast.style.color="#fff";
+toast.style.padding="14px 18px";
+toast.style.borderRadius="14px";
+toast.style.boxShadow="0 15px 35px rgba(0,0,0,.2)";
+toast.style.maxWidth="420px";
+
+document.body.appendChild(toast);
+}
+
+toast.textContent=message;
+
+clearTimeout(window.toastTimer);
+
+window.toastTimer=setTimeout(
+()=>{
+if(toast.parentNode)toast.remove();
+},
+4000
+);
+}
+
+function escapeHtml(value){
+
+return String(value??"")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+}
+  </script>
+  <script>
+function loadInstruction(space){
+
+if(!currentUser||currentUser.role!=="president"){
+showToast("Accès réservé au Président.");
+return;
+}
+
+document.getElementById("citizenTab")
+.classList.toggle("active",space==="citoyen");
+
+document.getElementById("foreignTab")
+.classList.toggle("active",space==="etranger");
+
+const list=document.getElementById("instructionList");
+
+const filtered=requests.filter(
+r=>r.ownerRole===space
+);
+
+if(!filtered.length){
+
+list.innerHTML=`
+<div class="empty">
+Aucune demande à instruire dans cet espace.
+</div>`;
+
+document.getElementById(
+"instructionSearchBox"
+).innerHTML="";
+
+document.getElementById(
+"instructionDetail"
+).innerHTML="";
+
+return;
+}
+
+document.getElementById(
+"instructionSearchBox"
+).innerHTML=`
+<div class="field">
+<input
+id="requestSearch"
+type="search"
+placeholder="Rechercher une demande..."
+oninput="searchRequests()">
+</div>`;
+
+list.innerHTML=`
+<div class="list">
+
+${filtered.map(r=>`
+<div class="list-item instruction-item">
+
+<div>
+<strong>${escapeHtml(r.title)}</strong>
+<small>Référence : ${escapeHtml(r.id)}</small>
+<small>Demandeur : ${escapeHtml(r.name)}</small>
+<small>Statut : ${escapeHtml(r.status)}</small>
+</div>
+
+<div>
+<span class="status">
+${escapeHtml(r.status)}
+</span>
+
+<button class="btn btn-primary"
+onclick="openInstruction('${r.id}')">
+Instruire
+</button>
+</div>
+
+</div>
+`).join("")}
+
+</div>`;
+}
+
+function searchRequests(){
+
+const input=document.getElementById("requestSearch");
+if(!input)return;
+
+const query=input.value
+.toLowerCase()
+.trim();
+
+document
+.querySelectorAll(".instruction-item")
+.forEach(item=>{
+
+item.style.display=
+item.textContent
+.toLowerCase()
+.includes(query)
+?"flex"
+:"none";
+
+});
+}
+
+function openInstruction(id){
+
+const request=requests.find(
+r=>r.id===id
+);
+
+if(!request)return;
+
+const detail=document.getElementById(
+"instructionDetail"
+);
+
+detail.innerHTML=`
+
+<div class="form-box">
+
+<h2>Instruction du dossier</h2>
+
+<p>
+Référence : ${escapeHtml(request.id)}
+</p>
+
+<div class="card-grid">
+
+<div class="card">
+<h3>Demandeur</h3>
+<p>
+Nom : ${escapeHtml(request.name)}<br>
+NIN : ${escapeHtml(request.nin)}<br>
+Date de naissance : ${escapeHtml(request.birthDate)}<br>
+E-mail : ${escapeHtml(request.email)}<br>
+Adresse : ${escapeHtml(request.address)}
+</p>
+</div>
+
+<div class="card">
+<h3>Démarche</h3>
+<p>
+${escapeHtml(request.title)}<br>
+Type :
+${escapeHtml(request.requestType||"—")}<br>
+Statut :
+${escapeHtml(request.status)}
+</p>
+</div>
+
+</div>
+
+<div style="margin-top:22px">
+
+<h3>Pièces justificatives</h3>
+
+<div class="list" style="margin-top:12px">
+
+${request.files.map(file=>`
+<div class="list-item">
+
+<div>
+<strong>
+${escapeHtml(file.label||file.field)}
+</strong>
+
+<small>
+${escapeHtml(file.name)}
+</small>
+</div>
+
+<span class="status">
+Fichier reçu
+</span>
+
+</div>
+`).join("")}
+
+</div>
+</div>
+
+<div style="margin-top:22px">
+
+<h3>Message du demandeur</h3>
+
+<p style="margin-top:8px;color:#64748b">
+${escapeHtml(request.message||"Aucun message.")}
+</p>
+
+</div>
+
+<div class="field" style="margin-top:22px">
+
+<label>Nouveau statut</label>
+
+<select id="instructionStatus">
+
+<option value="Instruction en cours">
+Instruction en cours
+</option>
+
+<option value="Dossier incomplet">
+Dossier incomplet
+</option>
+
+<option value="Dossier complet">
+Dossier complet
+</option>
+
+<option value="Récépissé valide">
+Récépissé valide
+</option>
+
+<option value="Décision prise">
+Décision prise
+</option>
+
+<option value="Décision favorable">
+Décision favorable
+</option>
+
+<option value="Décision défavorable">
+Décision défavorable
+</option>
+
+<option value="Document prêt">
+Document prêt
+</option>
+
+<option value="Document valable">
+Document valable
+</option>
+
+</select>
+
+</div>
+
+<div class="field">
+
+<label>Observation administrative</label>
+
+<textarea
+id="instructionObservation"
+rows="5"
+placeholder="Observation concernant le dossier">${escapeHtml(request.observation||"")}</textarea>
+
+</div>
+
+<div class="field">
+
+<label>Message au demandeur</label>
+
+<textarea
+id="instructionMessage"
+rows="4"
+placeholder="Message à transmettre au demandeur"></textarea>
+
+</div>
+
+<div class="actions">
+
+<button class="btn btn-light"
+onclick="closeInstruction()">
+Fermer
+</button>
+
+<button class="btn btn-primary"
+onclick="saveInstruction('${request.id}')">
+Enregistrer l'instruction
+</button>
+
+</div>
+
+</div>`;
+
+detail.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+}
+
+function closeInstruction(){
+
+document.getElementById(
+"instructionDetail"
+).innerHTML="";
+}
+
+function saveInstruction(id){
+
+if(!currentUser||currentUser.role!=="president"){
+showToast("Accès refusé.");
+return;
+}
+
+const request=requests.find(
+r=>r.id===id
+);
+
+if(!request)return;
+
+const status=document.getElementById(
+"instructionStatus"
+).value;
+
+const observation=document.getElementById(
+"instructionObservation"
+).value.trim();
+
+const message=document.getElementById(
+"instructionMessage"
+).value.trim();
+
+request.status=status;
+request.observation=observation;
+
+request.instruction=
+"Instruction effectuée par le Président";
+
+request.history.push({
+status:status,
+date:new Date().toLocaleString("fr-FR")
+});
+
+if(message){
+
+request.messages.push({
+author:"Administration",
+message:message,
+date:new Date().toLocaleString("fr-FR")
+});
+
+}
+
+saveRequests();
+
+closeInstruction();
+
+loadInstruction(
+request.ownerRole
+);
+
+showToast(
+"Instruction enregistrée avec succès."
+);
+}
+
+function initializeInstruction(){
+
+if(currentUser?.role!=="president")return;
+
+document
+.getElementById("instructionMenu")
+.classList.remove("hidden");
+
+document
+.getElementById("presidentInstructionCard")
+.classList.remove("hidden");
+}
+  </script>
+  <script>
+function initializeInterface(){
+
+loadRequests();
+
+document.getElementById(
+"currentUserName"
+).textContent=
+currentUser.identifier;
+
+document.getElementById(
+"currentUserRole"
+).textContent=
+getRoleName(currentUser.role);
+
+if(currentUser.role==="president"){
+
+document.getElementById(
+"welcomeTitle"
+).textContent=
+"Bienvenue, Monsieur le Président";
+
+document.getElementById(
+"welcomeText"
+).textContent=
+"Vous pouvez effectuer vos propres démarches administratives et instruire les dossiers des citoyens et des étrangers.";
+
+initializeInstruction();
+
+}else if(currentUser.role==="citoyen"){
+
+document.getElementById(
+"welcomeTitle"
+).textContent=
+"Bienvenue dans l'Espace Citoyen";
+
+document.getElementById(
+"welcomeText"
+).textContent=
+"Effectuez vos démarches et consultez vos dossiers.";
+
+}else{
+
+document.getElementById(
+"welcomeTitle"
+).textContent=
+"Bienvenue dans l'Espace Étranger";
+
+document.getElementById(
+"welcomeText"
+).textContent=
+"Effectuez vos démarches administratives et suivez vos dossiers.";
+}
+
+renderProcedures();
+renderMyRequests();
+updateStats();
+}
+
+function getRoleName(role){
+
+if(role==="president"){
+return"Espace administratif du Président";
+}
+
+if(role==="citoyen"){
+return"Espace Citoyen";
+}
+
+return"Espace Étranger";
+}
+
+function initialize(){
+
+loadRequests();
+loadSession();
+
+if(currentUser){
+
+document
+.getElementById("loginScreen")
+.classList.add("hidden");
+
+document
+.getElementById("app")
+.classList.remove("hidden");
+
+initializeInterface();
+
+}else{
+
+document
+.getElementById("loginScreen")
+.classList.remove("hidden");
+
+document
+.getElementById("app")
+.classList.add("hidden");
+
+}
+}
+
+function sendMessage(id,message){
+
+const request=requests.find(
+r=>r.id===id
+);
+
+if(!request||!message)return;
+
+request.messages.push({
+author:
+currentUser.role==="president"
+?"Administration"
+:currentUser.identifier,
+
+message:message,
+
+date:new Date().toLocaleString("fr-FR")
+});
+
+saveRequests();
+}
+
+function addHistory(request,status){
+
+request.history.push({
+status:status,
+date:new Date().toLocaleString("fr-FR")
+});
+}
+
+function getStatistics(){
+
+return{
+total:requests.length,
+
+citizens:
+requests.filter(
+r=>r.ownerRole==="citoyen"
+).length,
+
+foreigners:
+requests.filter(
+r=>r.ownerRole==="etranger"
+).length,
+
+president:
+requests.filter(
+r=>r.ownerRole==="president"
+).length
+};
+}
+
+window.MOSTAKBAL={
+getRequest:id=>requests.find(
+r=>r.id===id
+),
+
+getStatistics:getStatistics,
+
+getCurrentUser:()=>currentUser,
+
+getRequests:()=>requests
+};
+
+window.addEventListener(
+"DOMContentLoaded",
+initialize
+);
+  </script>
+  <script>
+function startPortal(){
+
+loadRequests();
+loadSession();
+
+if(currentUser){
+
+document
+.getElementById("loginScreen")
+.classList.add("hidden");
+
+document
+.getElementById("app")
+.classList.remove("hidden");
+
+initializeInterface();
+
+}else{
+
+document
+.getElementById("loginScreen")
+.classList.remove("hidden");
+
+document
+.getElementById("app")
+.classList.add("hidden");
+
+}
+}
+
+function exportPrototypeData(){
+
+if(currentUser?.role!=="president"){
+showToast("Cette fonction est réservée au Président.");
+return;
+}
+
+const blob=new Blob(
+[
+JSON.stringify(
+requests,
+null,
+2
+)
+],
+{
+type:"application/json"
+}
+);
+
+const url=URL.createObjectURL(blob);
+
+const link=document.createElement("a");
+
+link.href=url;
+link.download="mostakbal-donnees.json";
+
+document.body.appendChild(link);
+
+link.click();
+
+link.remove();
+
+URL.revokeObjectURL(url);
+}
+
+function clearPrototypeData(){
+
+if(currentUser?.role!=="president"){
+showToast("Cette fonction est réservée au Président.");
+return;
+}
+
+requests=[];
+
+localStorage.removeItem(
+"MOSTAKBAL_REQUESTS"
+);
+
+renderMyRequests();
+updateStats();
+
+showToast(
+"Les données locales ont été supprimées."
+);
+}
+
+function checkPortal(){
+
+return{
+portal:"MOSTAKBAL",
+connected:Boolean(currentUser),
+role:currentUser?
+currentUser.role:
+null,
+requests:requests.length
+};
+}
+
+window.MOSTAKBAL_ADMIN={
+exportData:exportPrototypeData,
+clearData:clearPrototypeData,
+check:checkPortal
+};
+
+  </script>
