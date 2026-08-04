@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MOSTAKBAL - Portail administratif</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI", Arial, sans-serif;
+}
+
+body{
+    background:#f3f6fa;
+    color:#1b263b;
+}
+
+
+/* HEADER */
+
+header{
+
+    background:white;
+    height:100px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-bottom:4px solid #1d3557;
+
+}
+
+
+.logo{
+
+    display:flex;
+    align-items:center;
+    gap:20px;
+
+}
+
+
+.logo img{
+
+    width:75px;
+    height:75px;
+    object-fit:contain;
+
+}
+
+
+.logo h1{
+
+    font-size:38px;
+    color:#1d3557;
+    letter-spacing:3px;
+
+}
+
+
+
+/* PAGE ACCUEIL */
+
+
+.hero{
+
+    text-align:center;
+    padding:50px 20px;
+
+}
+
+
+.hero h2{
+
+    font-size:34px;
+    color:#1d3557;
+    margin-bottom:15px;
+
+}
+
+
+.hero p{
+
+    font-size:18px;
+    color:#555;
+
+}
+
+
+
+/* ESPACES */
+
+
+.spaces{
+
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:30px;
+
+}
+
+
+.space-card{
+
+    background:white;
+    padding:35px;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.12);
+    text-align:center;
+    transition:0.3s;
+
+}
+
+
+.space-card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+
+.space-card h3{
+
+    color:#1d3557;
+    font-size:24px;
+    margin-bottom:20px;
+
+}
+
+
+
+.space-card p{
+
+    color:#555;
+    min-height:60px;
+    margin-bottom:25px;
+
+}
+
+
+
+.space-card button{
+
+    background:#1d3557;
+    color:white;
+    border:none;
+    padding:14px 35px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+
+}
+
+
+.space-card button:hover{
+
+    background:#457b9d;
+
+}
+
+
+
+
+/* MODALES CONNEXION */
+
+
+.modal{
+
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.45);
+    justify-content:center;
+    align-items:center;
+
+}
+
+
+.modal-box{
+
+    background:white;
+    width:400px;
+    padding:30px;
+    border-radius:15px;
+
+}
+
+
+.modal-box h2{
+
+    text-align:center;
+    margin-bottom:20px;
+    color:#1d3557;
+
+}
+
+
+
+.modal-box input{
+
+    width:100%;
+    padding:13px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:8px;
+
+}
+
+
+
+.modal-box button{
+
+    width:100%;
+    padding:13px;
+    background:#1d3557;
+    color:white;
+    border:none;
+    border-radius:8px;
+
+}
+
+
+
+/* FOOTER */
+
+
+footer{
+
+    margin-top:60px;
+    background:#1d3557;
+    color:white;
+    text-align:center;
+    padding:20px;
+
+}
+
+
+
+@media(max-width:900px){
+
+.spaces{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+
+
+</style>
+
+</head>
+
+
+
+<body>
+
+
+<header>
+
+<div class="logo">
+
+<img src="logo-mostakbal.png">
+
+<h1>MOSTAKBAL</h1>
+
+</div>
+
+</header>
+
+
+
+<section class="hero">
+
+<h2>Bienvenue sur le portail administratif MOSTAKBAL</h2>
+
+<p>
+Effectuez vos démarches administratives numériques depuis un seul espace.
+</p>
+
+</section>
+
+
+
+<section class="spaces">
+
+
+<div class="space-card">
+
+<h3>Espace étranger</h3>
+
+<p>
+Demandes administratives pour les personnes étrangères.
+</p>
+
+<button onclick="ouvrir('etranger')">
+Accéder
+</button>
+
+</div>
+
+
+
+<div class="space-card">
+
+<h3>Espace citoyen</h3>
+
+<p>
+Accès aux démarches administratives citoyennes.
+</p>
+
+<button onclick="ouvrir('citoyen')">
+Accéder
+</button>
+
+</div>
+
+
+
+
+<div class="space-card">
+
+<h3>Espace administratif</h3>
+
+<p>
+Espace réservé à l'administrateur unique du portail.
+</p>
+
+<button onclick="ouvrir('admin')">
+Accéder
+</button>
+
+</div>
+
+
+</section>
+
+
+
+
+
+<div class="modal" id="modal">
+
+
+<div class="modal-box">
+
+
+<h2 id="titreConnexion">
+Connexion
+</h2>
+
+
+<input type="text" placeholder="Identifiant">
+
+
+<input type="password" placeholder="Mot de passe">
+
+
+<button>
+Se connecter
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<footer>
+
+🦅 MOSTAKBAL - Portail administratif numérique
+
+</footer>
+
+
+
+
+
+<script>
+
+
+function ouvrir(espace){
+
+let modal=document.getElementById("modal");
+
+let titre=document.getElementById("titreConnexion");
+
+
+modal.style.display="flex";
+
+
+if(espace==="etranger"){
+
+titre.innerHTML="Connexion Espace étranger";
+
+}
+
+if(espace==="citoyen"){
+
+titre.innerHTML="Connexion Espace citoyen";
+
+}
+
+if(espace==="admin"){
+
+titre.innerHTML="Connexion Administrateur";
+
+}
+
+
+}
+
+
+</script>
+
+
+
+</body>
+
+  </html>
+  <!-- PARTIE 2/10 - TABLEAU DE BORD MOSTAKBAL -->
+
+<section id="dashboard" class="dashboard">
+
+    <div class="dashboard-header">
+
+        <h1>🦅 MOSTAKBAL</h1>
+
+        <p>
+            Bienvenue dans votre espace administratif numérique
+        </p>
+
+    </div>
+
+
+
+    <div class="dashboard-menu">
+
+
+        <div class="menu-card">
+
+            <h2>📁 Mes démarches administratives importantes</h2>
+
+            <p>
+                Retrouvez vos demandes et commencez une nouvelle démarche.
+            </p>
+
+            <button onclick="ouvrirDemandes()">
+                Voir les démarches
+            </button>
+
+        </div>
+
+
+
+
+        <div class="menu-card suivi">
+
+            <h2>📌 Suivre mes demandes</h2>
+
+            <p>
+                Consultez l'avancement de vos dossiers déposés.
+            </p>
+
+            <button onclick="ouvrirSuivi()">
+                Suivre mes demandes
+            </button>
+
+        </div>
+
+
+
+
+
+        <div class="menu-card">
+
+            <h2>📄 Mes documents</h2>
+
+            <p>
+                Accédez aux documents administratifs disponibles.
+            </p>
+
+            <button>
+                Consulter
+            </button>
+
+        </div>
+
+
+
+    </div>
+
+
+</section>
+
+
+
+
+
+<section id="demandes" class="demandes" style="display:none;">
+
+
+<h2>
+Choisissez une démarche administrative
+</h2>
+
+
+
+<div class="liste-demandes">
+
+
+
+<div class="demande-card">
+
+<h3>
+Carte Nationale d'Identité
+</h3>
+
+<p>
+Première demande ou renouvellement.
+</p>
+
+<button>
+Commencer
+</button>
+
+</div>
+
+
+
+
+
+<div class="demande-card">
+
+<h3>
+Passeport
+</h3>
+
+<p>
+Demande de passeport ou renouvellement.
+</p>
+
+<button>
+Commencer
+</button>
+
+</div>
+
+
+
+
+
+<div class="demande-card">
+
+<h3>
+Certificat de nationalité
+</h3>
+
+<p>
+Demande et délivrance du certificat.
+</p>
+
+<button>
+Commencer
+</button>
+
+</div>
+
+
+
+
+
+<div class="demande-card">
+
+<h3>
+TIME
+</h3>
+
+<p>
+Titre d'identité pour mineur étranger.
+</p>
+
+<button>
+Commencer
+</button>
+
+</div>
+
+
+
+
+
+<div class="demande-card">
+
+<h3>
+Carte de statut
+</h3>
+
+<p>
+Demande de première délivrance.
+</p>
+
+<button>
+Commencer
+</button>
+
+</div>
+
+
+
+
+<div class="demande-card">
+
+<h3>
+Demande de naturalisation
+</h3>
+
+<p>
+Demande selon les conditions prévues.
+</p>
+
+<button>
+Commencer
+</button>
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<section id="suivi" style="display:none;">
+
+
+<h2>
+Suivi de mes demandes
+</h2>
+
+
+<div class="dossier">
+
+
+<p>
+Référence dossier : MST-2026-000458
+</p>
+
+
+<p>
+Démarche : Carte de statut
+</p>
+
+
+<p>
+État :
+<span>
+En cours d'instruction
+</span>
+</p>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+<script>
+
+
+function ouvrirDemandes(){
+
+document.getElementById("dashboard").style.display="none";
+
+document.getElementById("demandes").style.display="block";
+
+}
+
+
+
+
+function ouvrirSuivi(){
+
+document.getElementById("dashboard").style.display="none";
+
+document.getElementById("suivi").style.display="block";
+
+}
+
+
+
+</script>
+<!-- PARTIE 3/10 - FORMULAIRES ADMINISTRATIFS MOSTAKBAL -->
+
+
+<section id="formulaire-demande" class="formulaire" style="display:none;">
+
+
+<h2>
+Nouvelle demande administrative
+</h2>
+
+
+
+<div class="form-box">
+
+
+<label>
+Choisir une démarche
+</label>
+
+
+<select id="typeDemande" onchange="chargerFormulaire()">
+
+
+<option value="">
+Sélectionner
+</option>
+
+
+<option value="cni">
+Carte Nationale d'Identité
+</option>
+
+
+<option value="passeport">
+Passeport
+</option>
+
+
+<option value="nationalite">
+Certificat de nationalité
+</option>
+
+
+<option value="time">
+TIME
+</option>
+
+
+<option value="statut">
+Carte de statut
+</option>
+
+
+<option value="naturalisation">
+Demande de naturalisation
+</option>
+
+
+</select>
+
+
+
+<div id="champsDemande">
+
+
+</div>
+
+
+
+<button onclick="envoyerDemande()">
+
+Continuer
+
+</button>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<script>
+
+
+function chargerFormulaire(){
+
+
+let type=document.getElementById("typeDemande").value;
+
+
+let zone=document.getElementById("champsDemande");
+
+
+
+zone.innerHTML=`
+
+
+<label>
+Nom
+</label>
+
+<input type="text" id="nomDemande">
+
+
+
+<label>
+Prénom
+</label>
+
+<input type="text" id="prenomDemande">
+
+
+
+<label>
+Date de naissance
+</label>
+
+<input type="date" id="dateNaissance">
+
+
+
+<label>
+Adresse
+</label>
+
+<input type="text" id="adresseDemande">
+
+
+
+<label>
+Numéro d'identification nationale / numéro étranger
+</label>
+
+<input type="text" id="identifiantDemande">
+
+
+`;
+
+
+
+
+if(type==="cni"){
+
+
+zone.innerHTML += `
+
+<h3>
+Type de demande CNI
+</h3>
+
+
+<select>
+
+<option>
+Première demande
+</option>
+
+<option>
+Renouvellement
+</option>
+
+</select>
+
+`;
+
+}
+
+
+
+if(type==="passeport"){
+
+
+zone.innerHTML += `
+
+<h3>
+Type de demande passeport
+</h3>
+
+
+<select>
+
+<option>
+Première demande
+</option>
+
+<option>
+Renouvellement
+</option>
+
+</select>
+
+`;
+
+}
+
+
+
+if(type==="naturalisation"){
+
+
+zone.innerHTML += `
+
+<p>
+La demande sera disponible uniquement selon les conditions prévues.
+</p>
+
+`;
+
+}
+
+
+}
+
+
+
+
+function envoyerDemande(){
+
+
+alert(
+"Demande enregistrée. Passage à l'étape des documents."
+);
+
+
+}
+
+</script>
+<!-- PARTIE 4/10 - DEPOT DES DOCUMENTS -->
+
+
+<section id="documents" class="documents" style="display:none;">
+
+
+<h2>
+Dépôt des pièces justificatives
+</h2>
+
+
+
+<div class="documents-box">
+
+
+<h3 id="titrePieces">
+Pièces nécessaires
+</h3>
+
+
+
+<div id="listePieces">
+
+
+</div>
+
+
+
+
+<label>
+Ajouter un document
+</label>
+
+
+<input type="file" multiple>
+
+
+
+
+<textarea placeholder="
+Observation ou message pour le service administratif
+"></textarea>
+
+
+
+
+<button onclick="validerDepot()">
+
+Valider le dépôt
+
+</button>
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+<script>
+
+
+let pieces={
+
+
+cni:[
+
+"Certificat de nationalité",
+
+"Photo d'identité",
+
+"Acte de naissance selon la situation"
+
+],
+
+
+passeport:[
+
+"Photo d'identité",
+
+"Certificat de nationalité",
+
+"Ancien passeport si renouvellement"
+
+],
+
+
+time:[
+
+"Acte de naissance",
+
+"Document d'identité du pays d'origine",
+
+"Justificatif de résidence"
+
+],
+
+
+statut:[
+
+"Document d'identité du pays d'origine",
+
+"Acte de naissance",
+
+"Justificatif de résidence"
+
+],
+
+
+naturalisation:[
+
+"TIME ou Carte de statut valide",
+
+"Acte de naissance",
+
+"Documents justificatifs"
+
+]
+
+
+};
+
+
+
+
+
+function afficherPieces(type){
+
+
+let zone=document.getElementById("listePieces");
+
+
+zone.innerHTML="";
+
+
+
+pieces[type].forEach(function(piece){
+
+
+zone.innerHTML += `
+
+<div>
+
+☑ ${piece}
+
+</div>
+
+`;
+
+
+});
+
+
+}
+
+
+
+
+function validerDepot(){
+
+
+alert(
+"Votre dossier a été transmis pour instruction administrative."
+);
+
+
+}
+
+
+</script>
+<!-- PARTIE 5/10 - SUIVI DES DEMANDES MOSTAKBAL -->
+
+
+<section class="suivi-demandes">
+
+
+<h2>
+Suivre mes demandes
+</h2>
+
+
+
+<div id="listeDossiers">
+
+
+<div class="dossier-card">
+
+
+<h3>
+Demande de Carte de statut
+</h3>
+
+
+<p>
+Référence : MST-2026-000458
+</p>
+
+
+<p>
+Date de dépôt : 04/08/2026
+</p>
+
+
+<p>
+Statut :
+<span id="etatDossier">
+En cours d'instruction
+</span>
+</p>
+
+
+
+<button onclick="voirDossier()">
+
+Voir le dossier
+
+</button>
+
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<script>
+
+
+function voirDossier(){
+
+
+alert(
+
+"Ouverture du détail du dossier : pièces déposées, historique et messages administratifs."
+
+);
+
+
+}
+
+
+
+
+let historique=[
+
+
+{
+date:"04/08/2026",
+action:"Dossier déposé"
+},
+
+
+{
+date:"05/08/2026",
+action:"Dossier transmis au service administratif"
+}
+
+
+];
+
+
+</script>
+<!-- PARTIE 6/10 - ESPACE ADMINISTRATIF -->
+
+
+<section class="administration">
+
+
+<h1>
+🦅 MOSTAKBAL - Administration
+</h1>
+
+
+<p>
+Tableau de bord de l'administrateur unique
+</p>
+
+
+
+
+<div class="admin-menu">
+
+
+<div class="admin-card">
+
+<h2>
+Demandes étrangères
+</h2>
+
+<p>
+Consulter et instruire les dossiers étrangers.
+</p>
+
+
+<button>
+Accéder
+</button>
+
+
+</div>
+
+
+
+
+<div class="admin-card">
+
+<h2>
+Demandes citoyennes
+</h2>
+
+<p>
+Consulter et instruire les dossiers citoyens.
+</p>
+
+
+<button>
+Accéder
+</button>
+
+
+</div>
+
+
+
+
+
+<div class="admin-card">
+
+<h2>
+Instruction des demandes
+</h2>
+
+<p>
+Traiter les demandes reçues.
+</p>
+
+
+<button onclick="ouvrirInstruction()">
+Ouvrir
+</button>
+
+
+</div>
+
+
+
+
+
+<div class="admin-card">
+
+<h2>
+Mes démarches personnelles
+</h2>
+
+
+<p>
+L'administrateur peut aussi déposer ses propres demandes.
+</p>
+
+
+<button>
+Nouvelle demande
+</button>
+
+
+</div>
+
+
+
+</div>
+
+
+  </section>
+  <!-- PARTIE 7/10 - TRAITEMENT ADMINISTRATIF -->
+
+
+<section id="instruction" class="instruction">
+
+
+<h2>
+Instruction des demandes
+</h2>
+
+
+
+<div class="choix-instruction">
+
+
+<button onclick="chargerEtranger()">
+
+Etranger
+
+</button>
+
+
+
+<button onclick="chargerCitoyen()">
+
+Citoyen
+
+</button>
+
+
+</div>
+
+
+
+
+
+<div id="dossiersAdmin">
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<script>
+
+
+function chargerEtranger(){
+
+
+document.getElementById("dossiersAdmin").innerHTML=`
+
+
+<div class="dossier-admin">
+
+
+<h3>
+Dossier étranger - TIME
+</h3>
+
+
+<p>
+Référence : MST-E-00021
+</p>
+
+
+<p>
+Pièces :
+Complètes
+</p>
+
+
+
+<button>
+Accepter
+</button>
+
+
+<button>
+Demander complément
+
+</button>
+
+
+
+<button>
+Refuser
+
+</button>
+
+
+
+</div>
+
+
+`;
+
+
+}
+
+
+
+
+
+function chargerCitoyen(){
+
+
+document.getElementById("dossiersAdmin").innerHTML=`
+
+
+<div class="dossier-admin">
+
+
+<h3>
+Dossier citoyen - Passeport
+</h3>
+
+
+<p>
+Référence : MST-C-00054
+</p>
+
+
+<p>
+Etat :
+En attente de vérification
+</p>
+
+
+<button>
+Valider
+</button>
+
+
+<button>
+Refuser
+</button>
+
+
+</div>
+
+
+`;
+
+
+}
+
+
+</script>
+<!-- PARTIE 9/10 - QR CODE VERIFICATION -->
+
+
+<section class="verification">
+
+
+<h2>
+Vérification du document
+</h2>
+
+
+
+<div id="qrcode">
+
+
+QR CODE
+
+
+</div>
+
+
+
+
+<p>
+Scannez ce code pour vérifier
+l'authenticité du document.
+</p>
+
+
+
+</section>
+
+
+
+
+
+<script>
+
+
+function creerQR(reference){
+
+
+let contenu =
+"https://mostakbal.gov/verification/"
++ reference;
+
+
+
+document.getElementById("qrcode").innerHTML =
+
+`
+
+<img 
+src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${contenu}"
+>
+
+`;
+
+
+}
+
+
+
+</script>
+<!-- PARTIE 10/10 - PARAMETRES ADMINISTRATEUR FINAL MOSTAKBAL -->
+
+
+<section class="parametres-admin">
+
+
+<h2>
+⚙️ Paramètres administrateur
+</h2>
+
+
+
+<div class="admin-security-box">
+
+
+<h3>
+Modifier les informations administratives
+</h3>
+
+
+
+<label>
+Ancien identifiant administrateur
+</label>
+
+<input 
+id="ancienIdentifiant"
+type="text"
+placeholder="Ancien identifiant"
+>
+
+
+
+
+<label>
+Nouvel identifiant administrateur
+</label>
+
+<input 
+id="nouvelIdentifiant"
+type="text"
+placeholder="Nouvel identifiant"
+>
+
+
+
+
+
+<label>
+Ancien mot de passe
+</label>
+
+<input 
+id="ancienMotPasse"
+type="password"
+placeholder="Ancien mot de passe"
+>
+
+
+
+
+<label>
+Nouveau mot de passe
+</label>
+
+<input 
+id="nouveauMotPasse"
+type="password"
+placeholder="Nouveau mot de passe"
+>
+
+
+
+
+<label>
+Confirmation du nouveau mot de passe
+</label>
+
+<input 
+id="confirmationMotPasse"
+type="password"
+placeholder="Confirmer le mot de passe"
+>
+
+
+
+
+<button onclick="modifierCompteAdministrateur()">
+
+Enregistrer les modifications
+
+</button>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<script>
+
+
+function securiser(mot){
+
+
+return btoa(
+unescape(
+encodeURIComponent(mot)
+)
+);
+
+
+}
+
+
+
+
+
+function modifierCompteAdministrateur(){
+
+
+
+let ancienID =
+document.getElementById("ancienIdentifiant").value;
+
+
+
+let nouveauID =
+document.getElementById("nouvelIdentifiant").value;
+
+
+
+let ancienMDP =
+document.getElementById("ancienMotPasse").value;
+
+
+
+let nouveauMDP =
+document.getElementById("nouveauMotPasse").value;
+
+
+
+let confirmation =
+document.getElementById("confirmationMotPasse").value;
+
+
+
+
+
+let idActuel =
+localStorage.getItem("admin_identifiant");
+
+
+
+let mdpActuel =
+localStorage.getItem("admin_password");
+
+
+
+
+
+
+if(ancienID !== idActuel){
+
+
+alert(
+"Ancien identifiant incorrect."
+);
+
+
+return;
+
+}
+
+
+
+
+
+if(securiser(ancienMDP) !== mdpActuel){
+
+
+alert(
+"Ancien mot de passe incorrect."
+);
+
+
+return;
+
+}
+
+
+
+
+
+if(nouveauMDP !== confirmation){
+
+
+alert(
+"La confirmation du mot de passe est incorrecte."
+);
+
+
+return;
+
+}
+
+
+
+
+
+if(nouveauID === "" || nouveauMDP === ""){
+
+
+alert(
+"Veuillez remplir tous les champs."
+);
+
+
+return;
+
+}
+
+
+
+
+
+localStorage.setItem(
+
+"NR-2601-0001-M-FON",
+
+nouveauID
+
+);
+
+
+
+localStorage.setItem(
+
+"Alamimohammed12?",
+
+securiser(nouveauMDP)
+
+);
+
+
+
+
+alert(
+
+"Les informations administrateur ont été modifiées avec succès."
+
+);
+
+
+
+}
+
+
+
+  </script>
